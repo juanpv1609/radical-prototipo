@@ -8,6 +8,10 @@ import EditClient from './components/cliente/EditClient.vue';
 import AllContratos from './components/contrato/AllContratos.vue';
 import CreateContrato from './components/contrato/CreateContrato.vue';
 import EditContrato from './components/contrato/EditContrato.vue';
+
+import AllAreas from './components/area/AllAreas.vue';
+import CreateArea from './components/area/CreateArea.vue';
+import EditArea from './components/area/EditArea.vue';
 export const routes = [
     {
         name: 'home',
@@ -39,7 +43,7 @@ export const routes = [
         path: '/clientes/edit/:id',
         component: EditClient
     },
-
+    // contratos
     {
         name: 'contratos',
         path: '/contratos',
@@ -54,5 +58,21 @@ export const routes = [
         name: 'contratos-edit',
         path: '/contratos/edit/:id',
         component: EditContrato
+    },
+    // areas
+    {
+        name: 'areas',
+        path: '/areas',
+        component: AllAreas
+    },
+    {
+        name: 'areas-new',
+        path: '/areas/create',
+        component: CreateArea
+    },
+    {
+        name: 'areas-edit',
+        path: '/areas/edit/:id',
+        component: EditArea
     }
 ];

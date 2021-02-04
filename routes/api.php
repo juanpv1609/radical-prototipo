@@ -7,6 +7,7 @@ use App\Http\Controllers\PaisController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\FrecuenciaController;
+use App\Http\Controllers\ContratoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,11 +21,13 @@ use App\Http\Controllers\FrecuenciaController;
 */
 
 Route::middleware('api')->group(function () {
+    Route::resource('contratos', ContratoController::class);
     Route::resource('products', ProductController::class);
     Route::resource('clientes', ClienteController::class);
     Route::resource('areas', AreaController::class);
     Route::resource('paises', PaisController::class);
     Route::resource('frecuencias', FrecuenciaController::class);
+    Route::resource('areas', AreaController::class);
 
 
 

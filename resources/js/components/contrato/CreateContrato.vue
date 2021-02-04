@@ -1,12 +1,14 @@
 <template>
-    <div class="card">
-        <div class="card-header d-flex justify-content-between">
-            <h5 class="card-title">Nuevo cliente</h5>
-        </div>
-        <div class="card-body">
-            <form @submit.prevent="addContrato">
+<div>
+
+<form @submit.prevent="addContrato">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between">
+                <h5 class="card-title">Nuevo contrato</h5>
+            </div>
+            <div class="card-body">
                 <div class="row">
-                    <div class="col-sm-3">
+                    <div class="col-sm-2">
                         <div class="mb-3">
                             <label for="cliente" class="form-label"
                                 >Seleccione un cliente:</label
@@ -25,10 +27,10 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-sm-3">
+                    <div class="col-sm-2">
                         <div class="mb-3">
                             <label for="fecha_inicio" class="form-label"
-                                >Fecha inicio:</label
+                                >Fecha inicial:</label
                             >
                             <input
                                 type="date"
@@ -38,10 +40,10 @@
                             />
                         </div>
                     </div>
-                    <div class="col-sm-3">
+                    <div class="col-sm-2">
                         <div class="mb-3">
                             <label for="fecha_fin" class="form-label"
-                                >Fecha fin:</label
+                                >Fecha final:</label
                             >
                             <input
                                 type="date"
@@ -51,7 +53,7 @@
                             />
                         </div>
                     </div>
-                    <div class="col-sm-3">
+                    <div class="col-sm-2">
                         <div class="mb-3">
                             <label for="pais" class="form-label">Pais:</label>
                             <select
@@ -68,9 +70,7 @@
                             </select>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-3">
+                    <div class="col-sm-2">
                         <div class="mb-3">
                             <label for="area" class="form-label">Area:</label>
                             <select
@@ -82,12 +82,12 @@
                                     v-bind:key="item.id"
                                     v-bind:value="item.id"
                                 >
-                                    {{ item.descripcion }}
+                                    {{ item.nombre }}
                                 </option>
                             </select>
                         </div>
                     </div>
-                    <div class="col-sm-3">
+                    <div class="col-sm-2">
                         <div class="mb-3">
                             <label for="solucion" class="form-label"
                                 >Solucion:</label
@@ -100,7 +100,11 @@
                             />
                         </div>
                     </div>
-                    <!-- <div class="col-sm-3">
+                </div>
+                <div class="row">
+
+
+                    <div class="col-sm-2">
                         <div class="mb-3">
                             <label for="marca" class="form-label">Marca:</label>
                             <input
@@ -110,8 +114,8 @@
                                 required
                             />
                         </div>
-                    </div> -->
-                    <div class="col-sm-3">
+                    </div>
+                    <div class="col-sm-2">
                         <div class="mb-3">
                             <label for="frecuencia" class="form-label"
                                 >Frecuencia:</label
@@ -131,14 +135,12 @@
                         </div>
                     </div>
                     <div class="col-sm-3">
-                        <div class="mb-3">
-                            <label for="dias" class="form-label"
+                        <label for="dias" class="form-label"
                                 >Cada dia:</label
                             >
-                            <select
-                                v-model="dias.value"
-                                class="form-control"
-                            >
+                        <div class="input-group mb-3">
+
+                            <select v-model="dias.value" class="form-control">
                                 <option
                                     v-for="item in dias"
                                     v-bind:key="item.value"
@@ -147,6 +149,19 @@
                                     {{ item.text }}
                                 </option>
                             </select>
+                            <button
+                            v-on:click="generarFechas"
+                            type="button"
+                            class="btn btn-warning"
+                        >
+                            Generar Tareas
+                        </button>
+                        </div>
+                    </div>
+                    <div class="col-sm-5">
+                        <div class="mb-3">
+                            <label for="correos">Direcciones de correo para las alertas</label>
+                            <input-tag v-model="correos" class="form-control" placeholder="Ingrese una direccion de correo" validate="email" ></input-tag>
                         </div>
                     </div>
                 </div>
@@ -179,34 +194,85 @@
                         </div>
                     </div>
                 </div>
-                <button v-on:click="generarFechas" class="btn btn-info">
-                    Generar Fechas
-                </button>
-                <div class="row" v-if="mantenimientos.length>0">
-                    <div class="col-sm-6"></div>
-                    <div class="col-sm-6">
-                        <table class="table">
-                            <thead class="table-dark">
-                                <tr>
-                                    <th>Fecha</th>
-                                    <th style="width:20%">Alerta</th>
-                                    <th style="width:20%"></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-for="value in mantenimientos" v-bind:key="value.fecha">
-                                    <td> <input type="date" class="form-control form-control-sm" v-model="value.fecha"></td>
-                                    <td> <input type="text" class="form-control form-control-sm" v-model="value.alerta"></td>
-                                    <td> <button class="btn btn-sm btn-danger" @click="deleteMantenimiento(value.fecha)">X</button></td>
-                                </tr>
-                            </tbody>
-                        </table>
+
+                <div class="row" v-if="mantenimientos.length > 0">
+                    <div class="col-sm-8"></div>
+                    <div class="col-sm-4">
+
                     </div>
                 </div>
+            </div>
+            <div class="card-footer ">
+                <div class="d-flex justify-content-between">
+
+                <button type="button" :disabled="!mantenimientos.length>0" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModal">Ver Tareas</button>
+
                 <button type="submit" class="btn btn-primary">Enviar</button>
-            </form>
+                </div>
+
+            </div>
         </div>
+</form>
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Tareas programadas</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body table-responsive">
+        <table class="table table-sm">
+            <thead class="table-dark">
+                <tr>
+                    <th style="width: 10%">#</th>
+                    <th>Fecha</th>
+                    <th style="width: 20%">Alerta</th>
+                    <th style="width: 10%"></th>
+                </tr>
+            </thead>
+                <tbody>
+                    <tr
+                        v-for="value in mantenimientos"
+                        v-bind:key="value.tarea_id"
+                    >
+                        <td>{{ value.tarea_id }}</td>
+                        <td>
+                            <input
+                                type="date"
+                                class="form-control form-control-sm"
+                                v-model="value.fecha"
+                            />
+                        </td>
+                        <td>
+                            <input
+                                type="text"
+                                class="form-control form-control-sm"
+                                v-model="value.alerta"
+                            />
+                        </td>
+                        <th>
+                            <button
+                                class="btn btn-sm btn-danger"
+                                type="button"
+                                v-on:click="deleteTarea(value.tarea_id)">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </th>
+                    </tr>
+                </tbody>
+            </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+      </div>
     </div>
+  </div>
+</div>
+</div>
+
+
 </template>
 <script>
 import moment from "moment";
@@ -214,23 +280,24 @@ import moment from "moment";
 export default {
     data() {
         return {
+            request: {},
             contrato: {},
             clientes: {},
             paises: {},
             areas: {},
             frecuencias: {},
             mantenimientos: {},
-            options: ['list', 'of', 'options'],
-            dias:[
-                { text: 'LUNES',value:1},
-                { text: 'MARTES',value:2},
-                { text: 'MIERCOLES',value:3},
-                { text: 'JUEVES',value:4},
-                { text: 'VIERNES',value:5},
-                { text: 'SABADO',value:6},
-                { text: 'DOMINGO',value:7},
+            correos:[],
+            dias: [
+                { text: "LUNES", value: 1 },
+                { text: "MARTES", value: 2 },
+                { text: "MIERCOLES", value: 3 },
+                { text: "JUEVES", value: 4 },
+                { text: "VIERNES", value: 5 },
+                { text: "SABADO", value: 6 },
+                { text: "DOMINGO", value: 7 }
             ],
-            datos:[]
+            datos: []
         };
     },
     created() {
@@ -256,75 +323,122 @@ export default {
     },
     methods: {
         addContrato() {
-            console.log(this.contrato);
-            this.data = {
-                cliente: this.selectedCliente,
-                fecha_inicio: this.c
-            };
-            /* this.axios
-                    .post('http://localhost:8000/api/contratos', this.client)
+
+            this.contrato.mantenimientos=this.mantenimientos;
+            this.contrato.correos=this.correos;
+            console.log(JSON.stringify(this.contrato));
+
+            this.axios
+                    .post('http://localhost:8000/api/contratos', this.contrato)
                     .then(response => (
                         this.$router.push({ name: 'contratos' })
                     ))
                     .catch(err => console.log(err))
-                    .finally(() => this.loading = false) */
+                    .finally(() => this.loading = false)
         },
-        deleteMantenimiento(fecha) {
-                        let i = this.mantenimientos.map(data => data.fecha).indexOf(fecha);
-                        this.mantenimientos.splice(i, 1)
-            },
+        deleteTarea(tarea_id) {
+            let i = this.mantenimientos.map(data => data.tarea_id).indexOf(tarea_id);
+            this.mantenimientos.splice(i, 1);
+        },
         generarFechas() {
-            //var datos  = [];
+            this.datos  = [];
             let fecha_inicio = moment(this.contrato.fecha_inicio);
             let fecha_fin = moment(this.contrato.fecha_fin);
             let frecuencia = this.contrato.frecuencia;
             let num_dia = this.dias.value;
-            //console.log(num_dia);
-            let salto=0;
-            let diferencia_dias = parseInt(fecha_fin.diff(fecha_inicio,'days'))+parseInt(1);
-            //console.log(''+fecha_inicio.format("d"));
-             switch (frecuencia) {
-
+            let dia_preferido;
+            let diferencia;
+            switch (frecuencia) {
                 case 2: //semanal
-                    salto = 7;
+                    diferencia = parseInt(fecha_fin.diff(fecha_inicio, "weeks")) + parseInt(1);
+                    for (let i = 1; i < parseInt(diferencia); i++) {
+                        dia_preferido = moment(fecha_inicio).startOf("week");
+                        while (dia_preferido.day() !== parseInt(num_dia)) {
+                            dia_preferido.add(1, "day");
+                        }
+                        if (dia_preferido.day() == parseInt(num_dia)) {
+                            this.datos.push({
+                                tarea_id: i,
+                                fecha: moment(dia_preferido).format( "YYYY-MM-DD"),
+                                alerta: 15
+                            });
+                            fecha_inicio.add(1, "weeks");
+                        } else {
+                            fecha_inicio.add(1, "days");
+                        }
+                    }
+
                     break;
                 case 3: //mensual
-                    salto = 30;
+                    diferencia = parseInt(fecha_fin.diff(fecha_inicio, "months")) + parseInt(1);
+                    for (let i = 1; i <= parseInt(diferencia); i++) {
+                        dia_preferido = moment(fecha_inicio).startOf("month");
+                        while (dia_preferido.day() !== parseInt(num_dia)) {
+                            dia_preferido.add(1, "day");
+                        }
+                        if (dia_preferido.day() == parseInt(num_dia)) {
+                            this.datos.push({
+                                tarea_id: i,
+                                fecha: moment(dia_preferido).format( "YYYY-MM-DD"),
+                                alerta: 15
+                            });
+                            fecha_inicio.add(1, "months");
+                        } else {
+                            fecha_inicio.add(1, "days");
+                        }
+                    }
                     break;
                 case 4: //trimestral
-                    salto = 90;
+                    diferencia = (parseInt(fecha_fin.diff(fecha_inicio, "months")) + parseInt(1))/3;
+                    for (let i = 1; i <= parseInt(diferencia); i++) {
+                        dia_preferido = moment(fecha_inicio).startOf("month");
+                        while (dia_preferido.day() !== parseInt(num_dia)) {
+                            dia_preferido.add(1, "day");
+                        }
+                        if (dia_preferido.day() == parseInt(num_dia)) {
+                            this.datos.push({
+                                tarea_id: i,
+                                fecha: moment(dia_preferido).format( "YYYY-MM-DD"),
+                                alerta: 15
+                            });
+                            fecha_inicio.add(3, "months");
+                        } else {
+                            fecha_inicio.add(1, "days");
+                        }
+                    }
+
                     break;
                 case 5: //semestral
-                    salto = 180;
+                    diferencia = (parseInt(fecha_fin.diff(fecha_inicio, "months")) + parseInt(1))/6;
+                    for (let i = 1; i <= parseInt(diferencia); i++) {
+                        dia_preferido = moment(fecha_inicio).startOf("month");
+                        while (dia_preferido.day() !== parseInt(num_dia)) {
+                            dia_preferido.add(1, "day");
+                        }
+                        if (dia_preferido.day() == parseInt(num_dia)) {
+                            this.datos.push({
+                                tarea_id: i,
+                                fecha: moment(dia_preferido).format( "YYYY-MM-DD"),
+                                alerta: 15
+                            });
+                            fecha_inicio.add(6, "months");
+                        } else {
+                            fecha_inicio.add(1, "days");
+                        }
+                    }
+
                     break;
                 default:
                     //anual
-                    salto = 365;
+                    diferencia = parseInt(fecha_fin.diff(fecha_inicio, "years")) + parseInt(1);
                     break;
             }
-            //console.log(moment().startOf("month").startOf("isoweek"));
-            // let result = moment().startOf("month");
-            // console.log(num_dia);
-            //     while (result.day() !== parseInt(num_dia)) {
-            //     result.add(1, "day");
-            //     }
-            //     console.log(result);
-            while (salto<=parseInt(diferencia_dias)) { // de 7 en
 
+           // console.log("tareas:" + diferencia);
 
-
-                this.datos.push({
-                    'fecha' : moment(fecha_inicio).add(salto,'days').format("YYYY-MM-DD"),
-                    'alerta' : 15
-                });
-                // const mant = {
-                //             'fecha' : moment(fecha_inicio).add(salto,'days').format("DD-MM-YYYY")
-                //         };
-
-                        //this.mantenimientos.push(mant);
-                        salto+=salto;
-            }
             this.mantenimientos = this.datos;
+            //console.log(JSON.stringify(this.mantenimientos));
+            this.$toasted.success('Tareas generadas correctamente');
 
         }
     }

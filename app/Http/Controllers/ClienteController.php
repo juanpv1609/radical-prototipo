@@ -17,7 +17,7 @@ class ClienteController extends Controller
         //     $clientes = Cliente::all();
         //    return view('cliente.index')->with('clientes', $clientes);
         $clientes = Cliente::all()->toArray();
-        return array_reverse($clientes);
+        return $clientes;
     }
 
     /**

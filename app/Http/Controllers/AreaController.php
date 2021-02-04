@@ -16,7 +16,7 @@ class AreaController extends Controller
     {
         $areas = Area::all()->toArray();
 
-        return array_reverse($areas);
+        return $areas;
 
 
 
@@ -29,7 +29,7 @@ class AreaController extends Controller
      */
     public function create()
     {
-        //
+
     }
 
     /**
@@ -40,7 +40,14 @@ class AreaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $area = new Area([
+            'nombre' => $request->input('nombre'),
+            'descripcion' => $request->input('descripcion'),
+            'estado' => 1
+        ]);
+        $area->save();
+
+        return response()->json('Area created!');
     }
 
     /**
@@ -49,10 +56,7 @@ class AreaController extends Controller
      * @param  \App\Models\Area  $area
      * @return \Illuminate\Http\Response
      */
-    public function show(Area $area)
-    {
-        //
-    }
+
 
     /**
      * Show the form for editing the specified resource.
@@ -60,31 +64,25 @@ class AreaController extends Controller
      * @param  \App\Models\Area  $area
      * @return \Illuminate\Http\Response
      */
-    public function edit(Area $area)
+    public function show($id)
     {
-        //
+        $area = Area::find($id);
+        return response()->json($area);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Area  $area
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Area $area)
+    public function update($id, Request $request)
     {
-        //
+        $area = Area::find($id);
+        $area->update($request->all());
+
+        return response()->json('Area updated!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Area  $area
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Area $area)
+    public function destroy($id)
     {
-        //
+        $area = Area::find($id);
+        $area->delete();
+
+        return response()->json('Area deleted!');
     }
 }

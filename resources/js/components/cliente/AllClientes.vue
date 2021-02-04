@@ -3,7 +3,7 @@
                 <div class="card-header d-flex justify-content-between">
                     <h5 class="card-title">Clientes</h5>
                     <router-link to="/clientes/create" class="btn btn-primary btn-sm">Nuevo</router-link>
-                    
+
                 </div>
 
                 <div class="card-body">
@@ -29,8 +29,12 @@
                                     <td>{{ cliente.direccion}}</td>
                                     <td>
                                         <div class="btn-group" role="group">
-                                            <router-link :to="{name: 'clientes-edit', params: { id: cliente.id }}" class="btn btn-success">Edit</router-link>
-                                            <button class="btn btn-danger" @click="deleteClient(cliente.id)">Delete</button>
+                                            <router-link :to="{name: 'clientes-edit', params: { id: cliente.id }}" class="btn btn-success">
+                                                <i class="fas fa-edit"></i>
+                                            </router-link>
+                                            <button class="btn btn-danger" @click="deleteClient(cliente.id)">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
                                         </div>
                                     </td>
                                 </tr>

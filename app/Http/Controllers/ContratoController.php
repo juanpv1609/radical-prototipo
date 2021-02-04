@@ -2,30 +2,30 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
+use App\Models\Contrato;
+use App\Models\Mantenimiento;
 use Illuminate\Http\Request;
 
-class ProductController extends Controller
+class ContratoController extends Controller
 {
     public function index()
     {
         //$products = Product::all()->toArray();
-        $contratos = Contrato::with('cliente', 'contrato', 'pais', 'area', 'mantenimiento', 'frecuencia')->get()->toArray();
+        $contratos = Contrato::with('cliente', 'pais', 'area', 'mantenimiento', 'frecuencias')->get()->toArray();
 
-        return array_reverse($contratos);
+        return $contratos;
     }
 
     public function store(Request $request)
     {
-        /* $product = new Product([
-            'name' => $request->input('name'),
-            'detail' => $request->input('detail')
-        ]);
-        $product->save(); */
-        $mantenimientos = $request->input("selected");
-        $mantenimientos = substr($mantenimientos, 0, -1);
-        $arrayMantenimiento = explode(",", $mantenimientos);
-        //dd($arrayMantenimiento);
+
+        // $mantenimientos = $request->input("selected");
+        // $mantenimientos = substr($mantenimientos, 0, -1);
+        // $arrayMantenimiento = explode(",", $mantenimientos);
+        //dd($request);
+        $arrayMantenimientos = $request->input("mantenimientos");
+        $arrayCorreos = $request->input("correos");
+
         $contrato = new Contrato([
             'descripcion' => $request->input("descripcion"),
             'fecha_inicio' => $request->input("fecha_inicio"),
@@ -36,19 +36,29 @@ class ProductController extends Controller
             'solucion' => $request->input('solucion'),
             'marca' => $request->input('marca'),
             'frecuencia' => $request->input('frecuencia'),
+            'correos' => implode(",", $arrayCorreos),
             //'mantenimientos' => $request['frecuencia'],
-            'observacion' => $request->input("observacion"),
+            'observacion' => $request->input("observaciones"),
             //'fecha_creacion' => $hoy,
             'estado' => 0,
         ]);
-
-        for ($i=0; $i < count($arrayMantenimiento); $i++) {
+        $contrato->save();
+        foreach ($arrayMantenimientos as $item) {
             Mantenimiento::create([
                 'contrato_id' => $contrato->id,
-                'fecha' => $arrayMantenimiento[$i],
+                'fecha' => $item['fecha'],
+                'alerta' => $item['alerta'],
+                'observacion' => '',
                 'estado' => 0
             ]);
         }
+        /* for ($i=0; $i < count($arrayMantenimiento); $i++) {
+            Mantenimiento::create([
+                'contrato_id' => $contrato->id,
+                'fecha' => $arrayMantenimientos[$i],
+                'estado' => 0
+            ]);
+        } */
 
 
         return response()->json('Contrato created!');
@@ -56,22 +66,22 @@ class ProductController extends Controller
 
     public function show($id)
     {
-        $product = Product::find($id);
-        return response()->json($product);
+        $contrato = Contrato::with('cliente', 'pais', 'area', 'mantenimiento', 'frecuencias')->find($id);
+        return response()->json($contrato);
     }
 
     public function update($id, Request $request)
     {
-        $product = Product::find($id);
-        $product->update($request->all());
+        $contrato = Contrato::find($id);
+        $contrato->update($request->all());
 
         return response()->json('Product updated!');
     }
 
     public function destroy($id)
     {
-        $product = Product::find($id);
-        $product->delete();
+        $contrato = Contrato::find($id);
+        $contrato->delete();
 
         return response()->json('Product deleted!');
     }

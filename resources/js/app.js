@@ -13,9 +13,16 @@ import VueAxios from 'vue-axios';
 import VueRouter from 'vue-router';
 import axios from 'axios';
 import { routes } from './routes';
-
+import VCalendar from 'v-calendar';
 // import Multiselect from 'vue-multiselect'
-
+import InputTag from 'vue-input-tag'
+import Toasted from 'vue-toasted';
+let options = {
+    theme: 'bubble',
+    duration: 2000,
+    //iconPack: 'fontawesome'
+};
+Vue.use(Toasted,options)
 // // register globally
 // Vue.component('multiselect', Multiselect)
 /**
@@ -25,7 +32,12 @@ import { routes } from './routes';
  */
 
 Vue.use(VueRouter);
+//Vue.use(Swal);
 Vue.use(VueAxios, axios);
+Vue.use(VCalendar, {
+    componentPrefix: 'vc',
+});
+Vue.component('input-tag', InputTag);
 
 const router = new VueRouter({
     mode: 'history',
@@ -37,3 +49,5 @@ const app = new Vue({
     router: router,
     render: h => h(App),
 });
+
+
