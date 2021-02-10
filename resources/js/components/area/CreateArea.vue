@@ -55,7 +55,7 @@ export default {
   methods: {
     addArea() {
       this.axios
-        .post("http://localhost:8000/api/areas", this.area)
+        .post("/api/areas", this.area)
         .then((response) => this.$router.push({ name: "areas" }))
         .catch((err) => console.log(err))
         .finally(() => (this.loading = false));

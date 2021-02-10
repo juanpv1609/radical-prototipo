@@ -12,6 +12,6 @@ class Area extends Model
     protected $fillable = ['nombre',
                             'descripcion',
                             'estado'];
-    public $timestamps = false;
+    //public $timestamps = false;
     protected $guarded = [];
 }

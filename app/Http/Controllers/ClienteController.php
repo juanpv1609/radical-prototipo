@@ -16,7 +16,7 @@ class ClienteController extends Controller
     {
         //     $clientes = Cliente::all();
         //    return view('cliente.index')->with('clientes', $clientes);
-        $clientes = Cliente::all()->toArray();
+        $clientes = Cliente::with('tipo_identificacion')->get()->toArray();
         return $clientes;
     }
 
@@ -43,6 +43,8 @@ class ClienteController extends Controller
         // return view('cliente.index')->with('clientes', $clientes);
 
         $client = new Cliente([
+            'tipo_identificacion' => $request->input('tipo_identificacion'),
+            'dni' => $request->input('dni'),
             'razon_social' => $request->input('razon_social'),
             'nombre_comercial' => $request->input('nombre_comercial'),
             'correo' => $request->input('correo'),
@@ -57,7 +59,7 @@ class ClienteController extends Controller
 
     public function show($id)
     {
-        $client = Cliente::find($id);
+        $client = Cliente::with('tipo_identificacion')->find($id);
         return response()->json($client);
     }
 

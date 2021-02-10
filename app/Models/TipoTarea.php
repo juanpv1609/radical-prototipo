@@ -6,19 +6,18 @@ use App\Models\Area;
 use App\Models\Pais;
 use App\Models\Cliente;
 use App\Models\Contrato;
+use App\Models\Frecuencia;
+use App\Models\EstadoTarea;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Mantenimiento extends Model
-{   protected $table = 'mantenimientos';
+class TipoTarea extends Model
+{
+    protected $table = 'tipo_tarea';
     protected $fillable = [
-                            'contrato_id','fecha','alerta','observacion','estado'];
-    public $timestamps = false;
+                            'nombre','descripcion'];
+    //public $timestamps = false;
     protected $guarded = [];
     use HasFactory;
-    public function contrato()
-    {
-        return $this->belongsTo(Contrato::class, 'id');
-    }
 
 }

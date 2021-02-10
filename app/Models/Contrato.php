@@ -6,7 +6,7 @@ use App\Models\Frecuencia;
 use App\Models\Pais;
 use App\Models\Cliente;
 use App\Models\Area;
-use App\Models\Mantenimiento;
+use App\Models\Tareas;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -23,11 +23,10 @@ class Contrato extends Model
                             'solucion',
                             'marca',
                             'frecuencia',
-                            'mantenimientos',
                             'correos',
-                            'observacion',
-                            'fecha_creacion','estado'];
-    public $timestamps = false;
+                            'observacion'
+                            ,'estado'];
+    //public $timestamps = false;
     protected $guarded = [];
     use HasFactory;
     public function cliente(){
@@ -39,12 +38,13 @@ class Contrato extends Model
     public function area(){
     	return $this->belongsTo(Area::class, 'area_id', 'id');
     }
-    public function mantenimiento()
+    public function tarea()
     {
-        return $this->hasMany(Mantenimiento::class, 'contrato_id', 'id');
+        return $this->hasMany(Tareas::class, 'contrato_id', 'id');
     }
-    public function frecuencias()
+    public function estado_contrato()
     {
-        return $this->belongsTo(Frecuencia::class, 'frecuencia', 'id');
+        return $this->hasMany(EstadoContrato::class, 'estado', 'id');
     }
+
 }

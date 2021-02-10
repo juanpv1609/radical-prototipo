@@ -48,7 +48,7 @@
         },
         created() {
             this.axios
-                .get('http://localhost:8000/api/areas/')
+                .get('/api/areas/')
                 .then(response => {
                     this.areas = response.data;
                     console.log(response.data);
@@ -57,11 +57,11 @@
         methods: {
             deleteArea(id) {
                 this.axios
-                    .delete(`http://localhost:8000/api/areas/${id}`)
+                    .delete(`/api/areas/${id}`)
                     .then(response => {
                         let i = this.areas.map(data => data.id).indexOf(id);
                         this.areas.splice(i, 1)
-                        
+
                     });
             }
         }

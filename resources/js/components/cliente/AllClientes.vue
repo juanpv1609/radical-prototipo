@@ -7,7 +7,7 @@
                 </div>
 
                 <div class="card-body">
-                    <table class="table ">
+                    <table class="table " v-if="clientes.length>0">
                         <thead class="table-dark">
                             <tr>
                                 <th>Id</th>
@@ -40,6 +40,8 @@
                                 </tr>
                         </tbody>
                     </table>
+                    <p v-else class="alert alert-info">No se encontraron resultados :(</p>
+
                 </div>
             </div>
 </template>
@@ -48,12 +50,13 @@
     export default {
         data() {
             return {
-                clientes: []
+                clientes: [],
+
             }
         },
         created() {
             this.axios
-                .get('http://localhost:8000/api/clientes/')
+                .get('/api/clientes')
                 .then(response => {
                     this.clientes = response.data;
                     console.log(response.data);
@@ -62,7 +65,7 @@
         methods: {
             deleteClient(id) {
                 this.axios
-                    .delete(`http://localhost:8000/api/clientes/${id}`)
+                    .delete(`/api/clientes/${id}`)
                     .then(response => {
                         let i = this.clientes.map(data => data.id).indexOf(id);
                         this.clientes.splice(i, 1)

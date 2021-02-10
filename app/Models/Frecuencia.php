@@ -11,8 +11,9 @@ class Frecuencia extends Model
     protected $table = 'frecuencias';
     protected $fillable = [
                             'descripcion',
-                            'estado'];
-    public $timestamps = false;
+                            'estado',
+                        'alerta'
+                    ];
     protected $guarded = [];
-    
+
 }

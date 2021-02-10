@@ -11,7 +11,7 @@ class Pais extends Model
     protected $fillable = ['nombre',
                             'abreviatura',
                             'estado'];
-    public $timestamps = false;
+    //public $timestamps = false;
     protected $guarded = [];
     use HasFactory;
 }

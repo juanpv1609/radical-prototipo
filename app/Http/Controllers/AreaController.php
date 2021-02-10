@@ -12,6 +12,7 @@ class AreaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    
     public function index()
     {
         $areas = Area::all()->toArray();

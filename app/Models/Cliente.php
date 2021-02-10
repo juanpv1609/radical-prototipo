@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\TipoIdentificacion;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Cliente extends Model
 {
@@ -12,9 +13,12 @@ class Cliente extends Model
                             'nombre_comercial',
                             'correo',
                             'telefono',
-                            'direccion'];
-    public $timestamps = false;
+                            'direccion','tipo_identificacion','dni'];
+    //public $timestamps = false;
     protected $guarded = [];
 
     use HasFactory;
+    public function tipo_identificacion(){
+    	return $this->belongsTo(TipoIdentificacion::class, 'tipo_identificacion', 'id');
+    }
 }

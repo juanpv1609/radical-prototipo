@@ -54,7 +54,7 @@ export default {
         },
         created() {
             this.axios
-                .get(`http://localhost:8000/api/areas/${this.$route.params.id}`)
+                .get(`/api/areas/${this.$route.params.id}`)
                 .then((res) => {
                     this.area = res.data;
                     console.log(res.data);
@@ -63,10 +63,10 @@ export default {
         methods: {
             updateArea() {
                 this.axios
-                    .patch(`http://localhost:8000/api/areas/${this.$route.params.id}`, this.area)
+                    .patch(`/api/areas/${this.$route.params.id}`, this.area)
                     .then((res) => {
                         this.$router.push({ name: 'areas' });
-                        
+
                     });
             }
         }

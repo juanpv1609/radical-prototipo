@@ -1,24 +1,73 @@
 <template>
-    <div class="container-fluid px-0">
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <div class="collapse navbar-collapse">
-                <div class="navbar-nav">
-                    <!-- <router-link to="/" class="nav-item nav-link">Products List</router-link> -->
-                    <router-link to="/areas" class="nav-item nav-link">Areas</router-link>
-                    <router-link to="/clientes" class="nav-item nav-link">Clientes</router-link>
-                    <router-link to="/contratos" class="nav-item nav-link">Contratos</router-link>
-                    <!-- <router-link to="/create" class="nav-item nav-link">Create Product</router-link> -->
-                </div>
-            </div>
-        </nav>
+  <div class="container-fluid px-0">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <!-- <a class="navbar-brand" href="#">Navbar</a> -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav" v-if="$store.state.auth">
+        <li class="nav-item">
+          <router-link to="/usuarios" class="nav-item nav-link">Usuarios</router-link>
+        </li>
+        <li class="nav-item">
+          <router-link to="/areas" class="nav-item nav-link">Areas</router-link>
+        </li>
+        <li class="nav-item">
+          <router-link to="/clientes" class="nav-item nav-link">Clientes</router-link>
+        </li>
+        <li class="nav-item">
+          <router-link to="/contratos" class="nav-item nav-link">Contratos</router-link>
+        </li>
+        <li class="nav-item">
+          <router-link to="/tareas" class="nav-item nav-link">Tareas</router-link>
+        </li>
+
+
+
+      </ul>
+      <ul class="navbar-nav ml-auto">
+            <template v-if="$store.state.auth">
+                <li class="nav-item dropdown">
+                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#"
+                    role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
+                        {{ $store.state.user.name  }}
+                    </a>
+
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+
+                        <a class="dropdown-item"
+                            @click="logout">
+                            Salir
+                        </a>
+                    </div>
+                </li>
+
+        </template>
+        <template v-else>
+            <li class="nav-item">
+                <router-link to="/login" class="nav-link">Login</router-link>
+            </li>
+        </template>
+        </ul>
+    </div>
+</nav>
     <div class="row pt-4 px-2">
-        <div class="col-12">
-        <router-view> </router-view>
+            <div class="col-12">
+            <router-view> </router-view>
+            </div>
         </div>
-    </div>
-    </div>
+  </div>
+
 </template>
 
 <script>
-    export default {}
+    export default {
+        methods:{
+            async logout(){
+              await  this.$store.dispatch("logout");
+              this.$router.replace("/login");
+            }
+        }
+    }
 </script>

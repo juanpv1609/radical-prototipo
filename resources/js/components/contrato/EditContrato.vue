@@ -1,14 +1,14 @@
 <template>
 <div>
 
-<form @submit.prevent="addContrato">
+<form @submit.prevent="updateContrato">
         <div class="card">
             <div class="card-header d-flex justify-content-between">
                 <h5 class="card-title">Nuevo contrato</h5>
             </div>
             <div class="card-body">
                 <div class="row">
-                    <div class="col-sm-2">
+                    <div class="col-sm-3">
                         <div class="mb-3">
                             <label for="cliente" class="form-label"
                                 >Seleccione un cliente:</label
@@ -27,7 +27,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-sm-2">
+                    <div class="col-sm-3">
                         <div class="mb-3">
                             <label for="fecha_inicio" class="form-label"
                                 >Fecha inicial:</label
@@ -40,7 +40,7 @@
                             />
                         </div>
                     </div>
-                    <div class="col-sm-2">
+                    <div class="col-sm-3">
                         <div class="mb-3">
                             <label for="fecha_fin" class="form-label"
                                 >Fecha final:</label
@@ -53,7 +53,7 @@
                             />
                         </div>
                     </div>
-                    <div class="col-sm-2">
+                    <div class="col-sm-3">
                         <div class="mb-3">
                             <label for="pais" class="form-label">Pais:</label>
                             <select
@@ -70,6 +70,9 @@
                             </select>
                         </div>
                     </div>
+
+                </div>
+                <div class="row">
                     <div class="col-sm-2">
                         <div class="mb-3">
                             <label for="area" class="form-label">Area:</label>
@@ -100,9 +103,6 @@
                             />
                         </div>
                     </div>
-                </div>
-                <div class="row">
-
 
                     <div class="col-sm-2">
                         <div class="mb-3">
@@ -115,50 +115,7 @@
                             />
                         </div>
                     </div>
-                    <div class="col-sm-2">
-                        <div class="mb-3">
-                            <label for="frecuencia" class="form-label"
-                                >Frecuencia:</label
-                            >
-                            <select
-                                v-model="contrato.frecuencia"
-                                class="form-control"
-                            >
-                                <option
-                                    v-for="item in frecuencias"
-                                    v-bind:key="item.id"
-                                    v-bind:value="item.id"
-                                >
-                                    {{ item.descripcion }}
-                                </option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <label for="dias" class="form-label"
-                                >Cada dia:</label
-                            >
-                        <div class="input-group mb-3">
-
-                            <select v-model="contrato.dia_elegido" class="form-control">
-                                <option
-                                    v-for="item in dias"
-                                    v-bind:key="item.value"
-                                    v-bind:value="item.value"
-                                >
-                                    {{ item.text }}
-                                </option>
-                            </select>
-                            <button
-                            v-on:click="generarFechas"
-                            type="button"
-                            class="btn btn-warning"
-                        >
-                            Generar Tareas
-                        </button>
-                        </div>
-                    </div>
-                    <div class="col-sm-5">
+                    <div class="col-sm-6">
                         <div class="mb-3">
                             <label for="correos">Direcciones de correo para las alertas</label>
                             <input-tag v-model="correos" class="form-control" placeholder="Ingrese una direccion de correo" validate="email" ></input-tag>
@@ -203,9 +160,7 @@
                 </div>
             </div>
             <div class="card-footer ">
-                <div class="d-flex justify-content-between">
-
-                <button type="button"  class="btn btn-secondary" data-toggle="modal" data-target="#exampleModal">Ver Tareas</button>
+                <div class="d-flex justify-content-end">
 
                 <button type="submit" class="btn btn-primary">Enviar</button>
                 </div>
@@ -213,63 +168,7 @@
             </div>
         </div>
 </form>
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-scrollable">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Tareas programadas</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body table-responsive">
-        <table class="table table-sm">
-            <thead class="table-dark">
-                <tr>
-                    <th style="width: 10%">#</th>
-                    <th>Fecha</th>
-                    <th style="width: 20%">Alerta</th>
-                    <th style="width: 10%"></th>
-                </tr>
-            </thead>
-                <tbody>
-                    <tr
-                        v-for="value in contrato.mantenimiento"
-                        v-bind:key="value.tarea_id"
-                    >
-                        <td>{{ value.tarea_id }}</td>
-                        <td>
-                            <input
-                                type="date"
-                                class="form-control form-control-sm"
-                                v-model="value.fecha"
-                            />
-                        </td>
-                        <td>
-                            <input
-                                type="text"
-                                class="form-control form-control-sm"
-                                v-model="value.alerta"
-                            />
-                        </td>
-                        <th>
-                            <button
-                                class="btn btn-sm btn-danger"
-                                type="button"
-                                v-on:click="deleteTarea(value.tarea_id)">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </th>
-                    </tr>
-                </tbody>
-            </table>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-      </div>
-    </div>
-  </div>
-</div>
+
 </div>
 
 
@@ -301,152 +200,49 @@ export default {
         };
     },
     created() {
-        this.axios.get("http://localhost:8000/api/clientes/").then(response => {
+        this.axios.get("/api/clientes/").then(response => {
             this.clientes = response.data;
             //console.log('clientes'+response.data);
         });
-        this.axios.get("http://localhost:8000/api/paises/").then(response => {
+        this.axios.get("/api/paises/").then(response => {
             this.paises = response.data;
             //console.log(response.data);
         });
-        this.axios.get("http://localhost:8000/api/areas/").then(response => {
+        this.axios.get("/api/areas/").then(response => {
             this.areas = response.data;
             //console.log(response.data);
         });
         this.axios
-            .get("http://localhost:8000/api/frecuencias/")
+            .get("/api/frecuencias/")
             .then(response => {
                 this.frecuencias = response.data;
                 //console.log(response.data);
             });
         this.axios
-            .get(`http://localhost:8000/api/contratos/${this.$route.params.id}`)
+            .get(`/api/contratos/${this.$route.params.id}`)
             .then((res) => {
                 this.contrato = res.data;
-                console.log(res.data);
+                //console.log(res.data);
                 this.correos = (res.data.correos.split(','))
+                //console.log(this.correos);
             });
         //console.log(moment().format('MMMM Do YYYY, h:mm:ss a'));
     },
     methods: {
-        addContrato() {
+
+        updateContrato() {
 
             this.contrato.mantenimientos=this.mantenimientos;
-            this.contrato.correos=this.correos;
+            this.contrato.correos=this.correos.join(',');
             console.log(JSON.stringify(this.contrato));
 
             this.axios
-                    .post('http://localhost:8000/api/contratos', this.contrato)
+                    .patch(`/api/contratos/${this.$route.params.id}`, this.contrato)
                     .then(response => (
                         this.$router.push({ name: 'contratos' })
                     ))
                     .catch(err => console.log(err))
                     .finally(() => this.loading = false)
-        },
-        deleteTarea(tarea_id) {
-            let i = this.mantenimientos.map(data => data.tarea_id).indexOf(tarea_id);
-            this.mantenimientos.splice(i, 1);
-        },
-        generarFechas() {
-            this.datos  = [];
-            let fecha_inicio = moment(this.contrato.fecha_inicio);
-            let fecha_fin = moment(this.contrato.fecha_fin);
-            let frecuencia = this.contrato.frecuencia;
-            let num_dia = this.dias.value;
-            let dia_preferido;
-            let diferencia;
-            switch (frecuencia) {
-                case 2: //semanal
-                    diferencia = parseInt(fecha_fin.diff(fecha_inicio, "weeks")) + parseInt(1);
-                    for (let i = 1; i < parseInt(diferencia); i++) {
-                        dia_preferido = moment(fecha_inicio).startOf("week");
-                        while (dia_preferido.day() !== parseInt(num_dia)) {
-                            dia_preferido.add(1, "day");
-                        }
-                        if (dia_preferido.day() == parseInt(num_dia)) {
-                            this.datos.push({
-                                tarea_id: i,
-                                fecha: moment(dia_preferido).format( "YYYY-MM-DD"),
-                                alerta: 15
-                            });
-                            fecha_inicio.add(1, "weeks");
-                        } else {
-                            fecha_inicio.add(1, "days");
-                        }
-                    }
-
-                    break;
-                case 3: //mensual
-                    diferencia = parseInt(fecha_fin.diff(fecha_inicio, "months")) + parseInt(1);
-                    for (let i = 1; i <= parseInt(diferencia); i++) {
-                        dia_preferido = moment(fecha_inicio).startOf("month");
-                        while (dia_preferido.day() !== parseInt(num_dia)) {
-                            dia_preferido.add(1, "day");
-                        }
-                        if (dia_preferido.day() == parseInt(num_dia)) {
-                            this.datos.push({
-                                tarea_id: i,
-                                fecha: moment(dia_preferido).format( "YYYY-MM-DD"),
-                                alerta: 15
-                            });
-                            fecha_inicio.add(1, "months");
-                        } else {
-                            fecha_inicio.add(1, "days");
-                        }
-                    }
-                    break;
-                case 4: //trimestral
-                    diferencia = (parseInt(fecha_fin.diff(fecha_inicio, "months")) + parseInt(1))/3;
-                    for (let i = 1; i <= parseInt(diferencia); i++) {
-                        dia_preferido = moment(fecha_inicio).startOf("month");
-                        while (dia_preferido.day() !== parseInt(num_dia)) {
-                            dia_preferido.add(1, "day");
-                        }
-                        if (dia_preferido.day() == parseInt(num_dia)) {
-                            this.datos.push({
-                                tarea_id: i,
-                                fecha: moment(dia_preferido).format( "YYYY-MM-DD"),
-                                alerta: 15
-                            });
-                            fecha_inicio.add(3, "months");
-                        } else {
-                            fecha_inicio.add(1, "days");
-                        }
-                    }
-
-                    break;
-                case 5: //semestral
-                    diferencia = (parseInt(fecha_fin.diff(fecha_inicio, "months")) + parseInt(1))/6;
-                    for (let i = 1; i <= parseInt(diferencia); i++) {
-                        dia_preferido = moment(fecha_inicio).startOf("month");
-                        while (dia_preferido.day() !== parseInt(num_dia)) {
-                            dia_preferido.add(1, "day");
-                        }
-                        if (dia_preferido.day() == parseInt(num_dia)) {
-                            this.datos.push({
-                                tarea_id: i,
-                                fecha: moment(dia_preferido).format( "YYYY-MM-DD"),
-                                alerta: 15
-                            });
-                            fecha_inicio.add(6, "months");
-                        } else {
-                            fecha_inicio.add(1, "days");
-                        }
-                    }
-
-                    break;
-                default:
-                    //anual
-                    diferencia = parseInt(fecha_fin.diff(fecha_inicio, "years")) + parseInt(1);
-                    break;
-            }
-
-           // console.log("tareas:" + diferencia);
-
-            this.mantenimientos = this.datos;
-            //console.log(JSON.stringify(this.mantenimientos));
-            this.$toasted.success('Tareas generadas correctamente');
-
         }
     }
 };
