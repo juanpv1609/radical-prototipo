@@ -7,6 +7,7 @@
 require('./bootstrap');
 //window.Vue = require('vue');
 import Vue from 'vue';
+import vuetify from './src/plugins/vuetify' // path to vuetify export
 import Vuex from 'vuex';
 import 'es6-promise/auto';
 window.Vue = Vue;
@@ -95,6 +96,7 @@ const app = new Vue({
     el: '#app',
     router: router,
     store:store,
+    vuetify,
     render: h => h(App),
 });
 
