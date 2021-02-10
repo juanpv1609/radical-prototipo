@@ -56,11 +56,11 @@ const store = new Vuex.Store({
     },
     actions:{
         async login({dispatch},credentials){
-            await axios.post('/login', credentials);
+            await axios.post('/api/login', credentials);
             return dispatch("getUser");
         },
         async logout({ dispatch }) {
-            await axios.post('/logout');
+            await axios.post('/api/logout');
             return dispatch("getUser");
         },
         getUser({commit}){
@@ -70,7 +70,6 @@ const store = new Vuex.Store({
 
             }).catch(() => {
                 commit("SET_USER", null);
-
 
             });
         }

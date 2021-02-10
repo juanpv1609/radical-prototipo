@@ -1,5 +1,312 @@
 <template>
-    <div>
+<div>
+    <v-card elevation="2" :loading="loading">
+        <v-card-title class="d-flex justify-space-between mb-6"
+            >Contratos
+            <v-btn
+                class="mx-2"
+                fab
+                dark
+                small
+                color="primary"
+                @click="addContrato"
+            >
+                <v-icon dark>
+                    mdi-plus
+                </v-icon>
+            </v-btn>
+        </v-card-title>
+
+        <v-card-text>
+            <v-text-field
+                v-model="search"
+                append-icon="mdi-magnify"
+                label="Search"
+                single-line
+                hide-details
+            ></v-text-field>
+            <v-data-table
+                :headers="headers"
+                :items="contratos"
+                :search="search"
+            >
+            <template v-slot:item="row">
+                <tr>
+                    <td>{{row.item.id}}</td>
+                    <td>{{row.item.descripcion}}</td>
+                    <td>{{row.item.cliente.nombre_comercial}}</td>
+                    <td>{{row.item.fecha_inicio}}</td>
+                    <td>{{row.item.fecha_fin }}</td>
+                    <td>{{row.item.area.nombre}}</td>
+                    <td>{{row.item.solucion}}</td>
+                    <td>{{row.item.marca}}</td>
+                    <td>
+                        <v-btn-toggle >
+                            <v-btn  icon color="primary" @click="findTareas(row.item)">
+                            <v-icon dark>mdi-eye</v-icon>
+                            </v-btn>
+                            <v-btn  icon color="error" :to="{
+                                                name: 'contratos-tasks',
+                                                params: { id: row.item.id }
+                                            }">
+                            <v-icon dark>mdi-plus</v-icon>
+                        </v-btn>
+                        </v-btn-toggle>
+                    </td>
+                    <td>
+                        <v-btn  icon color="primary" @click="editContrato(row.item)">
+                            <v-icon dark>mdi-pencil</v-icon>
+                            </v-btn>
+                            <v-btn  icon color="error" @click="sendMails(row.item)">
+                            <v-icon dark>mdi-mail</v-icon>
+                        </v-btn>
+                    </td>
+                </tr>
+            </template>
+    </v-data-table>
+        </v-card-text>
+
+        <v-card-actions> </v-card-actions>
+    </v-card>
+    <template>
+        <v-row justify="center" v-model="dialogTareas" max-width="800px">
+           <v-dialog>
+               <v-card>
+                   <v-card-title>
+                       <span class="headline">
+
+                       </span>
+                   </v-card-title>
+                   <v-card-text>
+                       <v-data-table :headers="headersTareas"
+                                        :items="tareas">
+
+                       </v-data-table>
+                       <template v-slot:item="row">
+                        <tr>
+                            <td>{{row.item.responsable}}</td>
+                            <td>{{row.item.tipo_tarea}}</td>
+                            <td>{{row.item.fecha}}</td>
+                            <td>{{row.item.estado_tarea.id}}</td>
+                        </tr>
+                       </template>
+                   </v-card-text>
+               </v-card>
+           </v-dialog>
+        </v-row>
+    </template>
+    <template>
+        <v-row justify="center">
+            <v-dialog v-model="dialog" persistent max-width="800px">
+                <v-card>
+                    <v-card-title>
+                        <span class="headline">{{ titleForm }}</span>
+                    </v-card-title>
+                    <v-card-text>
+                        <v-container>
+                            <v-row>
+                                <v-col cols="4">
+                                    <v-select :items="clientes"
+                                    v-model="contrato.cliente"
+                                        label="Seleccione un cliente" >
+                                        <template slot="selection" slot-scope="data">
+                                            <!-- HTML that describe how select should render selected items -->
+                                            {{ data.item.nombre_comercial }}
+                                        </template>
+                                        <template slot="item" slot-scope="data">
+                                            <!-- HTML that describe how select should render items when the select is open -->
+                                            {{ data.item.nombre_comercial }}
+                                        </template>
+                                    </v-select>
+                                </v-col>
+                                <v-col cols="4">
+                                    <v-menu
+                                        ref="menu"
+                                        v-model="menu"
+                                        :close-on-content-click="false"
+                                        :return-value.sync="date"
+                                        transition="scale-transition"
+                                        offset-y
+                                        min-width="auto"
+                                    >
+                                        <template v-slot:activator="{ on, attrs }">
+                                        <v-text-field
+                                            v-model="contrato.fecha_inicio"
+                                            label="Fecha inicial"
+                                            readonly
+                                            v-bind="attrs"
+                                            v-on="on"
+                                        ></v-text-field>
+                                        </template>
+                                        <v-date-picker
+                                        v-model="contrato.fecha_inicio"
+                                        no-title
+                                        scrollable
+                                        >
+                                        <v-spacer></v-spacer>
+                                        <v-btn
+                                            text
+                                            color="primary"
+                                            @click="menu = false"
+                                        >
+                                            Cancel
+                                        </v-btn>
+                                        <v-btn
+                                            text
+                                            color="primary"
+                                            @click="$refs.menu.save(date)"
+                                        >
+                                            OK
+                                        </v-btn>
+                                        </v-date-picker>
+                                    </v-menu>
+                                </v-col>
+                                <v-col cols="4">
+                                    <v-menu
+                                        ref="menu2"
+                                        v-model="menu2"
+                                        :close-on-content-click="false"
+                                        :return-value.sync="date2"
+                                        transition="scale-transition"
+                                        offset-y
+                                        min-width="auto"
+                                    >
+                                        <template v-slot:activator="{ on, attrs }">
+                                        <v-text-field
+                                            v-model="contrato.fecha_fin"
+                                            label="Fecha final"
+                                            readonly
+                                            v-bind="attrs"
+                                            v-on="on"
+                                        ></v-text-field>
+                                        </template>
+                                        <v-date-picker
+                                        v-model="contrato.fecha_fin"
+                                        no-title
+                                        scrollable
+                                        >
+                                        <v-spacer></v-spacer>
+                                        <v-btn
+                                            text
+                                            color="primary"
+                                            @click="menu2 = false"
+                                        >
+                                            Cancel
+                                        </v-btn>
+                                        <v-btn
+                                            text
+                                            color="primary"
+                                            @click="$refs.menu2.save(date2)"
+                                        >
+                                            OK
+                                        </v-btn>
+                                        </v-date-picker>
+                                    </v-menu>
+                                </v-col>
+                            </v-row>
+                                <v-row>
+
+                                <v-col cols="4">
+                                    <v-select :items="paises"
+                                    v-model="contrato.pais"
+                                        label="Seleccione un pais" >
+                                        <template slot="selection" slot-scope="data">
+                                            <!-- HTML that describe how select should render selected items -->
+                                            {{ data.item.nombre }}
+                                        </template>
+                                        <template slot="item" slot-scope="data">
+                                            <!-- HTML that describe how select should render items when the select is open -->
+                                            {{ data.item.nombre }}
+                                        </template>
+                                    </v-select>
+                                </v-col>
+                                <v-col cols="4">
+                                    <v-select :items="areas"
+                                    v-model="contrato.area"
+                                        label="Seleccione un area" >
+                                        <template slot="selection" slot-scope="data">
+                                            <!-- HTML that describe how select should render selected items -->
+                                            {{ data.item.nombre }}
+                                        </template>
+                                        <template slot="item" slot-scope="data">
+                                            <!-- HTML that describe how select should render items when the select is open -->
+                                            {{ data.item.nombre }}
+                                        </template>
+                                    </v-select>
+                                </v-col>
+                                <v-col cols="4">
+                                    <v-text-field
+                                        v-model="contrato.solucion"
+                                        label="Solucion"
+
+                                    ></v-text-field>
+                                </v-col>
+                            </v-row>
+                            <v-row>
+                                <v-col cols="4">
+                                    <v-text-field
+                                        v-model="contrato.marca"
+                                        label="Marca"
+
+                                    ></v-text-field>
+                                </v-col>
+                                <v-col cols="8">
+                                    <input-tag v-model="correos"
+                                     placeholder="Ingrese una direccion de correo" validate="email" ></input-tag>
+                                </v-col>
+
+
+                            </v-row>
+                            <v-row>
+                                <v-col cols="6">
+                                    <v-text-field
+                                        v-model="contrato.descripcion"
+                                        label="Descripcion del contrato"
+
+                                    ></v-text-field>
+                                </v-col>
+                                <v-col cols="6">
+                                    <v-text-field
+                                        v-model="contrato.observaciones"
+                                        label="Observaciones"
+                                    ></v-text-field>
+                                     </v-col>
+                            </v-row>
+                        </v-container>
+                        <small>*indicates required field</small>
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn
+                            color="error"
+                            text
+                            @click="dialog = false"
+                        >
+                            Cerrar
+                        </v-btn>
+                        <v-btn
+                            v-if="!update"
+                            color="primary"
+                            text
+                            @click="createContrato"
+                        >
+                            Guardar
+                        </v-btn>
+                        <v-btn
+                            v-else
+                            color="primary"
+                            text
+                            @click="updateContrato"
+                        >
+                            Actualizar
+                        </v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
+        </v-row>
+    </template>
+</div>
+   <!--  <div>
         <div class="card">
             <div class="card-header d-flex justify-content-between">
                 <h5 class="card-title">Contratos</h5>
@@ -8,9 +315,6 @@
                     class="btn btn-primary btn-sm"
                     >Nuevo</router-link
                 >
-                <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                        Nuevo
-                    </button> -->
             </div>
 
             <div class="card-body">
@@ -40,14 +344,6 @@
                                 <td>{{ item.marca }}</td>
 
                                 <td>
-                                    <!-- <div
-                                    v-for="mant in item.mantenimiento"
-                                    :key="mant.id"
-                                >
-                                    <span class="badge badge-success">{{
-                                        mant.fecha
-                                    }}</span>
-                                </div> -->
                                     <div class="btn-group" role="group">
                                         <router-link
                                             :to="{
@@ -243,7 +539,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 </template>
 
 <script>
@@ -252,36 +548,132 @@ export default {
     data() {
         return {
             contratos: [],
-            correos:'',
-
-            mantenimientos: {},
+            correos:[],
+            clientes: {},
+            paises: {},
+            areas: {},
+            frecuencias: {},
             tareas: {},
-            request: {},
-            modalShow: false,
-            tipo_tareas: [
-                { text: "Informe", value: 1 },
-                { text: "Firewall", value: 2 },
-                { text: "IPS", value: 3 }
+            contrato: {},
+             dialog: false,
+             dialogTareas: false,
+                update: false,
+                cliente: {},
+                loading: true,
+                titleForm: null,
+                search: "",
+                headers: [
+                { text: "ID", value: "id" },
+                { text: "Descripcion", value: "descripcion" },
+                { text: "Cliente", value: "cliente.nombre_comercial" },
+                { text: "Fecha inicio", value: "fecha_inicio" },
+                { text: "Fecha fin", value: "fecha_fin" },
+                { text: "Area", value: "area" },
+                { text: "Solucion", value: "solucion" },
+                { text: "Marca", value: "marca" },
+                { text: "Tareas", value: "" },
+                { text: "Acciones", value: "controls", sortable: false }
             ],
-            responsables: [
-                { nombre: "Juan", value: 1 },
-                { nombre: "Pedro", value: 2 },
-                { nombre: "Jose", value: 3 }
-            ]
+            headersTareas: [
+                { text: "Responsable", value: "responsable" },
+                { text: "Tipo", value: "tipo_tarea" },
+                { text: "Fecha", value: "fecha" },
+                { text: "Estado", value: "estado_tarea" },
+            ],
+            date: new Date().toISOString().substr(0, 10),
+            menu: false,
+            date2: new Date().toISOString().substr(0, 10),
+            menu2: false,
         };
     },
     created() {
         this.axios.get("/api/contratos/").then(response => {
             this.contratos = response.data;
+            this.loading = false;
             //console.log(response.data);
         });
-        //this.$swal('Hello Vue world!!!');
+        this.axios.get("/api/clientes/").then(response => {
+            this.clientes = response.data;
+            //console.log('clientes'+response.data);
+        });
+        this.axios.get("/api/paises/").then(response => {
+            this.paises = response.data;
+            //console.log(response.data);
+        });
+        this.axios.get("/api/areas/").then(response => {
+            this.areas = response.data;
+            //console.log(response.data);
+        });
+        this.axios
+            .get("/api/frecuencias/")
+            .then(response => {
+                this.frecuencias = response.data;
+                //console.log(response.data);
+            });
     },
     methods: {
-        findTareas(id) {
-            $("#exampleModal2").modal("show");
-            console.log(id);
-            this.axios.get(`/api/contrato-tareas/${id}`).then(res => {
+        addContrato() {
+
+                this.titleForm = "Nuevo Contrato";
+                this.contrato = {};
+                this.update = false;
+                this.dialog = true;
+            },
+            editContrato(el) {
+                this.titleForm = "Editar Contrato";
+                this.update = true;
+                console.log(el);
+                this.contrato.id = el.id;
+                this.contrato.descripcion = el.descripcion;
+                this.contrato.cliente = el.cliente;
+                this.contrato.fecha_inicio = el.fecha_inicio;
+                this.contrato.fecha_fin = el.fecha_fin;
+                this.contrato.area = el.area;
+                this.contrato.pais = el.pais;
+                this.contrato.solucion = el.solucion;
+                this.contrato.marca = el.marca;
+                this.contrato.correos=el.correos;
+
+                this.dialog = true;
+            },
+            createContrato() {
+                this.loading = true;
+                this.contrato.cliente=this.contrato.cliente.id;
+                this.contrato.area=this.contrato.area.id;
+                this.contrato.pais=this.contrato.pais.id;
+                this.contrato.correos=this.correos;
+               console.log(this.contrato);
+             this.axios
+                    .post('/api/contratos', this.contrato)
+                    .then(response => {
+                        this.dialog = false;
+                        this.loading = false;
+                        this.refresh();
+                    })
+                    .catch(err => console.log(err))
+                    .finally(() => this.loading = false)
+        },
+        updateContrato() {
+            this.loading = true;
+                this.contrato.cliente=this.contrato.cliente.id;
+                this.contrato.area=this.contrato.area.id;
+                this.contrato.pais=this.contrato.pais.id;
+            this.contrato.correos=this.correos.join(',');
+
+            this.axios
+                    .patch(`/api/contratos/${this.$route.params.id}`, this.contrato)
+                    .then(response => {
+                        this.dialog = false;
+                        this.loading = false;
+                        this.refresh();
+                    })
+                    .catch(err => console.log(err))
+                    .finally(() => this.loading = false)
+        },
+        findTareas(el) {
+            this.dialogTareas=true
+            console.log(el);
+            this.axios.get(`/api/contrato-tareas/${el.id}`).then(res => {
                 //this.contratos = res.data;
                 console.log(res.data);
                 this.tareas = res.data;
@@ -289,10 +681,10 @@ export default {
         },
         updateTareas() {
             console.log(this.tareas);
-            this.request.tareas = this.tareas;
+            this.contrato.tareas = this.tareas;
 
             this.axios
-                .post(`/api/tareasAll/`, this.request)
+                .post(`/api/tareasAll/`, this.contrato)
                 .then(() => {
                     this.$toasted.success("Tareas actualizadas correctamente");
 
@@ -307,10 +699,10 @@ export default {
                 this.contratos.splice(i, 1);
             });
         },
-        async sendMails(id){
+        async sendMails(el){
             //this.correos='';
            await this.axios
-            .get(`/api/contratos/${id}`)
+            .get(`/api/contratos/${el.id}`)
             .then((res) => {
                 console.log(res.data);
                 this.correos = res.data.correos.replace(',','<br>')
@@ -331,7 +723,7 @@ export default {
                         allowOutsideClick: false
                     });
                         this.$swal.showLoading();
-                        this.axios.get(`/api/send-mails-client/${id}`).then(()=>{
+                        this.axios.get(`/api/send-mails-client/${el.id}`).then(()=>{
                             this.$swal.fire({
                                 title: 'Correcto',
                                 text: 'Correos enviados correctamente!',
@@ -345,6 +737,30 @@ export default {
                     }
                 })
 
+        },
+        refresh(){
+            this.axios.get("/api/contratos/").then(response => {
+                                this.contratos = response.data;
+                                //console.log(response.data);
+                            });
+                            this.axios.get("/api/clientes/").then(response => {
+                                this.clientes = response.data;
+                                //console.log('clientes'+response.data);
+                            });
+                            this.axios.get("/api/paises/").then(response => {
+                                this.paises = response.data;
+                                //console.log(response.data);
+                            });
+                            this.axios.get("/api/areas/").then(response => {
+                                this.areas = response.data;
+                                //console.log(response.data);
+                            });
+                            this.axios
+                                .get("/api/frecuencias/")
+                                .then(response => {
+                                    this.frecuencias = response.data;
+                                    //console.log(response.data);
+                                });
         }
     }
 };

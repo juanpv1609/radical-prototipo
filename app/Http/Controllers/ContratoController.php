@@ -32,12 +32,9 @@ class ContratoController extends Controller
             'area_id' => $request->input('area'),
             'solucion' => $request->input('solucion'),
             'marca' => $request->input('marca'),
-            //'frecuencia' => $request->input('frecuencia'),
             'correos' => implode(",", $arrayCorreos),
-            //'mantenimientos' => $request['frecuencia'],
             'observacion' => $request->input("observaciones"),
-            //'fecha_creacion' => $hoy,
-            'estado' => 0,
+            'estado' => 1,
         ]);
         $contrato->save();
         // $contratoObject = new SendMailController();

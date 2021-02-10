@@ -1,12 +1,43 @@
 <template>
-    <div class="container">
+<div>
+    <v-card elevation="2" :loading="loading" class="mx-auto"
+    max-width="344">
+        <v-card-title class="text-center"
+            >Iniciar sesion
+        </v-card-title>
+         <v-card-text>
+                 <v-col cols="12">
+                    <v-text-field
+                        label="Usuario*"
+                        v-model="form.email"
+                        required
+                    ></v-text-field>
+                </v-col>
+                <v-col cols="12">
+                    <v-text-field
+                        label="Contraseña*"
+                        v-model="form.password"
+                        required
+                    ></v-text-field>
+                </v-col>
+         </v-card-text>
+         <v-card-actions>
+             <v-btn
+                color="primary"
+                text
+                @click="login"
+            >
+                Enviar
+            </v-btn>
+         </v-card-actions>
+    </v-card>
+</div>
+    <!-- <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-4">
                 <div class="card">
                     <div class="card-header">Login</div>
                     <div class="card-body">
-
-                        <!-- <button type="button" v-if="user.email" @click="logout">logout</button> -->
                         <div class="alert alert-danger" v-if="has_error">
                             <p>{{ error_email }}</p>
                         </div>
@@ -26,13 +57,14 @@
             </div>
         </div>
 
-    </div>
+    </div> -->
 </template>
 <script>
 
   export default {
     data() {
       return {
+          loading:false,
           form:{
               email: 'admin@test.com',
             password: 'admin'
@@ -42,14 +74,16 @@
       }
     },
     methods: {
-      async login() {
+        async login() {
+          this.loading = true;
           await this.$store.dispatch("login", this.form).catch((error) =>{
-                        if (error.response) {
-                            this.has_error=true;
-                            this.error_email = error.response.data.errors.email[0];
-                            console.log(error.response.data);
-                        }
+                if (error.response) {
+                    this.has_error=true;
+                    this.error_email = error.response.data.errors.email[0];
+                    console.log(error.response.data);
+                }
             });
+            this.loading = false;
             this.$router.push({ name: 'home' })
         //redirect
 

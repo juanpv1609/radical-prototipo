@@ -1,117 +1,121 @@
 <template>
- <div class="container-fluid px-0">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav" v-if="$store.state.auth">
-        <li class="nav-item">
-          <router-link to="/usuarios" class="nav-item nav-link">Usuarios</router-link>
-        </li>
-        <li class="nav-item">
-          <router-link to="/areas" class="nav-item nav-link">Areas</router-link>
-        </li>
-        <li class="nav-item">
-          <router-link to="/clientes" class="nav-item nav-link">Clientes</router-link>
-        </li>
-        <li class="nav-item">
-          <router-link to="/contratos" class="nav-item nav-link">Contratos</router-link>
-        </li>
-        <li class="nav-item">
-          <router-link to="/tareas" class="nav-item nav-link">Tareas</router-link>
-        </li>
+     <v-app>
+        <v-navigation-drawer v-if="$store.state.auth" app v-model="drawer" absolute :width="225">
+            <v-list-item >
+                <v-list-item-content>
+                    <v-list-item-title class="title">
+                        TaskAPP
+                    </v-list-item-title>
+                </v-list-item-content>
+            </v-list-item>
+
+            <v-list dense nav>
+                <v-list-item v-for="item in items" :key="item.title" link :to="item.link">
+                    <v-list-item-icon>
+                        <v-icon>{{ item.icon }}</v-icon>
+                    </v-list-item-icon>
+
+                    <v-list-item-content>
+                        <v-list-item-title>{{ item.title }}</v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
+            </v-list>
+        </v-navigation-drawer >
+
+            <v-app-bar v-if="$store.state.auth" app color="accent-4" absolute dense dark>
+                <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+
+
+                <v-spacer></v-spacer>
 
 
 
-      </ul>
-      <ul class="navbar-nav ml-auto">
-            <template v-if="$store.state.auth">
-                <li class="nav-item dropdown">
-                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#"
-                    role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
-                        {{ $store.state.user.name  }}
-                    </a>
+                <v-menu left bottom>
+                    <template v-slot:activator="{ on, attrs }">
+                        <v-btn icon v-bind="attrs" v-on="on">
+                            <v-icon>mdi-dots-vertical</v-icon>
+                        </v-btn>
+                    </template>
 
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                    <v-list>
+                        <v-list-item v-if="$store.state.auth">
+                            <v-list-item-title>{{ $store.state.user.name  }}</v-list-item-title
+                            >
+                        </v-list-item>
+                        <v-spacer></v-spacer>
+                        <v-list-item >
+                            <v-list-item-title> Cambiar contraseña </v-list-item-title
+                            >
+                        </v-list-item>
+                        <v-list-item @click="logout">
+                            <v-list-item-title> Salir </v-list-item-title
+                            >
+                        </v-list-item>
+                    </v-list>
+                </v-menu>
+            </v-app-bar>
 
-                        <a class="dropdown-item"
-                            @click="logout">
-                            Salir
-                        </a>
-                    </div>
-                </li>
+        <!-- Sizes your content based upon application components -->
+        <v-main>
+            <!-- Provides the application the proper gutter -->
+            <v-container fluid>
+                <!-- If using vue-router -->
+                <router-view></router-view>
 
-        </template>
-        <template v-else>
-            <li class="nav-item">
-                <router-link to="/login" class="nav-link">Login</router-link>
-            </li>
-        </template>
-        </ul>
-    </div>
-</nav>
-    <div class="row pt-4 px-2">
-            <div class="col-12">
-            <router-view> </router-view>
-            </div>
-        </div>
-  </div>
-<!-- <div>
-    <v-app-bar
-      color="deep-purple accent-4"
-      dense
-      dark
-    >
-      <v-app-bar-nav-icon></v-app-bar-nav-icon>
+            </v-container>
+        </v-main>
 
-      <v-toolbar-title>Page title</v-toolbar-title>
-
-      <v-spacer></v-spacer>
-
-      <v-btn icon>
-        <v-icon>mdi-heart</v-icon>
-      </v-btn>
-
-      <v-btn icon>
-        <v-icon>mdi-magnify</v-icon>
-      </v-btn>
-
-      <v-menu
-        left
-        bottom
-      >
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn
-            icon
-            v-bind="attrs"
-            v-on="on"
-          >
-            <v-icon>mdi-dots-vertical</v-icon>
-          </v-btn>
-        </template>
-
-        <v-list>
-          <v-list-item
-            v-for="n in 5"
-            :key="n"
-            @click="() => {}"
-          >
-            <v-list-item-title>Option {{ n }}</v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-menu>
-    </v-app-bar>
-  </div> -->
+        <v-footer padless>
+            <!-- <v-col
+            class="text-center"
+            cols="12"
+            >
+            {{ new Date().getFullYear() }} — <strong>Vuetify</strong>
+            </v-col> -->
+        </v-footer>
+    </v-app>
 </template>
 
 <script>
-    export default {
-        methods:{
-            async logout(){
-              await  this.$store.dispatch("logout");
-              this.$router.replace("/login");
-            }
+export default {
+    data() {
+        return {
+            drawer: true,
+            items: [
+                {
+                    title: "Usuarios",
+                    link: "/usuarios",
+                    icon: "mdi-account-multiple"
+                },
+                { title: "Areas", link: "/areas", icon: "mdi-image" },
+                { title: "Clientes", link: "/clientes", icon: "mdi-account-settings" },
+                {
+                    title: "Contratos",
+                    link: "/contratos",
+                    icon: "mdi-book"
+                },
+                { title: "Tareas", link: "/tareas", icon: "mdi-list-status" }
+            ],
+            right: null
+        };
+    },
+    methods: {
+        logout() {
+            this.$swal.fire({
+                title: 'Esta seguro?',
+                html: `Finalizara su sesion`,
+                icon: 'question',
+                showConfirmButton: true,
+                showCancelButton: true
+
+                }).then(res => {
+                    if (res.value) {
+                        this.$store.dispatch("logout");
+                        this.$router.replace("/login");
+                    }
+                });
+
         }
     }
+};
 </script>

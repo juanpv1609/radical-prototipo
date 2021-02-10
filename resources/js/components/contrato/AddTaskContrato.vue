@@ -1,5 +1,93 @@
 <template>
 <div>
+    <v-card elevation="2" :loading="loading">
+        <v-card-title class="d-flex justify-space-between mb-6"
+            >Clientes
+            <v-btn
+                class="mx-2"
+                fab
+                dark
+                small
+                color="primary"
+                @click="addClient"
+            >
+                <v-icon dark>
+                    mdi-plus
+                </v-icon>
+            </v-btn>
+        </v-card-title>
+
+        <v-card-text>
+            <v-row>
+                <v-col cols="8">
+                    <v-row>
+                        <v-col cols="6">
+
+                        </v-col>
+                        <v-col cols="6">
+
+                        </v-col>
+                    </v-row>
+                     <v-row>
+                        <v-col cols="6">
+
+                        </v-col>
+                        <v-col cols="6">
+
+                        </v-col>
+                    </v-row>
+                </v-col>
+                <v-col cols="4">
+                    <table class="table table-sm table-borderless">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th colspan="2">Detalles del contrato</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                <td>Contrato N</td>
+                                <td>{{contrato.id}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Cliente</td>
+                                    <td>{{contrato.cliente.nombre_comercial}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Fecha inicial</td>
+                                    <td><span class="text-success">{{contrato.fecha_inicio}}</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Fecha final</td>
+                                    <td><span class="text-danger">{{contrato.fecha_fin}}</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Pais</td>
+                                    <td>{{contrato.pais.nombre}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Area</td>
+                                    <td>{{contrato.area.nombre}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Solucion</td>
+                                    <td>{{contrato.solucion}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Marca</td>
+                                    <td>{{contrato.marca}}</td>
+                                </tr>
+                            </tbody>
+
+                        </table>
+                        <button type="submit" class="btn btn-primary" :disabled="!tareas.length>0" >Enviar {{parseInt(diferencia)}} tareas</button>
+                   
+                </v-col>
+            </v-row>
+        </v-card-text>
+    </v-card>
+</div>
+<div>
 
 <form @submit.prevent="addTarea">
         <div class="card ">

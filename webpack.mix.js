@@ -40,4 +40,6 @@ module.exports = {
 }
 mix.js('resources/js/app.js', 'public/js')
     .vue()
-    .sass('resources/sass/app.scss', 'public/css');
+    .sass('resources/sass/app.scss', 'public/css')
+    .copy('node_modules/material-icons/css/material-icons.min.css',
+     'public/css/material-icons.min.css');;

@@ -10,12 +10,14 @@
         "production": "mix --production"
     },
     "devDependencies": {
+        "@mdi/font": "^5.9.55",
         "axios": "^0.21.1",
         "bootstrap": "^4.0.0",
         "deepmerge": "^4.2.2",
         "jquery": "^3.2",
         "laravel-mix": "^6.0.6",
         "lodash": "^4.17.19",
+        "material-icons": "^0.5.3",
         "popper.js": "^1.12",
         "postcss": "^8.1.14",
         "resolve-url-loader": "^2.3.1",

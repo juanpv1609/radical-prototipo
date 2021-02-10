@@ -1,69 +1,221 @@
 <template>
+    <div>
+        <v-card elevation="2" :loading="loading">
+            <v-card-title class="d-flex justify-space-between mb-6"
+                >Areas
+                <v-btn
+                    class="mx-2"
+                    fab
+                    dark
+                    small
+                    color="primary"
+                    @click="addArea"
+                >
+                    <v-icon dark>
+                        mdi-plus
+                    </v-icon>
+                </v-btn>
+            </v-card-title>
 
-        <div class="card">
-                <div class="card-header d-flex justify-content-between">
-                    <h5 class="card-title">Areas</h5>
-                    <router-link to="/areas/create" class="btn btn-primary btn-sm">Nuevo</router-link>
+            <v-card-text>
+                <v-text-field
+                    v-model="search"
+                    append-icon="mdi-magnify"
+                    label="Search"
+                    single-line
+                    hide-details
+                ></v-text-field>
+                <v-data-table
+                    :headers="headers"
+                    :items="areas"
+                    :search="search"
+                >
+                <template v-slot:item="row">
+                    <tr>
+                        <td>{{row.item.id}}</td>
+                        <td>{{row.item.nombre}}</td>
+                        <td>{{row.item.descripcion}}</td>
+                        <td>
+                            <v-chip
+                            class="ma-2"
+                            color="primary"
+                            small
+                            >
+                            {{(row.item.estado==1) ? 'Habilitada':'Deshabilitada'}}
+                            </v-chip>
+                        </td>
+                        <td>
+                            <v-btn  icon color="primary" @click="editArea(row.item)">
+                                <v-icon dark>mdi-pencil</v-icon>
+                                </v-btn>
+                                <v-btn  icon color="error" @click="deleteArea(row.item)">
+                                <v-icon dark>mdi-delete</v-icon>
+                            </v-btn>
+                        </td>
+                    </tr>
+                </template>
+      </v-data-table>
+            </v-card-text>
 
-                </div>
-
-                <div class="card-body">
-                    <table class="table ">
-                        <thead class="table-dark">
-                            <tr>
-                                <th>Id</th>
-                                <th>Nombre</th>
-                                <th>Descripcion</th>
-                                <th>Estado</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                                <tr v-for="area in areas" :key="area.id">
-                                    <td>{{ area.id}}</td>
-                                    <td>{{ area.nombre}}</td>
-                                    <td>{{ area.descripcion}}</td>
-                                    <td>{{ area.estado}}</td>
-                                    <td>
-                                        <div class="btn-group" role="group">
-                                            <router-link :to="{name: 'areas-edit', params: { id: area.id }}"
-                                            class="btn btn-success">Edit</router-link>
-                                            <button class="btn btn-danger" @click="deleteArea(area.id)">Delete</button>
-                                        </div>
-                                    </td>
-                                </tr>
-                        </tbody>
-                    </table>
-                </div>
-     </div>
-
+            <v-card-actions> </v-card-actions>
+        </v-card>
+        <template>
+            <v-row justify="center">
+                <v-dialog v-model="dialog" persistent max-width="400px">
+                    <v-card>
+                        <v-card-title>
+                            <span class="headline">{{ titleForm }}</span>
+                        </v-card-title>
+                        <v-card-text>
+                            <v-container>
+                                <v-form @submit.prevent="createArea"> </v-form>
+                                <v-row>
+                                    <v-col cols="12">
+                                        <v-text-field
+                                            v-model="area.nombre"
+                                            label="Nombre del area*"
+                                            required
+                                        ></v-text-field>
+                                    </v-col>
+                                </v-row>
+                                <v-row>
+                                    <v-col cols="12">
+                                        <v-text-field
+                                            v-model="area.descripcion"
+                                            label="Descripcion"
+                                            required
+                                        ></v-text-field>
+                                    </v-col>
+                                </v-row>
+                                <v-row>
+                                    <v-col cols="12">
+                                        <v-text-field
+                                            v-model="area.estado"
+                                            label="Estado*"
+                                            hint="example of persistent helper text"
+                                            required
+                                        ></v-text-field>
+                                    </v-col>
+                                </v-row>
+                            </v-container>
+                            <small>*indicates required field</small>
+                        </v-card-text>
+                        <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn
+                                color="error"
+                                text
+                                @click="dialog = false"
+                            >
+                                Cerrar
+                            </v-btn>
+                            <v-btn
+                                v-if="!update"
+                                color="primary"
+                                text
+                                @click="createArea"
+                            >
+                                Guardar
+                            </v-btn>
+                            <v-btn
+                                v-else
+                                color="primary"
+                                text
+                                @click="updateArea"
+                            >
+                                Actualizar
+                            </v-btn>
+                        </v-card-actions>
+                    </v-card>
+                </v-dialog>
+            </v-row>
+        </template>
+    </div>
 </template>
 
 <script>
-    export default {
-        data() {
-            return {
-                areas: []
-            }
-        },
-        created() {
+export default {
+    data() {
+        return {
+            dialog: false,
+            update: false,
+            area: {},
+            areas: [],
+            loading: true,
+            titleForm: null,
+            search: "",
+            headers: [
+                {
+                    text: "Id",
+                    // align: 'start',
+                    // filterable: false,
+                    value: "id"
+                },
+                { text: "Nombre", value: "nombre" },
+                { text: "Descripcion", value: "descripcion" },
+                { text: "Estado", value: "estado" },
+                { text: "Acciones", sortable: false }
+            ]
+        };
+    },
+    created() {
+        this.axios.get("/api/areas/").then(response => {
+            this.areas = response.data;
+            this.loading = false;
+
+        });
+    },
+    methods: {
+        createArea() {
+            this.loading = true;
             this.axios
-                .get('/api/areas/')
-                .then(response => {
-                    this.areas = response.data;
-                    console.log(response.data);
-                });
-        },
-        methods: {
-            deleteArea(id) {
-                this.axios
-                    .delete(`/api/areas/${id}`)
-                    .then(response => {
-                        let i = this.areas.map(data => data.id).indexOf(id);
-                        this.areas.splice(i, 1)
+                .post("/api/areas", this.area)
+                .then(() => {
+                    this.dialog = false;
+                    this.axios.get("/api/areas/").then(response => {
+                        this.areas = response.data;
+                        this.loading = false;
 
                     });
-            }
+                })
+                .catch(err => console.log(err))
+                .finally(() => (this.loading = false));
+        },
+        addArea() {
+            this.titleForm = "Nueva Area";
+            this.area = {};
+            this.update = false;
+            this.dialog = true;
+        },
+        editArea(el) {
+            this.titleForm = "Editar Area";
+            this.update = true;
+            this.area.id = el.id;
+            this.area.nombre = el.nombre;
+            this.area.descripcion = el.descripcion;
+            this.area.estado = el.estado;
+            this.dialog = true;
+        },
+        updateArea() {
+            this.loading = true;
+            this.axios
+                .patch(`/api/areas/${this.area.id}`, this.area)
+                .then(res => {
+                    this.dialog = false;
+                    this.axios.get("/api/areas/").then(response => {
+                        this.areas = response.data;
+                        this.loading = false;
+                    });
+                });
+        },
+        deleteArea(el) {
+            this.loading = true;
+            this.axios.delete(`/api/areas/${el.id}`).then(() => {
+                let i = this.areas.map(data => data.id).indexOf(el.id);
+                this.areas.splice(i, 1);
+                this.loading = false;
+            });
         }
     }
+};
 </script>
