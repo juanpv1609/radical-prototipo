@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" value="{{ csrf_token() }}" />
 
-    <title>Vue JS CRUD Operations in Laravel</title>
+    <title>TaskApp</title>
 
     <link href="{{ mix('css/app.css') }}" type="text/css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"

@@ -2,19 +2,7 @@
 <div>
     <v-card elevation="2" :loading="loading">
         <v-card-title class="d-flex justify-space-between mb-6"
-            >Clientes
-            <v-btn
-                class="mx-2"
-                fab
-                dark
-                small
-                color="primary"
-                @click="addClient"
-            >
-                <v-icon dark>
-                    mdi-plus
-                </v-icon>
-            </v-btn>
+            >Creacion de Tareas
         </v-card-title>
 
         <v-card-text>
@@ -22,176 +10,80 @@
                 <v-col cols="8">
                     <v-row>
                         <v-col cols="6">
-
+                             <v-select :items="usuarios"
+                                v-model="usuarios.value"
+                                    label="Seleccione un responsable" >
+                                <template slot="selection" slot-scope="data">
+                                    <!-- HTML that describe how select should render selected items -->
+                                    {{ data.item.name }}
+                                </template>
+                                <template slot="item" slot-scope="data">
+                                    <!-- HTML that describe how select should render items when the select is open -->
+                                    {{ data.item.name }}
+                                </template>
+                            </v-select>
                         </v-col>
                         <v-col cols="6">
-
+                            <v-select :items="tipo_tareas"
+                                v-model="tipo_tareas.value"
+                                    label="Seleccione un tipo de tarea" >
+                                <template slot="selection" slot-scope="data">
+                                    <!-- HTML that describe how select should render selected items -->
+                                    {{ data.item.nombre }}
+                                </template>
+                                <template slot="item" slot-scope="data">
+                                    <!-- HTML that describe how select should render items when the select is open -->
+                                    {{ data.item.nombre }}
+                                </template>
+                            </v-select>
                         </v-col>
                     </v-row>
                      <v-row>
                         <v-col cols="6">
-
+                            <v-select :items="frecuencias"
+                                v-model="frecuencias.value"
+                                    label="Frecuencia" >
+                                <template slot="selection" slot-scope="data">
+                                    <!-- HTML that describe how select should render selected items -->
+                                    {{ data.item.descripcion }}
+                                </template>
+                                <template slot="item" slot-scope="data">
+                                    <!-- HTML that describe how select should render items when the select is open -->
+                                    {{ data.item.descripcion }}
+                                </template>
+                            </v-select>
                         </v-col>
                         <v-col cols="6">
-
+                            <v-select :items="dias"
+                                v-model="dias.value"
+                                    label="Cada dia" >
+                                <template slot="selection" slot-scope="data">
+                                    <!-- HTML that describe how select should render selected items -->
+                                    {{ data.item.text }}
+                                </template>
+                                <template slot="item" slot-scope="data">
+                                    <!-- HTML that describe how select should render items when the select is open -->
+                                    {{ data.item.text }}
+                                </template>
+                            </v-select>
                         </v-col>
+
+
                     </v-row>
-                </v-col>
-                <v-col cols="4">
-                    <table class="table table-sm table-borderless">
-                            <thead class="table-dark">
-                                <tr>
-                                    <th colspan="2">Detalles del contrato</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                <td>Contrato N</td>
-                                <td>{{contrato.id}}</td>
-                                </tr>
-                                <tr>
-                                    <td>Cliente</td>
-                                    <td>{{contrato.cliente.nombre_comercial}}</td>
-                                </tr>
-                                <tr>
-                                    <td>Fecha inicial</td>
-                                    <td><span class="text-success">{{contrato.fecha_inicio}}</span></td>
-                                </tr>
-                                <tr>
-                                    <td>Fecha final</td>
-                                    <td><span class="text-danger">{{contrato.fecha_fin}}</span></td>
-                                </tr>
-                                <tr>
-                                    <td>Pais</td>
-                                    <td>{{contrato.pais.nombre}}</td>
-                                </tr>
-                                <tr>
-                                    <td>Area</td>
-                                    <td>{{contrato.area.nombre}}</td>
-                                </tr>
-                                <tr>
-                                    <td>Solucion</td>
-                                    <td>{{contrato.solucion}}</td>
-                                </tr>
-                                <tr>
-                                    <td>Marca</td>
-                                    <td>{{contrato.marca}}</td>
-                                </tr>
-                            </tbody>
+                    <v-row>
+                            <v-col cols="12">
+                                <v-btn
+                                    color="primary"
+                                    @click="generarFechas"
+                                    >
+                                    Generar Tareas
+                                    </v-btn>
+                            </v-col>
+                        </v-row>
+                    <v-row>
+                        <v-col cols="12">
 
-                        </table>
-                        <button type="submit" class="btn btn-primary" :disabled="!tareas.length>0" >Enviar {{parseInt(diferencia)}} tareas</button>
-                   
-                </v-col>
-            </v-row>
-        </v-card-text>
-    </v-card>
-</div>
-<div>
-
-<form @submit.prevent="addTarea">
-        <div class="card ">
-            <div class="card-header d-flex justify-content-between">
-                <h5 class="card-title">Creacion de Tareas</h5>
-                <router-link
-                    to="/contratos"
-                    class="btn btn-primary btn-sm"
-                    >Regresar</router-link
-                >
-            </div>
-            <div class="card-body h-75">
-                <div class="row">
-                    <div class="col-sm-8">
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="mb-3">
-                                    <label for="tarea" class="form-label"
-                                        >Responsable:</label
-                                    >
-                                    <select
-                                        v-model="usuarios.value"
-                                        class="form-control"
-                                    >
-                                        <option
-                                            v-for="item in usuarios"
-                                            v-bind:key="item.id"
-                                            v-bind:value="item.id"
-                                        >
-                                            {{ item.name }}
-                                        </option>
-                                    </select>
-                                </div>
-                        </div>
-                        <div class="col-sm-6">
-                                <div class="mb-3">
-                                    <label for="tarea" class="form-label"
-                                        >Tipo de tarea:</label
-                                    >
-                                    <select
-                                        v-model="tipo_tareas.value"
-                                        class="form-control"
-                                    >
-                                        <option
-                                            v-for="tipo in tipo_tareas"
-                                            v-bind:key="tipo.id"
-                                            v-bind:value="tipo.id"
-                                        >
-                                            {{ tipo.nombre }}
-                                        </option>
-                                    </select>
-                                </div>
-                        </div>
-                        </div>
-                        <div class="row">
-
-                            <div class="col-sm-6">
-                                <div class="mb-3">
-                                    <label for="frecuencia" class="form-label"
-                                        >Frecuencia:</label
-                                    >
-                                    <select
-                                        v-model="frecuencias.value"
-                                        class="form-control"
-                                    >
-                                        <option
-                                            v-for="item in frecuencias"
-                                            v-bind:key="item.id"
-                                            v-bind:value="item.id"
-                                        >
-                                            {{ item.descripcion }}
-                                        </option>
-                                    </select>
-                                </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <label for="dias" class="form-label"
-                                    >Cada dia:</label
-                                >
-                            <div class="input-group mb-3">
-
-                                <select v-model="dias.value" class="form-control">
-                                    <option
-                                        v-for="item in dias"
-                                        v-bind:key="item.value"
-                                        v-bind:value="item.value"
-                                    >
-                                        {{ item.text }}
-                                    </option>
-                                </select>
-                                <button
-                                v-on:click="generarFechas"
-                                type="button"
-                                class="btn btn-warning"
-                            >
-                                Generar Tareas
-                            </button>
-                            </div>
-                        </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <div class="table-responsive overflow-auto " v-bind:style="{heigth:'50%'}" v-if="tareas.length>0">
-                                    <table class="table table-sm">
+                            <table class="table table-sm" v-if="tareas.length>0">
                                         <thead class="table-dark">
                                             <tr>
                                                 <th>Responsable</th>
@@ -258,13 +150,12 @@
                                                     </th>
                                                 </tr>
                                             </tbody>
-                                        </table>
-                                    </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-4">
-                        <table class="table table-sm table-borderless">
+                            </table>
+                        </v-col>
+                    </v-row>
+                </v-col>
+                <v-col cols="4">
+                    <table class="table table-sm table-borderless">
                             <thead class="table-dark">
                                 <tr>
                                     <th colspan="2">Detalles del contrato</th>
@@ -306,16 +197,20 @@
                             </tbody>
 
                         </table>
-                        <button type="submit" class="btn btn-primary" :disabled="!tareas.length>0" >Enviar {{parseInt(diferencia)}} tareas</button>
-                    </div>
-
-                </div>
-
-
-            </div>
-        </div>
-    </form>
+                        <v-btn
+                        color="success"
+                        :loading="loading"
+                        :disabled="(loading || !tareas.length>0)"
+                        @click="addTarea"
+                        >
+                        Enviar {{parseInt(diferencia)}} tareas
+                        </v-btn>
+                </v-col>
+            </v-row>
+        </v-card-text>
+    </v-card>
 </div>
+
 
 
 </template>
@@ -341,7 +236,16 @@ export default {
                 { text: "DOMINGO", value: 7 }
             ],
             tipo_tareas: [],
-            datos: []
+            datos: [],
+            loading: false,
+            headersTareas: [
+                { text: "Responsable", value: "responsable" },
+                { text: "Tipo", value: "tipo_tarea" },
+                { text: "Fecha", value: "fecha" },
+                { text: "Alerta", value: "alerta" },
+                { text: "", value: "controls", sortable: false  },
+            ],
+
         };
     },
     created() {
@@ -371,7 +275,7 @@ export default {
     },
     methods: {
         addTarea() {
-
+            this.loading=true;
 
             console.log(JSON.stringify(this.tareas));
             this.request.tareas=this.tareas;
@@ -389,7 +293,9 @@ export default {
                                 title: 'Correcto',
                                 text: 'Tareas creadas correctamente!',
                                 icon: 'success'
-                                })
+                                });
+                         this.loading=false;
+
 
                     })
                     .catch(err => console.log(err))
@@ -404,11 +310,12 @@ export default {
             this.datos  = [];
             let fecha_inicio = moment(this.contrato.fecha_inicio);
             let fecha_fin = moment(this.contrato.fecha_fin);
-            let frecuencia = this.frecuencias.value;
+            let frecuencia = this.frecuencias.value.id;
             let num_dia = this.dias.value;
             let dia_preferido;
             //let diferencia;
             let alerta;
+            console.log(num_dia);
             switch (frecuencia) {
                 case 2: //semanal
                 alerta=2;
@@ -424,8 +331,8 @@ export default {
                                 contrato_id: this.contrato.id,
                                 dia_elegido: this.dias.value,
                                 fecha: moment(dia_preferido).format( "YYYY-MM-DD"),
-                                responsable: this.usuarios.value,
-                                tipo_tarea: this.tipo_tareas.value,
+                                responsable: this.usuarios.value.id,
+                                tipo_tarea: this.tipo_tareas.value.id,
                                 frecuencia: frecuencia,
                                 alerta: alerta
                             });
@@ -450,8 +357,8 @@ export default {
                                 contrato_id: this.contrato.id,
                                 dia_elegido: this.dias.value,
                                 fecha: moment(dia_preferido).format( "YYYY-MM-DD"),
-                                responsable: this.usuarios.value,
-                                tipo_tarea: this.tipo_tareas.value,
+                                responsable: this.usuarios.value.id,
+                                tipo_tarea: this.tipo_tareas.value.id,
                                 frecuencia: frecuencia,
                                 alerta: alerta
                             });
@@ -476,8 +383,8 @@ export default {
                                 contrato_id: this.contrato.id,
                                 dia_elegido: this.dias.value,
                                 fecha: moment(dia_preferido).format( "YYYY-MM-DD"),
-                                responsable: this.usuarios.value,
-                                tipo_tarea: this.tipo_tareas.value,
+                                responsable: this.usuarios.value.id,
+                                tipo_tarea: this.tipo_tareas.value.id,
                                 frecuencia: frecuencia,
                                 alerta: alerta
                             });
@@ -503,8 +410,8 @@ export default {
                                 contrato_id: this.contrato.id,
                                 dia_elegido: this.dias.value,
                                 fecha: moment(dia_preferido).format( "YYYY-MM-DD"),
-                                responsable: this.usuarios.value,
-                                tipo_tarea: this.tipo_tareas.value,
+                                responsable: this.usuarios.value.id,
+                                tipo_tarea: this.tipo_tareas.value.id,
                                 frecuencia: frecuencia,
                                 alerta: alerta
                             });
@@ -528,7 +435,6 @@ export default {
             this.tareas = this.datos;
             //console.log(JSON.stringify(this.mantenimientos));
             this.$toasted.success('Tareas generadas correctamente');
-
         }
     }
 };

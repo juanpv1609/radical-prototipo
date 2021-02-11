@@ -37,8 +37,8 @@
                             <div class="mb-3">
                         <label for="nombre_comercial" class="form-label">Estado:</label>
                         <select
-                                v-model="tareas.estado.id"
-                                class="form-control form-control-sm"
+                                v-model="tareas.estado"
+                                class="form-control "
                             >
                                 <option
                                     v-for="item in estado_tarea"
@@ -130,11 +130,11 @@
                 .get(`/api/tareas/${this.$route.params.id}`)
                 .then((res) => {
                     this.tareas = res.data;
-                    //console.log(res.data);
+                    console.log(this.tareas);
+                //this.files=this.tareas.adjunto.split(',');
                 });
                 this.axios.get("/api/estado-tareas/").then(response => {
                 this.estado_tarea = response.data;
-                console.log(response.data);
         });
 
         },
@@ -180,7 +180,7 @@
             updateTarea(e) {
                 e.preventDefault();
                 this.tareas.adjuntos=this.ruta_archivo;
-                this.tareas.estado=this.tareas.estado.id;
+                this.tareas.estado=this.tareas.estado;
                 console.log(this.tareas);
                 this.axios
                     .patch(`/api/tareas/${this.$route.params.id}`, this.tareas)

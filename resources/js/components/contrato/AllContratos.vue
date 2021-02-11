@@ -41,24 +41,22 @@
                     <td>{{row.item.solucion}}</td>
                     <td>{{row.item.marca}}</td>
                     <td>
-                        <v-btn-toggle >
-                            <v-btn  icon color="primary" @click="findTareas(row.item)">
+                        <v-btn  icon color="primary" @click="findTareas(row.item)">
                             <v-icon dark>mdi-eye</v-icon>
                             </v-btn>
-                            <v-btn  icon color="error" :to="{
+                            <v-btn  icon color="success" :to="{
                                                 name: 'contratos-tasks',
                                                 params: { id: row.item.id }
                                             }">
                             <v-icon dark>mdi-plus</v-icon>
-                        </v-btn>
-                        </v-btn-toggle>
+                            </v-btn>
                     </td>
                     <td>
                         <v-btn  icon color="primary" @click="editContrato(row.item)">
                             <v-icon dark>mdi-pencil</v-icon>
                             </v-btn>
-                            <v-btn  icon color="error" @click="sendMails(row.item)">
-                            <v-icon dark>mdi-mail</v-icon>
+                            <v-btn  icon color="warning" @click="sendMails(row.item)">
+                            <v-icon dark>mdi-email</v-icon>
                         </v-btn>
                     </td>
                 </tr>
@@ -68,9 +66,9 @@
 
         <v-card-actions> </v-card-actions>
     </v-card>
-    <template>
-        <v-row justify="center" v-model="dialogTareas" max-width="800px">
-           <v-dialog>
+    <!-- <template>
+        <v-row justify="center" >
+           <v-dialog v-model="dialogTareas" max-width="600px">
                <v-card>
                    <v-card-title>
                        <span class="headline">
@@ -84,7 +82,18 @@
                        </v-data-table>
                        <template v-slot:item="row">
                         <tr>
-                            <td>{{row.item.responsable}}</td>
+                            <td>
+                                <v-select :items="tareas"
+                                v-model="frecuencias.value"
+                                    label="Frecuencia" >
+                                <template slot="selection" slot-scope="data">
+                                    {{ data.item.descripcion }}
+                                </template>
+                                <template slot="item" slot-scope="data">
+                                    {{ data.item.descripcion }}
+                                </template>
+                            </v-select>
+                                {{row.item.responsable}}</td>
                             <td>{{row.item.tipo_tarea}}</td>
                             <td>{{row.item.fecha}}</td>
                             <td>{{row.item.estado_tarea.id}}</td>
@@ -94,7 +103,7 @@
                </v-card>
            </v-dialog>
         </v-row>
-    </template>
+    </template> -->
     <template>
         <v-row justify="center">
             <v-dialog v-model="dialog" persistent max-width="800px">
@@ -252,7 +261,7 @@
                                 </v-col>
                                 <v-col cols="8">
                                     <input-tag v-model="correos"
-                                     placeholder="Ingrese una direccion de correo" validate="email" ></input-tag>
+                                     placeholder="Ingrese una direccion de correo" class="form-control form-control-lg" validate="email" ></input-tag>
                                 </v-col>
 
 
@@ -267,7 +276,7 @@
                                 </v-col>
                                 <v-col cols="6">
                                     <v-text-field
-                                        v-model="contrato.observaciones"
+                                        v-model="contrato.observacion"
                                         label="Observaciones"
                                     ></v-text-field>
                                      </v-col>
@@ -305,87 +314,7 @@
             </v-dialog>
         </v-row>
     </template>
-</div>
-   <!--  <div>
-        <div class="card">
-            <div class="card-header d-flex justify-content-between">
-                <h5 class="card-title">Contratos</h5>
-                <router-link
-                    to="/contratos/create"
-                    class="btn btn-primary btn-sm"
-                    >Nuevo</router-link
-                >
-            </div>
-
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table " v-if="contratos.length>0">
-                        <thead class="table-dark">
-                            <tr>
-                                <th>Descripcion</th>
-                                <th>Cliente</th>
-                                <th>Fecha inicial</th>
-                                <th>Fecha final</th>
-                                <th>Area</th>
-                                <th>Solucion</th>
-                                <th>Marca</th>
-                                <th>Tareas</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="item in contratos" :key="item.id">
-                                <td>{{ item.descripcion }}</td>
-                                <td>{{ item.cliente.nombre_comercial }}</td>
-                                <td>{{ item.fecha_inicio }}</td>
-                                <td>{{ item.fecha_fin }}</td>
-                                <td>{{ item.area.nombre }}</td>
-                                <td>{{ item.solucion }}</td>
-                                <td>{{ item.marca }}</td>
-
-                                <td>
-                                    <div class="btn-group" role="group">
-                                        <router-link
-                                            :to="{
-                                                name: 'contratos-tasks',
-                                                params: { id: item.id }
-                                            }"
-                                            class="btn btn-warning btn-sm"
-                                        >
-                                            <i class="fas fa-plus-circle"></i>
-                                        </router-link>
-                                        <button
-                                            class="btn btn-sm btn-primary"
-                                            v-on:click="findTareas(item.id)"
-                                        >
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="btn-group" role="group">
-                                        <router-link
-                                            :to="{
-                                                name: 'contratos-edit',
-                                                params: { id: item.id }
-                                            }"
-                                            class="btn btn-secondary btn-sm"
-                                        >
-                                            <i class="fas fa-edit"></i>
-                                        </router-link>
-                                        <button type="button" @click="sendMails(item.id)" class="btn btn-sm btn-primary">
-                                            <i class="fas fa-envelope"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <p v-else class="alert alert-info">No se encontraron resultados :(</p>
-
-                </div>
-            </div>
-        </div>
+    <template>
         <div
             class="modal fade"
             id="exampleModal2"
@@ -439,10 +368,10 @@
                                             >
                                                 <option
                                                     v-for="item in responsables"
-                                                    v-bind:key="item.value"
-                                                    v-bind:value="item.value"
+                                                    v-bind:key="item.id"
+                                                    v-bind:value="item.id"
                                                 >
-                                                    {{ item.nombre }}
+                                                    {{ item.name }}
                                                 </option>
                                             </select>
                                         </td>
@@ -453,10 +382,10 @@
                                             >
                                                 <option
                                                     v-for="item in tipo_tareas"
-                                                    v-bind:key="item.value"
-                                                    v-bind:value="item.value"
+                                                    v-bind:key="item.id"
+                                                    v-bind:value="item.id"
                                                 >
-                                                    {{ item.text }}
+                                                    {{ item.nombre }}
                                                 </option>
                                             </select>
                                         </td>
@@ -519,27 +448,30 @@
                     </div>
                     <div class="modal-footer">
                         <div class="d-flex justify-content-between">
-                            <button
-                                type="button"
-                                class="btn btn-secondary mr-4"
-                                data-dismiss="modal"
-                            >
-                                Cerrar
-                            </button>
-                            <button
-                                type="button"
-                                class="btn btn-primary"
-                                @click="updateTareas"
+                            <v-btn
+                            color="error"
+                            text
+                            data-dismiss="modal"
+                        >
+                            Cerrar
+                        </v-btn>
+                        <v-btn
+                            color="primary"
+                            text
+                           @click="updateTareas"
                                 v-if="tareas.length>0"
-                            >
-                                Actualizar
-                            </button>
+                        >
+                            Actualizar
+                        </v-btn>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div> -->
+    </template>
+</div>
+
+
 </template>
 
 <script>
@@ -553,6 +485,8 @@ export default {
             paises: {},
             areas: {},
             frecuencias: {},
+            responsables: [],
+            tipo_tareas: [],
             tareas: {},
             contrato: {},
              dialog: false,
@@ -605,6 +539,16 @@ export default {
             //console.log(response.data);
         });
         this.axios
+            .get("/api/usuarios/")
+            .then(response => {
+                this.responsables = response.data;
+            });
+        this.axios
+            .get("/api/tipo-tareas/")
+            .then(response => {
+                this.tipo_tareas = response.data;
+            });
+        this.axios
             .get("/api/frecuencias/")
             .then(response => {
                 this.frecuencias = response.data;
@@ -616,6 +560,7 @@ export default {
 
                 this.titleForm = "Nuevo Contrato";
                 this.contrato = {};
+                this.correos = [];
                 this.update = false;
                 this.dialog = true;
             },
@@ -625,15 +570,16 @@ export default {
                 console.log(el);
                 this.contrato.id = el.id;
                 this.contrato.descripcion = el.descripcion;
-                this.contrato.cliente = el.cliente;
+                this.contrato.cliente = el.cliente_id;
                 this.contrato.fecha_inicio = el.fecha_inicio;
                 this.contrato.fecha_fin = el.fecha_fin;
                 this.contrato.area = el.area;
                 this.contrato.pais = el.pais;
                 this.contrato.solucion = el.solucion;
                 this.contrato.marca = el.marca;
-                this.contrato.correos=el.correos;
-
+                this.contrato.observacion = el.observacion;
+                this.correos=el.correos.split(",");
+                console.log(this.correos);
                 this.dialog = true;
             },
             createContrato() {
@@ -661,7 +607,7 @@ export default {
             this.contrato.correos=this.correos.join(',');
 
             this.axios
-                    .patch(`/api/contratos/${this.$route.params.id}`, this.contrato)
+                    .patch(`/api/contratos/${this.contrato.id}`, this.contrato)
                     .then(response => {
                         this.dialog = false;
                         this.loading = false;
@@ -671,12 +617,13 @@ export default {
                     .finally(() => this.loading = false)
         },
         findTareas(el) {
-            this.dialogTareas=true
             console.log(el);
             this.axios.get(`/api/contrato-tareas/${el.id}`).then(res => {
                 //this.contratos = res.data;
                 console.log(res.data);
                 this.tareas = res.data;
+                $("#exampleModal2").modal("show");
+                //this.dialogTareas=true;
             });
         },
         updateTareas() {

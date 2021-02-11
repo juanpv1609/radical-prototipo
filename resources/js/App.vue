@@ -1,6 +1,6 @@
-<template>
-     <v-app>
-        <v-navigation-drawer v-if="$store.state.auth" app v-model="drawer" absolute :width="225">
+<template >
+     <v-app v-if="$store.state.auth">
+        <v-navigation-drawer  app v-model="drawer" absolute :width="200">
             <v-list-item >
                 <v-list-item-content>
                     <v-list-item-title class="title">
@@ -22,7 +22,7 @@
             </v-list>
         </v-navigation-drawer >
 
-            <v-app-bar v-if="$store.state.auth" app color="accent-4" absolute dense dark>
+            <v-app-bar  app color="accent-4" absolute dense dark>
                 <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
 
 
@@ -30,7 +30,7 @@
 
 
 
-                <v-menu left bottom>
+                <v-menu left bottom >
                     <template v-slot:activator="{ on, attrs }">
                         <v-btn icon v-bind="attrs" v-on="on">
                             <v-icon>mdi-dots-vertical</v-icon>
@@ -38,8 +38,8 @@
                     </template>
 
                     <v-list>
-                        <v-list-item v-if="$store.state.auth">
-                            <v-list-item-title>{{ $store.state.user.name  }}</v-list-item-title
+                        <v-list-item >
+                            <v-list-item-title>{{ $store.state.user.email  }}</v-list-item-title
                             >
                         </v-list-item>
                         <v-spacer></v-spacer>
@@ -74,6 +74,16 @@
             </v-col> -->
         </v-footer>
     </v-app>
+    <v-app v-else>
+        <v-main>
+            <!-- Provides the application the proper gutter -->
+            <v-container fluid>
+                <!-- If using vue-router -->
+                <router-view></router-view>
+
+            </v-container>
+        </v-main>
+    </v-app>
 </template>
 
 <script>
@@ -103,7 +113,7 @@ export default {
         logout() {
             this.$swal.fire({
                 title: 'Esta seguro?',
-                html: `Finalizara su sesion`,
+                html: `Finalizará su sesión`,
                 icon: 'question',
                 showConfirmButton: true,
                 showCancelButton: true

@@ -7,18 +7,27 @@ use App\Models\Tarea;
 use App\Models\Tareas;
 use App\Models\Contrato;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class TareaController extends Controller
 {
+    private $tareas;
     public function index()
     {
         //$products = Product::all()->toArray();
-        $cond=[
-            'responsable' => auth()->user()->id
-        ];
-        $tareas = Tareas::with('contrato.cliente', 'frecuencias','estado_tarea','tipo','usuario')->where($cond)->get()->toArray();
+        if (auth()->user()->role==2) {
+            $this->tareas = Tareas::with('contrato.cliente', 'frecuencias','estado_tarea','tipo','usuario')
+            ->get()->toArray();
+        }else{
+            $cond=[
+                'responsable' => auth()->user()->id
+            ];
+            $this->tareas = Tareas::with('contrato.cliente', 'frecuencias','estado_tarea','tipo','usuario')
+                        ->where($cond)->get()->toArray();
+        }
 
-        return $tareas;
+
+        return $this->tareas;
     }
 
     public function store(Request $request)
@@ -102,7 +111,7 @@ class TareaController extends Controller
 
         $fileName = time().'-'.$request->file->getClientOriginalName();
         //$request->file->move(public_path('upload'), $fileName);
-        \Storage::disk('local')->put($fileName, \File::get($file));
+        Storage::disk('local')->put($fileName, File::get($file));
 
 
         return response()->json(['archivo'=>$fileName]);

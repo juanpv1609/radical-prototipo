@@ -1,90 +1,98 @@
 <template>
-<div>
-    <v-card elevation="2" :loading="loading" class="mx-auto"
+<div class="pt-4">
+    <v-form
+    ref="form"
+    v-model="valid"
+    lazy-validation
+  >
+    <v-card elevation="4" :loading="loading" class="mx-auto"
     max-width="344">
-        <v-card-title class="text-center"
-            >Iniciar sesion
-        </v-card-title>
+   <!--  <v-img
+      src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
+      height="200px"
+    >
+    <v-card-title
+            ><h3 class="text-center"> Iniciar Sesión</h3>
+        </v-card-title></v-img> -->
+
          <v-card-text>
+             <h3 class="text-center"> Iniciar Sesión</h3>
                  <v-col cols="12">
                     <v-text-field
                         label="Usuario*"
                         v-model="form.email"
-                        required
+                        required type="email"
+                        :rules="emailRules"
+                        prepend-icon="mdi-email"
                     ></v-text-field>
                 </v-col>
                 <v-col cols="12">
                     <v-text-field
                         label="Contraseña*"
                         v-model="form.password"
-                        required
+                        required type="password"
+                        :rules="passwordRules"
+                        prepend-icon="mdi-lock"
                     ></v-text-field>
                 </v-col>
+                <v-alert v-if="has_error"
+                    color="red"
+                    type="error"
+                    >{{error}}</v-alert>
          </v-card-text>
          <v-card-actions>
-             <v-btn
+             <v-btn block
                 color="primary"
-                text
+                depressed
                 @click="login"
             >
                 Enviar
             </v-btn>
          </v-card-actions>
     </v-card>
+    </v-form>
 </div>
-    <!-- <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-header">Login</div>
-                    <div class="card-body">
-                        <div class="alert alert-danger" v-if="has_error">
-                            <p>{{ error_email }}</p>
-                        </div>
-                        <form autocomplete="off"  @submit.prevent="login" >
-                            <div class="form-group">
-                                <label for="email">E-mail</label>
-                                <input type="email" id="email" class="form-control" placeholder="user@example.com" v-model="form.email" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="password">Mot de passe</label>
-                                <input type="password" id="password" class="form-control" v-model="form.password" required>
-                            </div>
-                            <button type="submit" class="btn btn-primary">LogIn</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </div> -->
 </template>
 <script>
 
   export default {
     data() {
       return {
+          valid: true,
           loading:false,
           form:{
-              email: 'admin@test.com',
-            password: 'admin'
+              email: null,
+            password: null
           },
         has_error: false,
-        error_email:null
+        error:null,
+        emailRules: [
+        v => !!v || 'E-mail is required',
+        v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
+      ],
+      passwordRules: [
+        v => !!v || 'Password is required',
+        //v => (v && v.length >= 6) || 'Name must be less than 6 characters',
+      ],
       }
     },
     methods: {
-        async login() {
-          this.loading = true;
-          await this.$store.dispatch("login", this.form).catch((error) =>{
+         login() {
+        if (this.$refs.form.validate()) {
+            this.loading = true;
+           this.$store.dispatch("login", this.form).then(()=>{
+               this.loading = false;
+                this.$router.push({ name: 'contratos' })
+           }).catch((error) =>{
+               this.loading = false;
                 if (error.response) {
                     this.has_error=true;
-                    this.error_email = error.response.data.errors.email[0];
-                    console.log(error.response.data);
+                    this.error = error.response.data.errors.email[0];
                 }
             });
-            this.loading = false;
-            this.$router.push({ name: 'home' })
+        }
+
+
         //redirect
 
       }

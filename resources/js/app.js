@@ -15,7 +15,8 @@ import App from './App.vue';
 import VueAxios from 'vue-axios';
 import VueRouter from 'vue-router';
 import axios from 'axios';
-import { routes } from './routes';
+import store from './store/store';
+import { routes } from './router/routes';
 import VCalendar from 'v-calendar';
 // import Multiselect from 'vue-multiselect'
 import InputTag from 'vue-input-tag'
@@ -41,59 +42,25 @@ axios.defaults.withCredentials = true;
 axios.defaults.baseURL = 'http://127.0.0.1:8000';
 Vue.use(VueAxios, axios);
 Vue.use(Vuex);
-const store = new Vuex.Store({
-    state: {
-        user:null,
-        auth:false,
-        isUserLoggedIn: false
-    },
-    mutations: {
-        SET_USER(state,user){
-            state.user = user
-            state.auth = Boolean(user)
-            state.isUserLoggedIn = Boolean(user)
-        }
-    },
-    actions:{
-        async login({dispatch},credentials){
-            await axios.post('/api/login', credentials);
-            return dispatch("getUser");
-        },
-        async logout({ dispatch }) {
-            await axios.post('/api/logout');
-            return dispatch("getUser");
-        },
-        getUser({commit}){
-            axios.get('/api/user').then(res => {
-                console.log(res.data);
-                commit("SET_USER",res.data);
 
-            }).catch(() => {
-                commit("SET_USER", null);
 
-            });
-        }
 
-    },
-    modules:{}
-})
 Vue.use(VCalendar, {
     componentPrefix: 'vc',
 });
 Vue.component('input-tag', InputTag);
-store.dispatch('getUser')
+
 
 const router = new VueRouter({
     mode: 'history',
     routes: routes
 });
-/* router.beforeEach((to, from, next) => {
-    if (to.name !== 'login' && !store.state.isUserLoggedIn) next({ name: 'login' })
-    else next()
-}) */
+store.dispatch('getUser')
+
+
 const app = new Vue({
     el: '#app',
-    router: router,
+    router:router,
     store:store,
     vuetify,
     render: h => h(App),

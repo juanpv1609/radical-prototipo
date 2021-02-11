@@ -41,7 +41,7 @@
                                 <v-btn  icon color="primary" @click="editUser(row.item)">
                                     <v-icon dark>mdi-pencil</v-icon>
                                     </v-btn>
-                                    <v-btn  icon color="error" @click="deleteUser(row.item)">
+                                    <v-btn :disabled="row.item.role==2"  icon color="error" @click="deleteUser(row.item)">
                                     <v-icon dark>mdi-delete</v-icon>
                                 </v-btn>
                             </td>
