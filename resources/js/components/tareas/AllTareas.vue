@@ -32,25 +32,38 @@
                             </v-btn>
                     </td>
                     <td>
-                        <label v-if="row.item.estado_tarea.id==1"
-                            class="badge badge-warning">
-                                {{ row.item.estado_tarea.descripcion}}
-                        </label>
-                        <label v-else-if="row.item.estado_tarea.id==2"
-                            class="badge badge-success">
-                                {{ row.item.estado_tarea.descripcion}}
-                        </label>
-                        <label v-else-if="row.item.estado_tarea.id==3"
-                            class="badge badge-danger">
-                                {{ row.item.estado_tarea.descripcion}}
-                        </label>
-                        <label v-else-if="row.item.estado_tarea.id==4"
-                            class="badge badge-info">
-                                {{ row.item.estado_tarea.descripcion}}
-                        </label>
+                        <v-chip v-if="row.item.estado_tarea.id==1"
+                            class="ma-2"
+                            small
+                            color="orange"
+
+                            text-color="white"
+                            > {{ row.item.estado_tarea.descripcion}}
+                            </v-chip>
+                            <v-chip v-else-if="row.item.estado_tarea.id==2"
+                            class="ma-2"
+                            small
+                            color="green"
+                            text-color="white"
+                            > {{ row.item.estado_tarea.descripcion}}
+                            </v-chip>
+                            <v-chip v-else-if="row.item.estado_tarea.id==3"
+                            class="ma-2"
+                            small
+                            color="red"
+                            text-color="white"
+                            > {{ row.item.estado_tarea.descripcion}}
+                            </v-chip>
+                            <v-chip v-else-if="row.item.estado_tarea.id==4"
+                            class="ma-2"
+                            small
+                            color="blue-grey"
+                            text-color="white"
+                            > {{ row.item.estado_tarea.descripcion}}
+                            </v-chip>
                     </td>
                     <td>
-                        <v-btn  icon color="success" :to="{
+                        <v-btn :disabled="row.item.estado_tarea.id==3"  icon color="grey darken-3" :to="{
                                     name: 'tareas-edit',
                                     params: { id: row.item.id }
                                 }">

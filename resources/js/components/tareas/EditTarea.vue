@@ -1,82 +1,77 @@
 <template>
-    <div class="card">
-            <div class="card-header d-flex justify-content-between">
-                <h5 class="card-title">Editar Tarea</h5>
-            </div>
-       <div class="card-body">
-                <form @submit.prevent="updateTarea" enctype="multipart/form-data">
-                    <div class="row">
-                        <div class="col-sm-4">
-                            <div class="mb-3">
-                            <label for="cliente" class="form-label">Cliente:</label>
-                            <input type="text" class="form-control" v-model="tareas.contrato.cliente.nombre_comercial" disabled >
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="mb-3">
-                                <label for="fecha" class="form-label">Fecha:</label>
-                                <input type="text" class="form-control" v-model="tareas.fecha" disabled>
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="mb-3">
-                                <label for="tipo" class="form-label">Tipo Tarea:</label>
-                                <input type="text" class="form-control"  v-model="tareas.tipo.nombre" disabled>
-                            </div>
-                        </div>
+    <v-card elevation="2" >
+                <v-card-title Tarea class="d-flex justify-space-between mb-6"
+                    >Editar Tarea
+                </v-card-title>
+                <v-card-text>
+                    <v-row>
+                        <v-col cols="4">
+                            <v-text-field
+                                v-model="tareas.contrato.cliente.nombre_comercial"
+                                label="Cliente" readonly
+                            ></v-text-field>
+                        </v-col>
+                        <v-col cols="4">
+                            <v-text-field
+                                v-model="tareas.fecha"
+                                label="Fecha" readonly
+                            ></v-text-field>
+                        </v-col>
+                        <v-col cols="4">
+                            <v-text-field
+                                v-model="tareas.tipo.nombre"
+                                label="Tipo Tarea" readonly
 
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-3">
-                            <div class="mb-3">
-                                <label for="ticket" class="form-label">Ticket:</label>
-                                <input type="text" class="form-control"  v-model="tareas.ticket" >
-                            </div>
-                        </div>
-                        <div class="col-sm-3">
-                            <div class="mb-3">
-                        <label for="nombre_comercial" class="form-label">Estado:</label>
-                        <select
+                            ></v-text-field>
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col cols="3">
+                            <v-text-field
+                                v-model="tareas.ticket"
+                                label="Ticket"
+                            ></v-text-field>
+                        </v-col>
+                        <v-col cols="3">
+                            <v-select :items="estado_tarea"
                                 v-model="tareas.estado"
-                                class="form-control "
-                            >
-                                <option
-                                    v-for="item in estado_tarea"
-                                    v-bind:key="item.id"
-                                    v-bind:value="item.id"
+                                    label="Estado" >
+                                    <template slot="selection" slot-scope="data">
+                                        <!-- HTML that describe how select should render selected items -->
+                                        {{ data.item.descripcion }}
+                                    </template>
+                                    <template slot="item" slot-scope="data">
+                                        <!-- HTML that describe how select should render items when the select is open -->
+                                        {{ data.item.descripcion }}
+                                    </template>
+                                </v-select>
+                        </v-col>
+                        <v-col cols="6">
+                            <v-file-input
+                                small-chips
+                                multiple
+                                v-model="files"
+                                label="Seleccione archivo/s"
                                 >
-                                    {{ item.descripcion }}
-                                </option>
-                            </select>
-                        </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="mb-3">
-                        <label for="adjunto" class="form-label">Archivos Adjuntos</label>
-                        <div class="input-group">
-                            <input type="file" class="form-control" :disabled="status_archivos" name="file"  @change="processFile($event)" multiple >
-
-                        </div>
-
-                    </div>
-                        </div>
-
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="mb-3">
-                                <label for="observacion" class="form-label">Observacion</label>
-                                <textarea class="form-control" cols="30" rows="3" v-model="tareas.observacion"></textarea>
-                            </div>
-                        </div>
-                        <div class="col-sm-6" v-if="files.length>0">
-                            <div class="mb-3">
-                                <button class="btn btn-success" type="button"
-                                 @click="subirArchivos" :disabled="status_archivos">
-                                Subir <strong>{{files.length}}</strong> Archivos</button>
-                            </div>
-
-                            <div class="table-responsive">
+                                </v-file-input>
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col cols="6">
+                            <v-textarea
+                                clearable
+                                clear-icon="mdi-close-circle"
+                                label="Observaciones"
+                                v-model="tareas.observacion"
+                                ></v-textarea>
+                        </v-col>
+                        <v-col cols="6" v-if="files.length>0">
+                            <v-btn  text color="success" block
+                            @click="subirArchivos"
+                            :disabled="status_archivos">
+                                   Subir <strong>{{files.length}}</strong> Archivos
+                                    </v-btn>
+                             <div class="table-responsive">
                                 <table class="table table-sm">
                                     <thead>
                                         <tr>
@@ -90,8 +85,8 @@
                                         <tr v-for="item in files" :key="item.name">
                                             <td>{{ item.name}}</td>
                                             <td> {{(item.size/1000)}} KB</td>
-                                            <td> <i v-if="item.status" class="fas fa-check-circle text-success"></i>
-                                                    <i v-if="!item.status" class="fas fa-times text-danger"></i></td>
+                                            <td> <i v-if="status_archivos" class="fas fa-check-circle text-success"></i>
+                                                    <i v-if="!status_archivos" class="fas fa-times text-danger"></i></td>
                                             <td>
                                                 <button class="btn btn-danger btn-sm" :disabled="status_archivos"
                                                  type="button" @click="deleteFile(item.name)">
@@ -102,12 +97,16 @@
                                     </tbody>
                                 </table>
                             </div>
-                        </div>
-                    </div>
-                    <button type="submit" class="btn btn-primary" >Actualizar</button>
-                </form>
-            </div>
-        </div>
+                        </v-col>
+                    </v-row>
+                </v-card-text>
+                <v-card-actions>
+                    <v-btn  depressed color="primary"
+                            @click="updateTarea">
+                        Actualizar
+                        </v-btn>
+                </v-card-actions>
+    </v-card>
 </template>
 
 <script>
@@ -115,9 +114,9 @@
         data() {
             return {
                 tareas: {},
-                estado_tarea: {},
+                estado_tarea: [],
                 file:'',
-                files:{},
+                files:[],
                 data_files:[],
                 ruta_archivo:[],
                 status_archivos:false,
@@ -159,18 +158,18 @@
                 //this.file.length=this.file.length-1;
             },
             subirArchivos(){
+                console.log(this.files);
                 const config = {
                     headers: { 'content-type': 'multipart/form-data' }
                 }
                 //console.log(this.files);
                 for (const file of this.files) {
                     let formData = new FormData();
-                    formData.append('file', file.file);
+                    formData.append('file', file);
                      this.axios
                     .post(`/api/subir-archivo/`, formData,config)
                     .then((res) => {
                         //this.$router.push({ name: 'tareas' });
-                        file.status=true;
                         this.ruta_archivo.push(res.data.archivo);
                         console.log(this.ruta_archivo);
                     });
@@ -180,7 +179,7 @@
             updateTarea(e) {
                 e.preventDefault();
                 this.tareas.adjuntos=this.ruta_archivo;
-                this.tareas.estado=this.tareas.estado;
+                this.tareas.estado=this.tareas.estado.id;
                 console.log(this.tareas);
                 this.axios
                     .patch(`/api/tareas/${this.$route.params.id}`, this.tareas)

@@ -1,4 +1,6 @@
 <template >
+<div>
+
      <v-app v-if="$store.state.auth">
         <v-navigation-drawer  app v-model="drawer" absolute :width="200">
             <v-list-item >
@@ -43,7 +45,7 @@
                             >
                         </v-list-item>
                         <v-spacer></v-spacer>
-                        <v-list-item >
+                        <v-list-item  @click="dialog=true">
                             <v-list-item-title> Cambiar contraseña </v-list-item-title
                             >
                         </v-list-item>
@@ -84,13 +86,93 @@
             </v-container>
         </v-main>
     </v-app>
+    <template>
+            <v-row justify="center">
+                <v-dialog v-model="dialog" persistent max-width="400px">
+                    <v-form
+                        ref="form"
+                        v-model="valid"
+                        lazy-validation
+                    >
+                    <v-card>
+                        <v-card-title>
+                            <span class="headline">Cambio de contraseña</span>
+                        </v-card-title>
+                        <v-card-text>
+                            <v-container>
+                                <v-row>
+                                    <v-col cols="12">
+                                        <v-text-field
+                                            v-model="form.old_password"
+                                            label="Contraseña actual*"
+                                            required
+                                            type="password"
+                                            :rules="passwordRules1"
+                                        ></v-text-field>
+                                    </v-col>
+                                </v-row>
+                                <v-row>
+                                    <v-col cols="12">
+                                        <v-text-field
+                                            v-model="form.new_password"
+                                            label="Nueva contraseña*"
+                                            required
+                                            type="password"
+                                            :rules="passwordRules2"
+                                        ></v-text-field>
+                                    </v-col>
+                                </v-row>
+                                <v-row>
+                                    <v-col cols="12">
+                                        <v-text-field
+                                            v-model="form.new_password2"
+                                            label="Repita la contraseña*"
+                                            required
+                                            type="password"
+                                            :rules="passwordRules3"
+                                        ></v-text-field>
+                                    </v-col>
+                                </v-row>
+                            </v-container>
+                            <small>*indicates required field</small>
+                        </v-card-text>
+                        <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn
+                                color="error"
+                                text
+                                @click="dialog = false"
+                            >
+                                Cerrar
+                            </v-btn>
+                            <v-btn
+                                color="primary"
+                                text
+                                @click="updateClave"
+                            >
+                                Actualizar
+                            </v-btn>
+                        </v-card-actions>
+                    </v-card>
+                    </v-form>
+                </v-dialog>
+            </v-row>
+        </template>
+</div>
 </template>
 
 <script>
 export default {
     data() {
         return {
+            valid: true,
+            dialog:false,
             drawer: true,
+            form:{
+              old_password: null,
+            new_password: null,
+            new_password2: null,
+          },
             items: [
                 {
                     title: "Usuarios",
@@ -106,7 +188,16 @@ export default {
                 },
                 { title: "Tareas", link: "/tareas", icon: "mdi-list-status" }
             ],
-            right: null
+            right: null,
+            passwordRules1: [
+                 v => !!v || 'Password old is required',
+             ],
+             passwordRules2: [
+                 v => !!v || 'Password new is required',
+             ],
+             passwordRules3: [
+                 v => !!v || 'Password repeat is required'
+             ]
         };
     },
     methods: {
@@ -124,6 +215,12 @@ export default {
                         this.$router.replace("/login");
                     }
                 });
+
+        },
+        updateClave(){
+            if (this.$refs.form.validate()) {
+
+            }
 
         }
     }
