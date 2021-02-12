@@ -39,7 +39,7 @@ Vue.use(Toasted, options)
 Vue.use(VueRouter);
 //Vue.use(Swal);
 axios.defaults.withCredentials = true;
-axios.defaults.baseURL = 'http://127.0.0.1/app/public';
+axios.defaults.baseURL = 'http://127.0.0.1';
 Vue.use(VueAxios, axios);
 Vue.use(Vuex);
 
