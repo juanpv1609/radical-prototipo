@@ -31,7 +31,6 @@
     </table>
 
 
-    <p>Thank you</p>
 
 </body>
 

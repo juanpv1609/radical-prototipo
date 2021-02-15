@@ -4,7 +4,8 @@ import Vuex from 'vuex';
 import VueAxios from 'vue-axios';
 import axios from 'axios';
 axios.defaults.withCredentials = true;
-axios.defaults.baseURL = 'http://127.0.0.1:8000';
+//axios.defaults.baseURL = 'http://127.0.0.1:8000';
+axios.defaults.baseURL = process.env.MIX_APP_URL;
 Vue.use(VueAxios, axios);
 Vue.use(Vuex);
 
