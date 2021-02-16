@@ -11,7 +11,7 @@ class Area extends Model
     protected $table = 'areas';
     protected $fillable = ['nombre',
                             'descripcion',
-                            'estado'];
+                            'estado','is_deleted'];
     //public $timestamps = false;
     protected $guarded = [];
 }

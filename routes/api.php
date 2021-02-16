@@ -59,6 +59,7 @@ Route::middleware('api')->group(function () {
     Route::resource('tareas', TareaController::class);
     Route::resource('usuarios', UserController::class);
     Route::get('usuarios-all', [UserController::class,'indexAll']);
+    Route::post('usuario-updatePassword', [UserController::class,'usuarioUpdatePassword']);
 
 
     Route::post('tareasAll', [TareaController::class,'updateGroup']); //actualiza grupo de tareas

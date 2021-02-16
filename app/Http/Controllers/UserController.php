@@ -10,14 +10,17 @@ class UserController extends Controller
 {
     public function index()
     {
-         $usuarios = User::where('role', 1)->get()->toArray();
+        $cond=['role' => 1 , 'is_deleted' => 0];
+         $usuarios = User::where($cond)->get()->toArray();
 
         return ($usuarios);
 
     }
     public function indexAll()
     {
-         $usuarios = User::get()->toArray();
+        $cond=['is_deleted' => 0];
+
+        $usuarios = User::where($cond)->get()->toArray();
 
         return ($usuarios);
 
@@ -39,7 +42,22 @@ class UserController extends Controller
         return response()->json('user created!');
 
     }
+    public function usuarioUpdatePassword(Request $request)
+    {
 
+        $user = User::where('id',$request->user)->first();
+        if (Hash::check( $request->old_password, $user->password)) {
+            $user->password = Hash::make($request->new_password);
+            $user->save();
+            # code...
+            return response()->json('user created!');
+        }else{
+            return response()->json('password error!');
+
+        }
+
+
+    }
     public function show($id)
     {
         $user = User::find($id);
@@ -57,8 +75,9 @@ class UserController extends Controller
     public function destroy($id)
     {
         $user = User::find($id);
-        $user->delete();
-
+        //$user->delete();
+        $user->is_deleted=1;
+        $user->save();
         return response()->json('user deleted!');
     }
 }

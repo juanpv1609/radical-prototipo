@@ -12,10 +12,12 @@ class AreaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    
+
     public function index()
     {
-        $areas = Area::all()->toArray();
+        $cond=['is_deleted' => 0];
+
+        $areas = Area::where($cond)->get()->toArray();
 
         return $areas;
 
@@ -82,7 +84,9 @@ class AreaController extends Controller
     public function destroy($id)
     {
         $area = Area::find($id);
-        $area->delete();
+        $area->is_deleted=1;
+        $area->save();
+        //$area->delete();
 
         return response()->json('Area deleted!');
     }

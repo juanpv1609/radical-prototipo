@@ -1,4 +1,5 @@
 <template>
+
     <div>
         <v-card elevation="2" :loading="loading">
             <v-card-title class="d-flex justify-space-between mb-6"
@@ -130,13 +131,17 @@
                 </v-dialog>
             </v-row>
         </template>
+
     </div>
+
 </template>
 
 <script>
+
 export default {
     data() {
         return {
+            showScheduleForm: false,
             dialog: false,
             update: false,
             area: {},
@@ -159,6 +164,7 @@ export default {
         };
     },
     created() {
+
         this.axios.get("/api/areas/").then(response => {
             this.areas = response.data;
             this.loading = false;

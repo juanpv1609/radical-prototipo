@@ -1,7 +1,7 @@
 <template >
 <div>
-
-     <v-app v-if="$store.state.auth">
+<template v-if="$store.state.auth">
+     <v-app  >
         <v-navigation-drawer  app v-model="drawer" absolute :width="200">
             <v-list-item >
                 <v-list-item-content>
@@ -45,7 +45,7 @@
                             >
                         </v-list-item>
                         <v-spacer></v-spacer>
-                        <v-list-item  @click="dialog=true">
+                        <v-list-item  @click="dialog=true; form={}">
                             <v-list-item-title> Cambiar contraseña </v-list-item-title
                             >
                         </v-list-item>
@@ -76,7 +76,9 @@
             </v-col> -->
         </v-footer>
     </v-app>
-    <v-app v-else>
+</template>
+<template v-else>
+<v-app >
         <v-main>
             <!-- Provides the application the proper gutter -->
             <v-container fluid>
@@ -85,10 +87,12 @@
 
             </v-container>
         </v-main>
-    </v-app>
+    </v-app></template>
+
+
     <template>
             <v-row justify="center">
-                <v-dialog v-model="dialog" persistent max-width="400px">
+                <v-dialog v-model="dialog" persistent max-width="400px" :loading="loading">
                     <v-form
                         ref="form"
                         v-model="valid"
@@ -100,6 +104,10 @@
                         </v-card-title>
                         <v-card-text>
                             <v-container>
+                                <v-alert v-if="has_error"
+                                    color="red"
+                                    type="error"
+                                    >{{error}}</v-alert>
                                 <v-row>
                                     <v-col cols="12">
                                         <v-text-field
@@ -107,7 +115,7 @@
                                             label="Contraseña actual*"
                                             required
                                             type="password"
-                                            :rules="passwordRules1"
+                                            :rules="[passwordRules2]"
                                         ></v-text-field>
                                     </v-col>
                                 </v-row>
@@ -118,7 +126,7 @@
                                             label="Nueva contraseña*"
                                             required
                                             type="password"
-                                            :rules="passwordRules2"
+                                            :rules="[passwordRules2]"
                                         ></v-text-field>
                                     </v-col>
                                 </v-row>
@@ -129,7 +137,7 @@
                                             label="Repita la contraseña*"
                                             required
                                             type="password"
-                                            :rules="passwordRules3"
+                                            :rules="[(form.new_password===form.new_password2) || 'Las claves no coinciden']"
                                         ></v-text-field>
                                     </v-col>
                                 </v-row>
@@ -165,6 +173,9 @@
 export default {
     data() {
         return {
+            error:null,
+            has_error:false,
+            loading : false,
             valid: true,
             dialog:false,
             drawer: true,
@@ -219,7 +230,26 @@ export default {
         },
         updateClave(){
             if (this.$refs.form.validate()) {
+                this.form.user=this.$store.state.user.id;
+                console.log(this.form);
+                this.loading = true;
+                this.axios
+                    .post('/api/usuario-updatePassword', this.form)
+                    .then(response => {
+                        console.log(response);
+                        if (response.data==='password error!') {
+                            this.has_error=true;
+                            this.error='La contraseña anterior no coincide!';
+                        } else {
 
+                            this.dialog = false;
+                            this.loading = false;
+                            this.$store.dispatch("logout");
+                        this.$router.replace("/login");
+                        }
+                         })
+                    .catch(err => console.log(err))
+                    .finally(() => this.loading = false)
             }
 
         }

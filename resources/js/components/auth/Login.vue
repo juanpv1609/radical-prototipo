@@ -23,7 +23,6 @@
                         v-model="form.email"
                         required type="email"
                         :rules="emailRules"
-                        prepend-icon="mdi-email"
                     ></v-text-field>
                 </v-col>
                 <v-col cols="12">
@@ -32,7 +31,6 @@
                         v-model="form.password"
                         required type="password"
                         :rules="passwordRules"
-                        prepend-icon="mdi-lock"
                     ></v-text-field>
                 </v-col>
                 <v-alert v-if="has_error"
@@ -77,12 +75,13 @@
       }
     },
     methods: {
-         login() {
+        login() {
         if (this.$refs.form.validate()) {
             this.loading = true;
-           this.$store.dispatch("login", this.form).then(()=>{
+          this.$store.dispatch("login", this.form).then(()=>{
                this.loading = false;
-                this.$router.push({ name: 'contratos' })
+                this.$router.push({ path: this.redirect || "/" }, () => { }, () => { });
+               //this.$router.push({ name: 'contratos' }).catch(() => [])
            }).catch((error) =>{
                this.loading = false;
                 if (error.response) {
@@ -90,6 +89,7 @@
                     this.error = error.response.data.errors.email[0];
                 }
             });
+
         }
 
 

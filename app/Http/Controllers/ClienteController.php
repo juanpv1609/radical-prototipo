@@ -16,7 +16,9 @@ class ClienteController extends Controller
     {
         //     $clientes = Cliente::all();
         //    return view('cliente.index')->with('clientes', $clientes);
-        $clientes = Cliente::with('tipo_identificacion')->get()->toArray();
+        $cond=['is_deleted' => 0];
+
+        $clientes = Cliente::with('tipo_identificacion')->where($cond)->get()->toArray();
         return $clientes;
     }
 
@@ -74,7 +76,9 @@ class ClienteController extends Controller
     public function destroy($id)
     {
         $client = Cliente::find($id);
-        $client->delete();
+        //$client->delete();
+        $client->is_deleted=1;
+        $client->save();
 
         return response()->json('Client deleted!');
     }

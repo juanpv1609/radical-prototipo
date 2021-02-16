@@ -15,6 +15,9 @@ const store = new Vuex.Store({
         auth:false,
         isUserLoggedIn: false
     },
+    getters:{
+        loggedIn: state => !!state.user
+    },
     mutations: {
         SET_USER(state,user){
             state.user = user
@@ -37,6 +40,7 @@ const store = new Vuex.Store({
                 commit("SET_USER",res.data);
 
             }).catch(() => {
+                
                 commit("SET_USER", null);
 
             });

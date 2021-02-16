@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use App\Models\Tareas;
 use App\Mail\TareasEmail;
 use Illuminate\Support\Facades\DB;
+use App\Console\Commands\SendAlert;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -18,7 +19,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        Commands\SendAlert::class,
     ];
     protected function scheduleTimezone()
     {
@@ -32,26 +33,10 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-
-        $schedule->call(function () {
-
-
-            $alerta_fechas = Tareas::with('contrato.cliente', 'frecuencias','estado_tarea','tipo','usuario')
-                            ->whereRaw('fecha_alerta = curdate()')->get();
-                foreach ($alerta_fechas as $item) {
-                    $details = [
-
-                    'title' => 'Notificacion de alerta',
-                    'body' => 'Se ha disparado la siguiente alerta',
-                    'cliente' => $item->contrato->cliente->razon_social,
-                    'fecha_entrega' => $item->fecha,
-                    'tipo_tarea' => $item->tipo->nombre
-
-                    ];
-                    Mail::to($item->usuario->email)->send(new TareasEmail($details));
-
-                }
-        })->timezone('America/Guayaquil')->everyMinute();
+        $schedule->command('send:alert')
+        ->dailyAt('07:00');
+        // })->timezone('America/Guayaquil')
+        // ->everyMinute();
         //->dailyAt('07:00');
         //->daily();
 

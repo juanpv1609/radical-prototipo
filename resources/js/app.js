@@ -52,12 +52,27 @@ Vue.use(VCalendar, {
 });
 Vue.component('input-tag', InputTag);
 
-
+export const bus = new Vue()
 const router = new VueRouter({
     mode: 'history',
     routes: routes
 });
 store.dispatch('getUser')
+router.beforeEach((to, from, next) => {
+
+    if (  to.matched.some(record => record.meta.requiresAuth)) {
+    //store.dispatch('getUser')
+
+        if ( store.getters.loggedIn) {
+            next()
+            return
+        }
+        next('/login')
+    } else {
+        next()
+    }
+})
+
 
 
 const app = new Vue({
