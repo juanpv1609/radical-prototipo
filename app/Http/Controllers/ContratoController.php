@@ -33,7 +33,7 @@ class ContratoController extends Controller
             'solucion' => $request->input('solucion'),
             'marca' => $request->input('marca'),
             'correos' => implode(",", $arrayCorreos),
-            'observacion' => $request->input("observaciones"),
+            'observacion' => $request->input("observacion"),
             'estado' => 1,
         ]);
         $contrato->save();
