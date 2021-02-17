@@ -22,6 +22,14 @@
                     </v-list-item-content>
                 </v-list-item>
             </v-list>
+
+            <template v-slot:append>
+                <div class="pa-2">
+                <v-btn block dense dark @click="logout">
+                    Salir
+                </v-btn>
+                </div>
+            </template>
         </v-navigation-drawer >
 
             <v-app-bar  app color="accent-4" absolute dense dark>
@@ -185,6 +193,20 @@ export default {
             new_password2: null,
           },
             items: [
+                /* {
+                    title: "Configuracion",
+                    icon: "mdi-cogs",
+                    subLinks: [
+                        {
+                            to: '/update-contact',
+                            text: 'Update Contact Details',
+                        },
+                        {
+                            to: '/review-registration',
+                            text: 'Review Registration',
+                        },
+                    ],
+                }, */
                 {
                     title: "Usuarios",
                     link: "/usuarios",
@@ -244,8 +266,10 @@ export default {
 
                             this.dialog = false;
                             this.loading = false;
-                            this.$store.dispatch("logout");
-                        this.$router.replace("/login");
+                            this.$store.dispatch("logout").then(()=>{
+
+                                this.$router.replace("/login");
+                            })
                         }
                          })
                     .catch(err => console.log(err))

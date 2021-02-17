@@ -23,8 +23,8 @@
                     <td>{{row.item.ticket}}</td>
                     <td>{{row.item.usuario.name}}</td>
                     <td>{{row.item.contrato.cliente.nombre_comercial}}</td>
-                    <td>{{row.item.contrato.solucion}}</td>
                     <td>{{row.item.tipo.nombre}}</td>
+                    <td>{{row.item.descripcion}}</td>
                     <td>
                         <v-btn  icon color="primary" @click="downloadFile(row.item.adjunto)" target="_blank"
                         :disabled="row.item.adjunto==null || row.item.adjunto==''">
@@ -93,8 +93,8 @@ import moment from "moment";
                 { text: "Ticket", value: "ticket" },
                 { text: "Responsable", value: "usuario.name" },
                 { text: "Cliente", value: "contrato.cliente.nombre_comercial" },
-                { text: "Solucion", value: "contrato.solucion" },
-                { text: "Tipo", value: "tipo.nombre" },
+                { text: "Tarea", value: "tipo.nombre" },
+                { text: "Entregable", value: "descripcion" },
                 { text: "Adjuntos", value: "adjunto" },
                 { text: "Estado", value: "estado_tarea" },
                 { text: "Acciones", value: "controls", sortable: false }

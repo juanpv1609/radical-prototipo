@@ -23,6 +23,7 @@ import InputTag from 'vue-input-tag'
 import Toasted from 'vue-toasted';
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
+
 let options = {
     theme: 'bubble',
     duration: 2000,
@@ -52,28 +53,28 @@ Vue.use(VCalendar, {
 });
 Vue.component('input-tag', InputTag);
 
-export const bus = new Vue()
 const router = new VueRouter({
     mode: 'history',
     routes: routes
 });
-store.dispatch('getUser')
-router.beforeEach((to, from, next) => {
+store.dispatch('getUser').then(()=>{
+    router.beforeEach((to, from, next) => {
+        console.log(store.getters.loggedIn);
+            if (  to.matched.some(record => record.meta.requiresAuth)) {
+            //store.dispatch('getUser')
 
-    if (  to.matched.some(record => record.meta.requiresAuth)) {
-    //store.dispatch('getUser')
-
-        if ( store.getters.loggedIn) {
-            next()
-            return
-        }
-        next('/login')
-    } else {
-        next()
-    }
-})
-
-
+                if ( store.getters.loggedIn) {
+                    next()
+                    return
+                } else
+                next('/login')
+            } else {
+                next()
+            }
+        })
+}).catch(()=>{
+    next('/login')
+});
 
 const app = new Vue({
     el: '#app',

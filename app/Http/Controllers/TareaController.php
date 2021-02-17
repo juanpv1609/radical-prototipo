@@ -39,6 +39,7 @@ class TareaController extends Controller
             $fecha = Carbon::createFromFormat('Y-m-d',$item['fecha']);
             $fecha_alerta = $fecha->subDays($item['alerta']);
             $tarea = new Tareas([
+                    'descripcion' => $item['descripcion'],
                     'contrato_id' => $item['contrato_id'],
                     'frecuencia' => $item['frecuencia'],
                     'tipo_tarea' => $item['tipo_tarea'],
@@ -95,6 +96,7 @@ class TareaController extends Controller
             //$tarea = Tareas::where('id', '=', $aux->id)->first();
                 $tarea = Tareas::find($item['id']);
 
+                $tarea->descripcion = $item['descripcion'];
                 $tarea->responsable = $item['responsable'];
                 $tarea->tipo_tarea = $item['tipo_tarea'];
                 $tarea->fecha = $item['fecha'];

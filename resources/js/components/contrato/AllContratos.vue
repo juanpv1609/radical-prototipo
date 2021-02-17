@@ -324,7 +324,7 @@
             aria-hidden="true"
         >
             <div
-                class="modal-dialog modal-lg modal-dialog-scrollable"
+                class="modal-dialog modal-xl modal-dialog-scrollable"
                 role="document"
             >
                 <div class="modal-content">
@@ -350,9 +350,10 @@
                             <table class="table table-sm table-bordered" >
                                 <thead class="table-dark">
                                     <tr>
-                                        <th>Responsable</th>
-                                        <th>Tipo</th>
-                                        <th style="width:20%">Fecha</th>
+                                        <th style="width:20%">Responsable</th>
+                                        <th style="width:20%">Tarea</th>
+                                        <th>Entragable</th>
+                                        <th style="width:10%">Fecha</th>
                                         <th style="width:10%">Estado</th>
                                     </tr>
                                 </thead>
@@ -388,6 +389,13 @@
                                                     {{ item.nombre }}
                                                 </option>
                                             </select>
+                                        </td>
+                                        <td>
+                                            <input
+                                                type="text"
+                                                class="form-control form-control-sm"
+                                                v-model="value.descripcion"
+                                            />
                                         </td>
                                         <td>
                                             <input

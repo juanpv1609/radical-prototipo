@@ -36,8 +36,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('send:alert')
         ->dailyAt('07:00');
         // })->timezone('America/Guayaquil')
-        // ->everyMinute();
-        //->dailyAt('07:00');
+         //->everyMinute();
         //->daily();
 
     }

@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Tareas extends Model
 {   protected $table = 'tareas';
-    protected $fillable = [
+    protected $fillable = [ 'descripcion',
                             'contrato_id','frecuencia','tipo_tarea','dia_elegido'
                             ,'ticket','responsable','fecha','alerta','fecha_alerta',
                             'adjunto','observacion','estado','alerta_enviada'];

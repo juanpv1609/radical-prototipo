@@ -1,6 +1,9 @@
 <template>
-<div class="pt-4">
-    <v-form
+<v-container fill-height fluid>
+  <v-row align="center"
+      justify="center">
+      <v-col>
+          <v-form
     ref="form"
     v-model="valid"
     lazy-validation
@@ -49,7 +52,11 @@
          </v-card-actions>
     </v-card>
     </v-form>
-</div>
+      </v-col>
+  </v-row>
+</v-container>
+
+
 </template>
 <script>
 
@@ -80,8 +87,8 @@
             this.loading = true;
           this.$store.dispatch("login", this.form).then(()=>{
                this.loading = false;
-                this.$router.push({ path: this.redirect || "/" }, () => { }, () => { });
-               //this.$router.push({ name: 'contratos' }).catch(() => [])
+                //this.$router.push({ path: this.redirect || "/contratos" }, () => { }, () => { });
+               this.$router.push({ name: 'home' }).catch(() => [])
            }).catch((error) =>{
                this.loading = false;
                 if (error.response) {

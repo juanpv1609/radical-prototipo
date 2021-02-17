@@ -7,7 +7,7 @@
 
         <v-card-text>
             <v-row>
-                <v-col cols="8">
+                <v-col cols="9">
                     <v-row>
                         <v-col cols="6">
                              <v-select :items="usuarios"
@@ -80,16 +80,72 @@
                                     </v-btn>
                             </v-col>
                         </v-row>
-                    <v-row>
+
+                </v-col>
+                <v-col cols="3">
+                    <table class="table table-sm table-borderless">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th colspan="2">Detalles del contrato</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                <td>Contrato N</td>
+                                <td>{{contrato.id}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Cliente</td>
+                                    <td>{{contrato.cliente.nombre_comercial}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Fecha inicial</td>
+                                    <td><span class="text-success">{{contrato.fecha_inicio}}</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Fecha final</td>
+                                    <td><span class="text-danger">{{contrato.fecha_fin}}</span></td>
+                                </tr>
+                               <!--  <tr>
+                                    <td>Pais</td>
+                                    <td>{{contrato.pais.nombre}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Area</td>
+                                    <td>{{contrato.area.nombre}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Solucion</td>
+                                    <td>{{contrato.solucion}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Marca</td>
+                                    <td>{{contrato.marca}}</td>
+                                </tr> -->
+                            </tbody>
+
+                        </table>
+                        <v-btn
+                        color="success" block
+                        :loading="loading"
+                        :disabled="(loading || !tareas.length>0)"
+                        @click="addTarea"
+                        >
+                        Enviar {{parseInt(diferencia)}} tareas
+                        </v-btn>
+                </v-col>
+            </v-row>
+            <v-row>
                         <v-col cols="12">
 
                             <table class="table table-sm" v-if="tareas.length>0">
                                         <thead class="table-dark">
                                             <tr>
-                                                <th>Responsable</th>
-                                                <th>Tipo</th>
-                                                <th style="width:20%">Fecha</th>
-                                                <th style="width:10%">Alerta</th>
+                                                <th style="width:20%">Responsable</th>
+                                                <th style="width:20%">Tarea</th>
+                                                <th >Entregable</th>
+                                                <th style="width:10%">Fecha</th>
+                                                <th style="width:5%">Alerta</th>
                                                 <th></th>
                                             </tr>
                                         </thead>
@@ -115,7 +171,7 @@
                                                     <td>
                                                         <select
                                                                 v-model="value.tipo_tarea"
-                                                                class="form-control form-control-sm" disabled
+                                                                class="form-control form-control-sm"
                                                             >
                                                                 <option
                                                                     v-for="item in tipo_tareas"
@@ -125,6 +181,13 @@
                                                                     {{ item.nombre }}
                                                                 </option>
                                                             </select>
+                                                    </td>
+                                                    <td>
+                                                        <input
+                                                            type="text"
+                                                            class="form-control form-control-sm"
+                                                            v-model="value.descripcion"
+                                                        />
                                                     </td>
                                                     <td>
                                                         <input
@@ -141,72 +204,67 @@
                                                         />
                                                     </td>
                                                     <th>
-                                                        <button
-                                                            class="btn btn-sm btn-danger"
-                                                            type="button"
-                                                            v-on:click="deleteTarea(value.id)">
-                                                            <i class="fas fa-trash"></i>
-                                                        </button>
+                                                        <v-btn  icon color="red" @click="deleteTarea(value.id)">
+                                                            <v-icon dark>mdi-delete</v-icon>
+                                                            </v-btn>
                                                     </th>
                                                 </tr>
+                                                <!-- <tr >
+                                                    <td>
+                                                        <select
+                                                                v-model="tarea.responsable"
+                                                                class="form-control form-control-sm"
+                                                            >
+                                                                <option
+                                                                    v-for="item in usuarios"
+                                                                    v-bind:key="item.id"
+                                                                    v-bind:value="item.id"
+                                                                >
+                                                                    {{ item.name }}
+                                                                </option>
+                                                            </select>
+                                                    </td>
+                                                    <td>
+                                                        <select
+                                                                v-model="tarea.tipo_tarea"
+                                                                class="form-control form-control-sm"
+                                                            >
+                                                                <option
+                                                                    v-for="item in tipo_tareas"
+                                                                    v-bind:key="item.id"
+                                                                    v-bind:value="item.id"
+                                                                >
+                                                                    {{ item.nombre }}
+                                                                </option>
+                                                            </select>
+                                                    </td>
+                                                    <td>
+                                                        <input
+                                                            type="date"
+                                                            class="form-control form-control-sm"
+                                                            v-model="tarea.fecha"
+                                                        />
+                                                    </td>
+                                                    <td>
+                                                        <input
+                                                            type="text"
+                                                            class="form-control form-control-sm"
+                                                            v-model="tarea.alerta"
+                                                        />
+                                                    </td>
+                                                    <th>
+                                                        <button
+                                                            class="btn btn-sm btn-primary"
+                                                            type="button"
+                                                            v-on:click="pushTarea(tarea)">
+                                                            <i class="fas fa-plus"></i>
+                                                        </button>
+                                                    </th>
+                                                </tr> -->
                                             </tbody>
                             </table>
                         </v-col>
                     </v-row>
-                </v-col>
-                <v-col cols="4">
-                    <table class="table table-sm table-borderless">
-                            <thead class="table-dark">
-                                <tr>
-                                    <th colspan="2">Detalles del contrato</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                <td>Contrato N</td>
-                                <td>{{contrato.id}}</td>
-                                </tr>
-                                <tr>
-                                    <td>Cliente</td>
-                                    <td>{{contrato.cliente.nombre_comercial}}</td>
-                                </tr>
-                                <tr>
-                                    <td>Fecha inicial</td>
-                                    <td><span class="text-success">{{contrato.fecha_inicio}}</span></td>
-                                </tr>
-                                <tr>
-                                    <td>Fecha final</td>
-                                    <td><span class="text-danger">{{contrato.fecha_fin}}</span></td>
-                                </tr>
-                                <tr>
-                                    <td>Pais</td>
-                                    <td>{{contrato.pais.nombre}}</td>
-                                </tr>
-                                <tr>
-                                    <td>Area</td>
-                                    <td>{{contrato.area.nombre}}</td>
-                                </tr>
-                                <tr>
-                                    <td>Solucion</td>
-                                    <td>{{contrato.solucion}}</td>
-                                </tr>
-                                <tr>
-                                    <td>Marca</td>
-                                    <td>{{contrato.marca}}</td>
-                                </tr>
-                            </tbody>
-
-                        </table>
-                        <v-btn
-                        color="success"
-                        :loading="loading"
-                        :disabled="(loading || !tareas.length>0)"
-                        @click="addTarea"
-                        >
-                        Enviar {{parseInt(diferencia)}} tareas
-                        </v-btn>
-                </v-col>
-            </v-row>
         </v-card-text>
     </v-card>
 </div>
@@ -224,6 +282,7 @@ export default {
             frecuencias: {},
             usuarios: [],
             tareas: {},
+            tarea: [],
             request: {},
             diferencia:0,
             dias: [
@@ -254,6 +313,7 @@ export default {
             .get("/api/frecuencias/")
             .then(response => {
                 this.frecuencias = response.data;
+                console.log(this.frecuencias);
             });
         this.axios
             .get("/api/usuarios/")
@@ -301,6 +361,21 @@ export default {
                     .catch(err => console.log(err))
                     .finally(() => this.$router.go())
         },
+        /* pushTarea(tarea) {
+            console.log(tarea);
+            this.datos.push({
+                id: this.diferencia+1,
+                contrato_id: this.contrato.id,
+                dia_elegido: this.dias.value,
+                fecha: moment(tarea.fecha).format( "YYYY-MM-DD"),
+                responsable: tarea.responsable,
+                tipo_tarea: tarea.tipo_tarea,
+                frecuencia: this.frecuencias.value.id,
+                alerta: tarea.alerta
+            });
+
+            this.diferencia++;
+        }, */
         deleteTarea(id) {
             let i = this.tareas.map(data => data.id).indexOf(id);
             this.tareas.splice(i, 1);
@@ -313,15 +388,163 @@ export default {
             let frecuencia = this.frecuencias.value.id;
             let num_dia = this.dias.value;
             let dia_preferido;
-            //let diferencia;
-            let alerta;
-            console.log(num_dia);
+            let alerta=this.frecuencias.value.alerta;
             switch (frecuencia) {
                 case 2: //semanal
-                alerta=2;
-                    this.diferencia = parseInt(fecha_fin.diff(fecha_inicio, "weeks")) + parseInt(1);
+                //this.algoritmo(fecha_inicio,fecha_fin,frecuencia,alerta,num_dia,"week","weeks",1);
+                    //alerta=2;
+                     this.diferencia = parseInt(fecha_fin.diff(fecha_inicio, "weeks")) + parseInt(1);
                     for (let i = 1; i < parseInt(this.diferencia); i++) {
                         dia_preferido = moment(fecha_inicio).startOf("week");
+                        while (dia_preferido.day() !== parseInt(num_dia)) {
+                            dia_preferido.add(1, "day");
+                        }
+                        if (dia_preferido.day() == parseInt(num_dia)) {
+                            this.datos.push({
+                                id: i,
+                                descripcion: 'INFORME '+this.tipo_tareas.value.nombre+' '+i,
+                                contrato_id: this.contrato.id,
+                                dia_elegido: this.dias.value,
+                                fecha: moment(dia_preferido).format( "YYYY-MM-DD"),
+                                responsable: this.usuarios.value.id,
+                                tipo_tarea: this.tipo_tareas.value.id,
+                                frecuencia: frecuencia,
+                                alerta: alerta
+                            });
+                            fecha_inicio.add(1, "weeks");
+                        } else {
+                            fecha_inicio.add(1, "days");
+                        }
+                    }
+
+                    break;
+                case 3: //mensual
+                   // this.algoritmo(fecha_inicio,fecha_fin,frecuencia,alerta,num_dia,"month","months",1);
+
+                   //  alerta=5;
+
+                    this.diferencia = parseInt(fecha_fin.diff(fecha_inicio, "months")) + parseInt(1);
+                    for (let i = 1; i <= parseInt(this.diferencia); i++) {
+                        dia_preferido = moment(fecha_inicio).startOf("month");
+                        while (dia_preferido.day() !== parseInt(num_dia)) {
+                            dia_preferido.add(1, "day");
+                        }
+                        if (dia_preferido.day() == parseInt(num_dia)) {
+                            this.datos.push({
+                                id: i,
+                                descripcion: 'INFORME '+this.tipo_tareas.value.nombre+' '+i,
+                                contrato_id: this.contrato.id,
+                                dia_elegido: this.dias.value,
+                                fecha: moment(dia_preferido).format( "YYYY-MM-DD"),
+                                responsable: this.usuarios.value.id,
+                                tipo_tarea: this.tipo_tareas.value.id,
+                                frecuencia: frecuencia,
+                                alerta: alerta
+                            });
+                            fecha_inicio.add(1, "months");
+                        } else {
+                            fecha_inicio.add(1, "days");
+                        }
+                    }
+                    break;
+                case 4: //trimestral
+                    //this.algoritmo(fecha_inicio,fecha_fin,frecuencia,alerta,num_dia,'month','months',3);
+
+                    this.diferencia = (parseInt(fecha_fin.diff(fecha_inicio, "months")) + parseInt(1))/3;
+                    for (let i = 1; i <= parseInt(this.diferencia); i++) {
+                        dia_preferido = moment(fecha_inicio).startOf("month");
+                        while (dia_preferido.day() !== parseInt(num_dia)) {
+                            dia_preferido.add(1, "day");
+                        }
+                        if (dia_preferido.day() == parseInt(num_dia)) {
+                            this.datos.push({
+                               id: i,
+                                descripcion: 'INFORME '+this.tipo_tareas.value.nombre+' '+i,
+                                contrato_id: this.contrato.id,
+                                dia_elegido: this.dias.value,
+                                fecha: moment(dia_preferido).format( "YYYY-MM-DD"),
+                                responsable: this.usuarios.value.id,
+                                tipo_tarea: this.tipo_tareas.value.id,
+                                frecuencia: frecuencia,
+                                alerta: alerta
+                            });
+                            fecha_inicio.add(3, "months");
+                        } else {
+                            fecha_inicio.add(1, "days");
+                        }
+                    }
+
+                    break;
+                case 5: //semestral
+                    //this.algoritmo(fecha_inicio,fecha_fin,frecuencia,alerta,num_dia,"month","months",6);
+
+                    this.diferencia = (parseInt(fecha_fin.diff(fecha_inicio, "months")) + parseInt(1))/6;
+                    for (let i = 1; i <= parseInt(this.diferencia); i++) {
+                        dia_preferido = moment(fecha_inicio).startOf("month");
+                        while (dia_preferido.day() !== parseInt(num_dia)) {
+                            dia_preferido.add(1, "day");
+                        }
+                        if (dia_preferido.day() == parseInt(num_dia)) {
+                            this.datos.push({
+                                id: i,
+                                descripcion: 'INFORME '+this.tipo_tareas.value.nombre+' '+i,
+                                contrato_id: this.contrato.id,
+                                dia_elegido: this.dias.value,
+                                fecha: moment(dia_preferido).format( "YYYY-MM-DD"),
+                                responsable: this.usuarios.value.id,
+                                tipo_tarea: this.tipo_tareas.value.id,
+                                frecuencia: frecuencia,
+                                alerta: alerta
+                            });
+                            fecha_inicio.add(6, "months");
+                        } else {
+                            fecha_inicio.add(1, "days");
+                        }
+                    }
+
+                    break;
+                default:
+                    //anual
+                    this.diferencia = (parseInt(fecha_fin.diff(fecha_inicio, "months")) + parseInt(1))/12;
+                    for (let i = 1; i <= parseInt(this.diferencia); i++) {
+                        dia_preferido = moment(fecha_inicio).startOf("month");
+                        while (dia_preferido.day() !== parseInt(num_dia)) {
+                            dia_preferido.add(1, "day");
+                        }
+                        if (dia_preferido.day() == parseInt(num_dia)) {
+                            this.datos.push({
+                                id: i,
+                                descripcion: 'INFORME '+this.tipo_tareas.value.nombre+' '+i,
+                                contrato_id: this.contrato.id,
+                                dia_elegido: this.dias.value,
+                                fecha: moment(dia_preferido).format( "YYYY-MM-DD"),
+                                responsable: this.usuarios.value.id,
+                                tipo_tarea: this.tipo_tareas.value.id,
+                                frecuencia: frecuencia,
+                                alerta: alerta
+                            });
+                            fecha_inicio.add(6, "months");
+                        } else {
+                            fecha_inicio.add(1, "days");
+                        }
+                    }
+
+                    break;
+            }
+
+           // console.log("tareas:" + diferencia);
+
+            this.tareas = this.datos;
+            //console.log(JSON.stringify(this.mantenimientos));
+            this.$toasted.success('Tareas generadas correctamente');
+        },
+        algoritmo(fecha_inicio,fecha_fin,frecuencia,alerta,num_dia,periodo,periodo_plural,divisor){
+            let dia_preferido;
+            console.log(fecha_inicio,fecha_fin,frecuencia,alerta,num_dia,periodo,periodo_plural,divisor);
+            this.datos  = [];
+            this.diferencia = (parseInt(fecha_fin.diff(fecha_inicio, periodo_plural.toString())) + parseInt(1))/divisor;
+                    for (let i = 1; i < parseInt(this.diferencia); i++) {
+                        dia_preferido = moment(fecha_inicio).startOf(periodo.toString());
                         while (dia_preferido.day() !== parseInt(num_dia)) {
                             dia_preferido.add(1, "day");
                         }
@@ -341,100 +564,6 @@ export default {
                             fecha_inicio.add(1, "days");
                         }
                     }
-
-                    break;
-                case 3: //mensual
-                    alerta=5;
-                    this.diferencia = parseInt(fecha_fin.diff(fecha_inicio, "months")) + parseInt(1);
-                    for (let i = 1; i <= parseInt(this.diferencia); i++) {
-                        dia_preferido = moment(fecha_inicio).startOf("month");
-                        while (dia_preferido.day() !== parseInt(num_dia)) {
-                            dia_preferido.add(1, "day");
-                        }
-                        if (dia_preferido.day() == parseInt(num_dia)) {
-                            this.datos.push({
-                                id: i,
-                                contrato_id: this.contrato.id,
-                                dia_elegido: this.dias.value,
-                                fecha: moment(dia_preferido).format( "YYYY-MM-DD"),
-                                responsable: this.usuarios.value.id,
-                                tipo_tarea: this.tipo_tareas.value.id,
-                                frecuencia: frecuencia,
-                                alerta: alerta
-                            });
-                            fecha_inicio.add(1, "months");
-                        } else {
-                            fecha_inicio.add(1, "days");
-                        }
-                    }
-                    break;
-                case 4: //trimestral
-                    alerta=15;
-
-                    this.diferencia = (parseInt(fecha_fin.diff(fecha_inicio, "months")) + parseInt(1))/3;
-                    for (let i = 1; i <= parseInt(this.diferencia); i++) {
-                        dia_preferido = moment(fecha_inicio).startOf("month");
-                        while (dia_preferido.day() !== parseInt(num_dia)) {
-                            dia_preferido.add(1, "day");
-                        }
-                        if (dia_preferido.day() == parseInt(num_dia)) {
-                            this.datos.push({
-                               id: i,
-                                contrato_id: this.contrato.id,
-                                dia_elegido: this.dias.value,
-                                fecha: moment(dia_preferido).format( "YYYY-MM-DD"),
-                                responsable: this.usuarios.value.id,
-                                tipo_tarea: this.tipo_tareas.value.id,
-                                frecuencia: frecuencia,
-                                alerta: alerta
-                            });
-                            fecha_inicio.add(3, "months");
-                        } else {
-                            fecha_inicio.add(1, "days");
-                        }
-                    }
-
-                    break;
-                case 5: //semestral
-                    alerta=30;
-
-                    this.diferencia = (parseInt(fecha_fin.diff(fecha_inicio, "months")) + parseInt(1))/6;
-                    for (let i = 1; i <= parseInt(this.diferencia); i++) {
-                        dia_preferido = moment(fecha_inicio).startOf("month");
-                        while (dia_preferido.day() !== parseInt(num_dia)) {
-                            dia_preferido.add(1, "day");
-                        }
-                        if (dia_preferido.day() == parseInt(num_dia)) {
-                            this.datos.push({
-                                id: i,
-                                contrato_id: this.contrato.id,
-                                dia_elegido: this.dias.value,
-                                fecha: moment(dia_preferido).format( "YYYY-MM-DD"),
-                                responsable: this.usuarios.value.id,
-                                tipo_tarea: this.tipo_tareas.value.id,
-                                frecuencia: frecuencia,
-                                alerta: alerta
-                            });
-                            fecha_inicio.add(6, "months");
-                        } else {
-                            fecha_inicio.add(1, "days");
-                        }
-                    }
-
-                    break;
-                default:
-                    //anual
-                    alerta=45;
-
-                    this.diferencia = parseInt(fecha_fin.diff(fecha_inicio, "years")) + parseInt(1);
-                    break;
-            }
-
-           // console.log("tareas:" + diferencia);
-
-            this.tareas = this.datos;
-            //console.log(JSON.stringify(this.mantenimientos));
-            this.$toasted.success('Tareas generadas correctamente');
         }
     }
 };

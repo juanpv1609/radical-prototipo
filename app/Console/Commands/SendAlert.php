@@ -41,16 +41,20 @@ class SendAlert extends Command
      */
     public function handle()
     {
-             $alerta_fechas = Tareas::with('contrato.cliente', 'frecuencias','estado_tarea','tipo','usuario')
+             $alerta_fechas = Tareas::with('contrato', 'frecuencias','estado_tarea','tipo','usuario')
                             ->whereRaw('fecha_alerta = curdate()')->get();
                 foreach ($alerta_fechas as $item) {
                     $details = [
 
                         'title' => 'Notificacion de alerta',
-                        'body' => 'Se ha disparado la siguiente alerta',
+                        'body' => 'Estimad@ '.$item->usuario->name.' el software RGSDM (Radical Gestión SDM) ha generado la siguiente alerta:',
+                        'entregable' => $item->descripcion,
                         'cliente' => $item->contrato->cliente->razon_social,
+                        'descripcion_contrato' => $item->contrato->descripcion,
+                        'observacion_contrato' => $item->contrato->observacion,
                         'fecha_entrega' => $item->fecha,
-                        'tipo_tarea' => $item->tipo->nombre
+                        'fecha_alerta' => $item->fecha_alerta,
+                        'tipo_tarea' => $item->tipo->nombre.' '.$item->frecuencias->descripcion,
 
                     ];
                     Mail::to($item->usuario->email)->send(new TareasEmail($details));

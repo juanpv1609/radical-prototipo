@@ -40,7 +40,7 @@ const store = new Vuex.Store({
                 commit("SET_USER",res.data);
 
             }).catch(() => {
-                
+
                 commit("SET_USER", null);
 
             });
@@ -49,4 +49,5 @@ const store = new Vuex.Store({
     },
     modules:{}
 })
+
 export default store
