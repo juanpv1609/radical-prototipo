@@ -6,7 +6,6 @@ use Carbon\Carbon;
 use App\Models\Tarea;
 use App\Models\Tareas;
 use App\Models\Contrato;
-use Illuminate\Http\File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -114,7 +113,7 @@ class TareaController extends Controller
 
         $fileName = time().'-'.$request->file->getClientOriginalName();
         //$request->file->move(public_path('upload'), $fileName);
-        \Storage::disk('local')->put($fileName, \File::get($file));
+        Storage::disk('local')->put($fileName, $file);
 
 
         return response()->json(['archivo'=>$fileName]);
