@@ -31,12 +31,6 @@ let options = {
 };
 Vue.use(VueSweetalert2);
 Vue.use(Toasted, options)
-// Vue.component('multiselect', Multiselect)
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
 Vue.use(VueRouter);
 //Vue.use(Swal);
 axios.defaults.withCredentials = true;
