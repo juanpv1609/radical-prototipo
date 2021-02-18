@@ -167,7 +167,7 @@
                     let formData = new FormData();
                     formData.append('file', file);
                      this.axios
-                    .post(`/api/subir-archivo/`, formData,config)
+                    .post(`/api/subir-archivo`, formData,config)
                     .then((res) => {
                         //this.$router.push({ name: 'tareas' });
                         console.log(res)
