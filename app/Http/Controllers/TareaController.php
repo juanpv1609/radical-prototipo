@@ -113,8 +113,8 @@ class TareaController extends Controller
         $file = $request->file('file');
 
         $fileName = time().'-'.$request->file->getClientOriginalName();
-        $request->file->move(storage_path('app/public/'), $fileName);
-        //Storage::disk('public')->put($fileName, File($file));
+        //$request->file->move(storage_path('app/public/'), $fileName);
+        Storage::disk('local')->put($fileName, File($file));
 
 
         return response()->json(['archivo'=>$fileName]);
