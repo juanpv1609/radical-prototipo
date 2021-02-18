@@ -83,7 +83,7 @@ Route::middleware('api')->group(function () {
 
         //verificamos si el archivo existe y lo retornamos
         if (Storage::disk('local')->exists($archivo)) {
-            return response()->download(storage_path('app/' . $archivo));
+            return response()->download(public_path('upload/' . $archivo));
         }
         //si no se encuentra lanzamos un error 404.
         return response()->json('error',404);
