@@ -24,7 +24,7 @@ class Contrato extends Model
                             'marca',
                             'frecuencia',
                             'correos',
-                            'observacion'
+                            'observacion','adjunto'
                             ,'estado'];
     //public $timestamps = false;
     protected $guarded = [];

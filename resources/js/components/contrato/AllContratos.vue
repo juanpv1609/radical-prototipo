@@ -39,7 +39,12 @@
                     <td>{{row.item.fecha_fin }}</td>
                     <td>{{row.item.area.nombre}}</td>
                     <td>{{row.item.solucion}}</td>
-                    <td>{{row.item.marca}}</td>
+                    <td>
+                        <v-btn  icon color="primary" @click="downloadFile(row.item.adjunto)" target="_blank"
+                        :disabled="row.item.adjunto==null || row.item.adjunto==''">
+                            <v-icon dark>mdi-download</v-icon>
+                            </v-btn>
+                    </td>
                     <td>
                         <v-btn  icon color="primary" @click="findTareas(row.item)">
                             <v-icon dark>mdi-eye</v-icon>
@@ -261,24 +266,52 @@
                                 </v-col>
                                 <v-col cols="8">
                                     <input-tag v-model="correos"
-                                     placeholder="Ingrese una direccion de correo" class="form-control form-control-lg" validate="email" ></input-tag>
+                                     placeholder="Ingrese una direccion de correo"
+                                     class="form-control form-control-lg" validate="email" ></input-tag>
                                 </v-col>
+
 
 
                             </v-row>
                             <v-row>
-                                <v-col cols="6">
-                                    <v-text-field
-                                        v-model="contrato.descripcion"
-                                        label="Descripcion del contrato"
+                                <v-col cols="8">
+                                    <v-file-input
+                                small-chips
+                                multiple
+                                v-model="files"
+                                label="Seleccione archivo/s"
+                                :disabled="status_archivos"
+                                >
+                                </v-file-input>
+                                </v-col>
+                                <v-col cols="4" class="pt-4">
+                                    <v-btn  color="success" block
+                                        @click="subirArchivos"
+                                        :disabled="status_archivos">
+                                    <span v-if="status_archivos">CORRECTO</span>
+                                    <span v-else>Subir {{files.length}} Archivos</span>
 
-                                    ></v-text-field>
+                                    </v-btn>
+                                </v-col>
+                            </v-row>
+                            <v-row>
+                                <v-col cols="6">
+                                    <v-textarea
+                                        clearable
+                                        rows="2"
+                                        clear-icon="mdi-close-circle"
+                                        label="Descripcion del contrato"
+                                        v-model="contrato.descripcion"
+                                        ></v-textarea>
                                 </v-col>
                                 <v-col cols="6">
-                                    <v-text-field
+                                    <v-textarea
+                                        clearable
+                                        rows="2"
+                                        clear-icon="mdi-close-circle"
                                         v-model="contrato.observacion"
                                         label="Observaciones"
-                                    ></v-text-field>
+                                        ></v-textarea>
                                      </v-col>
                             </v-row>
                         </v-container>
@@ -512,7 +545,7 @@ export default {
                 { text: "Fecha fin", value: "fecha_fin" },
                 { text: "Area", value: "area" },
                 { text: "Solucion", value: "solucion" },
-                { text: "Marca", value: "marca" },
+                { text: "Adjunto", value: "adjunto" },
                 { text: "Tareas", value: "" },
                 { text: "Acciones", value: "controls", sortable: false }
             ],
@@ -526,6 +559,9 @@ export default {
             menu: false,
             date2: new Date().toISOString().substr(0, 10),
             menu2: false,
+            files:[],
+            ruta_archivo:[],
+            status_archivos:false,
         };
     },
     created() {
@@ -596,6 +632,8 @@ export default {
                 this.contrato.area=this.contrato.area.id;
                 this.contrato.pais=this.contrato.pais.id;
                 this.contrato.correos=this.correos;
+                this.contrato.adjuntos=this.ruta_archivo;
+
                console.log(this.contrato);
              this.axios
                     .post('/api/contratos', this.contrato)
@@ -609,10 +647,11 @@ export default {
         },
         updateContrato() {
             this.loading = true;
-                this.contrato.cliente=this.contrato.cliente.id;
-                this.contrato.area=this.contrato.area.id;
-                this.contrato.pais=this.contrato.pais.id;
+            this.contrato.cliente=this.contrato.cliente.id;
+            this.contrato.area=this.contrato.area.id;
+            this.contrato.pais=this.contrato.pais.id;
             this.contrato.correos=this.correos.join(',');
+            this.contrato.adjuntos=this.ruta_archivo;
 
             this.axios
                     .patch(`/api/contratos/${this.contrato.id}`, this.contrato)
@@ -648,6 +687,45 @@ export default {
                 .catch(err => console.log(err))
                 .finally(() => (this.loading = false));
         },
+        subirArchivos(){
+                console.log(this.files);
+                const config = {
+                    headers: { 'enctype': 'multipart/form-data' }
+                }
+                //console.log(this.files);
+                for (const file of this.files) {
+                    let formData = new FormData();
+                    formData.append('file', file);
+                     this.axios
+                    .post(`/api/subir-archivo`, formData,config)
+                    .then((res) => {
+                        //this.$router.push({ name: 'tareas' });
+                        //console.log(res)
+                        this.ruta_archivo.push(res.data.archivo);
+                       // console.log(this.ruta_archivo);
+                    }).catch((error)=>{
+                        console.log(error);
+                    });
+                }
+                        this.status_archivos=true;
+            },
+            downloadFile(archivo){
+                console.log(archivo);
+                let arrayArchivos = archivo.split(',');
+                for (const file of arrayArchivos) {
+                    this.axios
+                        .get(`/api/get-file/${file}`)
+                        .then(response => {
+                            const url=response.config.baseURL+response.config.url;
+                            window.open(url,'_blank');
+                        },error => {
+                            console.log(error);
+                            this.$toasted.error(`No se encontro el archivo: ${file}`)
+
+                        });
+                }
+
+            },
         deleteClient(id) {
             this.axios.delete(`/api/contratos/${id}`).then(response => {
                 let i = this.contratos.map(data => data.id).indexOf(id);

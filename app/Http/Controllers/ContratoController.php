@@ -22,7 +22,7 @@ class ContratoController extends Controller
 
 
         $arrayCorreos = $request->input("correos");
-
+        $arrayAdjuntos = $request->input("adjuntos");
         $contrato = new Contrato([
             'descripcion' => $request->input("descripcion"),
             'fecha_inicio' => $request->input("fecha_inicio"),
@@ -33,6 +33,7 @@ class ContratoController extends Controller
             'solucion' => $request->input('solucion'),
             'marca' => $request->input('marca'),
             'correos' => implode(",", $arrayCorreos),
+            'adjunto' => implode(",", $arrayAdjuntos),
             'observacion' => $request->input("observacion"),
             'estado' => 1,
         ]);
