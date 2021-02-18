@@ -12,6 +12,8 @@ import AllUsuarios from "../components/usuario/AllUsuarios.vue";
 
 import AllTareas from "../components/tareas/AllTareas.vue";
 import EditTarea from "../components/tareas/EditTarea.vue";
+
+import TipoTareas from "../components/tipo_tareas/TipoTareas.vue";
 import Home from "../components/Home.vue"
 export const routes = [
     { path: "*", redirect: "/" },
@@ -98,6 +100,14 @@ export const routes = [
         name: "usuarios",
         path: "/usuarios",
         component: AllUsuarios,
+        meta: {
+      requiresAuth: true,
+    },
+    },
+    {
+        name: "tipo-tareas",
+        path: "/tipo-tareas",
+        component: TipoTareas,
         meta: {
       requiresAuth: true,
     },

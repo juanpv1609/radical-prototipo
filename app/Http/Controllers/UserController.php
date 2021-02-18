@@ -10,7 +10,7 @@ class UserController extends Controller
 {
     public function index()
     {
-        $cond=['role' => 1 , 'is_deleted' => 0];
+        $cond=[ 'is_deleted' => 0];
          $usuarios = User::where($cond)->get()->toArray();
 
         return ($usuarios);

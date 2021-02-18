@@ -2,11 +2,11 @@
 <div>
 <template v-if="$store.state.auth">
      <v-app  >
-        <v-navigation-drawer  app v-model="drawer" absolute :width="200">
+        <v-navigation-drawer  app v-model="drawer" absolute :width="200" >
             <v-list-item >
-                <v-list-item-content>
+                <v-list-item-content >
                     <v-list-item-title class="title">
-                        TaskAPP
+                        <v-img src="../img/logo.png" alt="Logo" ></v-img>
                     </v-list-item-title>
                 </v-list-item-content>
             </v-list-item>
@@ -41,6 +41,7 @@
 
 
                 <v-menu left bottom >
+
                     <template v-slot:activator="{ on, attrs }">
                         <v-btn icon v-bind="attrs" v-on="on">
                             <v-icon>mdi-dots-vertical</v-icon>
@@ -49,7 +50,7 @@
 
                     <v-list>
                         <v-list-item >
-                            <v-list-item-title>{{ $store.state.user.email  }}</v-list-item-title
+                            <v-list-item-title>{{ $store.state.user.name  }}</v-list-item-title
                             >
                         </v-list-item>
                         <v-spacer></v-spacer>
@@ -212,8 +213,9 @@ export default {
                     link: "/usuarios",
                     icon: "mdi-account-multiple"
                 },
-                { title: "Areas", link: "/areas", icon: "mdi-image" },
-                { title: "Clientes", link: "/clientes", icon: "mdi-account-settings" },
+                { title: "Areas", link: "/areas", icon: "mdi-view-quilt" },
+                { title: "Tipo Tareas", link: "/tipo-tareas", icon: "mdi-ballot" },
+                { title: "Clientes", link: "/clientes", icon: "mdi-face" },
                 {
                     title: "Contratos",
                     link: "/contratos",

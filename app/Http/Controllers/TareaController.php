@@ -69,7 +69,10 @@ class TareaController extends Controller
     }
     public function contratoTareas($id)
     {
-        $contrato = Tareas::with('contrato.cliente', 'frecuencias','estado_tarea','tipo')->where('contrato_id','=',$id)->get();
+        $contrato = Tareas::with('contrato.cliente', 'frecuencias','estado_tarea','tipo')
+        ->where('contrato_id','=',$id)
+        ->orderBy('fecha')
+        ->get();
         return response()->json($contrato);
     }
     public function update($id, Request $request)

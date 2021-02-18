@@ -15,6 +15,7 @@ use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ContratoController;
 use App\Http\Controllers\SendMailController;
+use App\Http\Controllers\TipoTareaController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\FrecuenciaController;
 
@@ -58,6 +59,7 @@ Route::middleware('api')->group(function () {
     Route::resource('areas', AreaController::class);
     Route::resource('tareas', TareaController::class);
     Route::resource('usuarios', UserController::class);
+    Route::resource('tareas-tipo', TipoTareaController::class);
     Route::get('usuarios-all', [UserController::class,'indexAll']);
     Route::post('usuario-updatePassword', [UserController::class,'usuarioUpdatePassword']);
 

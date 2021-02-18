@@ -24,7 +24,7 @@ class ConfigController extends Controller
     }
     public function tipoTareas()
     {
-        $tipo_tarea = TipoTarea::all()->toArray();
+        $tipo_tarea = TipoTarea::where('is_deleted',0)->get()->toArray();
 
         return $tipo_tarea;
     }

@@ -46,7 +46,7 @@ class FrecuenciaController extends Controller
      * @param  \App\Models\Area  $area
      * @return \Illuminate\Http\Response
      */
-    public function show(Area $area)
+    public function show(Request $request)
     {
         //
     }
@@ -57,7 +57,7 @@ class FrecuenciaController extends Controller
      * @param  \App\Models\Area  $area
      * @return \Illuminate\Http\Response
      */
-    public function edit(Area $area)
+    public function edit(Request $request)
     {
         //
     }
@@ -69,7 +69,7 @@ class FrecuenciaController extends Controller
      * @param  \App\Models\Area  $area
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Area $area)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -80,7 +80,7 @@ class FrecuenciaController extends Controller
      * @param  \App\Models\Area  $area
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Area $area)
+    public function destroy(Request $id)
     {
         //
     }

@@ -15,7 +15,7 @@ class TipoTarea extends Model
 {
     protected $table = 'tipo_tarea';
     protected $fillable = [
-                            'nombre','descripcion'];
+                            'nombre','descripcion','is_deleted'];
     //public $timestamps = false;
     protected $guarded = [];
     use HasFactory;
