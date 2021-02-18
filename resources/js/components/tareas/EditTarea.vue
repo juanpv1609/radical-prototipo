@@ -160,7 +160,7 @@
             subirArchivos(){
                 console.log(this.files);
                 const config = {
-                    headers: { 'content-type': 'multipart/form-data' }
+                    headers: { 'enctype': 'multipart/form-data' }
                 }
                 //console.log(this.files);
                 for (const file of this.files) {
@@ -170,8 +170,11 @@
                     .post(`/api/subir-archivo/`, formData,config)
                     .then((res) => {
                         //this.$router.push({ name: 'tareas' });
+                        console.log(res)
                         this.ruta_archivo.push(res.data.archivo);
                         console.log(this.ruta_archivo);
+                    }).catch((error)=>{
+                        console.log(error);
                     });
                 }
                 this.status_archivos=true;
