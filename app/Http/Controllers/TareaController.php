@@ -113,7 +113,7 @@ class TareaController extends Controller
         $file = $request->file('file');
 
         $fileName = time().'-'.$request->file->getClientOriginalName();
-        $request->file->move(public_path('upload'), $fileName);
+        $request->file->move(storage_path('app/public/'), $fileName);
         //Storage::disk('public')->put($fileName, File($file));
 
 
