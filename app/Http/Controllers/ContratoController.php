@@ -52,9 +52,23 @@ class ContratoController extends Controller
 
     public function update($id, Request $request)
     {
+        $arrayCorreos = $request->input("correos");
+        $arrayAdjuntos = $request->input("adjuntos");
 
         $contrato = Contrato::find($id);
-        $contrato->update($request->all());
+        $contrato->descripcion = $request->input("descripcion");
+        $contrato->fecha_inicio = $request->input("fecha_inicio");
+        $contrato->fecha_fin = $request->input("fecha_fin");
+        $contrato->cliente_id = $request->input("cliente");
+        $contrato->pais_id = $request->input("pais");
+        $contrato->area_id = $request->input("area");
+        $contrato->solucion = $request->input("solucion");
+        $contrato->marca = $request->input("marca");
+        $contrato->correos = implode(",", $arrayCorreos);
+        $contrato->adjunto = implode(",", $arrayAdjuntos);
+        $contrato->observacion = $request->input("observacion");
+        $contrato->estado = 1;
+        $contrato->save();
 
         return response()->json('Product updated!');
     }

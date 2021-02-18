@@ -653,7 +653,7 @@ export default {
             this.contrato.cliente=this.contrato.cliente.id;
             this.contrato.area=this.contrato.area.id;
             this.contrato.pais=this.contrato.pais.id;
-            this.contrato.correos=this.correos.join(',');
+            this.contrato.correos=this.correos;
             this.contrato.adjuntos=this.ruta_archivo;
 
             this.axios
