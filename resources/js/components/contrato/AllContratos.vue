@@ -276,17 +276,19 @@
                             <v-row>
                                 <v-col cols="8">
                                     <v-file-input
-                                small-chips
-                                multiple
-                                v-model="files"
-                                label="Seleccione archivo/s"
-                                :disabled="status_archivos"
-                                >
+                                    show-size
+                                    small-chips
+                                    multiple
+                                    v-model="files"
+                                    label="Seleccione archivo/s"
+                                    :disabled="status_archivos"
+                                    >
                                 </v-file-input>
                                 </v-col>
                                 <v-col cols="4" class="pt-4">
                                     <v-btn  color="success" block
                                         @click="subirArchivos"
+                                        :loading="loadingUpload"
                                         :disabled="status_archivos">
                                     <span v-if="status_archivos">CORRECTO</span>
                                     <span v-else>Subir {{files.length}} Archivos</span>
@@ -520,6 +522,7 @@ import $ from "jquery";
 export default {
     data() {
         return {
+            loadingUpload: false,
             contratos: [],
             correos:[],
             clientes: {},
@@ -687,7 +690,8 @@ export default {
                 .catch(err => console.log(err))
                 .finally(() => (this.loading = false));
         },
-        subirArchivos(){
+        async subirArchivos(){
+            this.loadingUpload=true;
                 console.log(this.files);
                 const config = {
                     headers: { 'enctype': 'multipart/form-data' }
@@ -696,7 +700,7 @@ export default {
                 for (const file of this.files) {
                     let formData = new FormData();
                     formData.append('file', file);
-                     this.axios
+                    await this.axios
                     .post(`/api/subir-archivo`, formData,config)
                     .then((res) => {
                         //this.$router.push({ name: 'tareas' });
@@ -707,7 +711,8 @@ export default {
                         console.log(error);
                     });
                 }
-                        this.status_archivos=true;
+            this.loadingUpload=false;
+             this.status_archivos=true;
             },
             downloadFile(archivo){
                 console.log(archivo);
