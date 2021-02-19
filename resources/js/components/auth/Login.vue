@@ -34,6 +34,7 @@
                         v-model="form.password"
                         required type="password"
                         :rules="passwordRules"
+                        @keyup.enter="login"
                     ></v-text-field>
                 </v-col>
                 <v-alert v-if="has_error"

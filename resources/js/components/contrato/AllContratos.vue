@@ -40,10 +40,17 @@
                     <td>{{row.item.area.nombre}}</td>
                     <td>{{row.item.solucion}}</td>
                     <td>
-                        <v-btn  icon color="primary" @click="downloadFile(row.item.adjunto)" target="_blank"
-                        :disabled="row.item.adjunto==null || row.item.adjunto==''">
-                            <v-icon dark>mdi-download</v-icon>
-                            </v-btn>
+                        <v-tooltip bottom>
+                            <template v-slot:activator="{ on, attrs }">
+                                <v-btn  icon v-bind="attrs"
+                                     v-on="on" color="primary" @click="downloadFile(row.item.adjunto)" target="_blank"
+                                     :disabled="row.item.adjunto==null || row.item.adjunto==''">
+                                    <v-icon dark>mdi-download</v-icon>
+                                </v-btn>
+                            </template>
+                            <span>{{ row.item.adjunto }}</span>
+                            </v-tooltip>
+
                     </td>
                     <td>
                         <v-btn  icon color="primary" @click="findTareas(row.item)">

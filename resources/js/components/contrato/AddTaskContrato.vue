@@ -2,12 +2,12 @@
 <div>
     <v-card elevation="2" :loading="loading">
         <v-card-title class="d-flex justify-space-between mb-6"
-            >Creacion de Tareas
+            >Creación de Tareas
         </v-card-title>
 
         <v-card-text>
             <v-row>
-                <v-col cols="9">
+                <v-col cols="8">
                     <v-row>
                         <v-col cols="6">
                              <v-select :items="usuarios"
@@ -82,7 +82,7 @@
                         </v-row>
 
                 </v-col>
-                <v-col cols="3">
+                <v-col cols="4">
                     <table class="table table-sm table-borderless">
                             <thead class="table-dark">
                                 <tr>
@@ -285,6 +285,9 @@ export default {
             tarea: [],
             request: {},
             diferencia:0,
+            tipo_tareas: [],
+            datos: [],
+            loading: false,
             dias: [
                 { text: "LUNES", value: 1 },
                 { text: "MARTES", value: 2 },
@@ -294,9 +297,7 @@ export default {
                 { text: "SABADO", value: 6 },
                 { text: "DOMINGO", value: 7 }
             ],
-            tipo_tareas: [],
-            datos: [],
-            loading: false,
+
             headersTareas: [
                 { text: "Responsable", value: "responsable" },
                 { text: "Tipo", value: "tipo_tarea" },
@@ -309,31 +310,35 @@ export default {
     },
     created() {
 
-        this.axios
+        this.initialData();
+        //console.log(moment().format('MMMM Do YYYY, h:mm:ss a'));
+    },
+    methods: {
+        initialData(){
+            this.axios
             .get("/api/frecuencias/")
             .then(response => {
                 this.frecuencias = response.data;
                 console.log(this.frecuencias);
             });
-        this.axios
+            this.axios
             .get("/api/usuarios/")
             .then(response => {
                 this.usuarios = response.data;
             });
-        this.axios
+            this.axios
             .get("/api/tipo-tareas/")
             .then(response => {
                 this.tipo_tareas = response.data;
             });
-        this.axios
+            this.axios
             .get(`/api/contratos/${this.$route.params.id}`)
             .then((res) => {
                 this.contrato = res.data;
 
             });
-        //console.log(moment().format('MMMM Do YYYY, h:mm:ss a'));
-    },
-    methods: {
+
+        },
         addTarea() {
             this.loading=true;
 
@@ -345,21 +350,30 @@ export default {
                         icon: 'info',
                         allowOutsideClick: false
                     });
-                        this.$swal.showLoading();
+            this.$swal.showLoading();
             this.axios
                     .post('/api/tareas', this.request)
                     .then(() => {
                         this.$swal.fire({
                                 title: 'Correcto',
                                 text: 'Tareas creadas correctamente!',
-                                icon: 'success'
+                                icon: 'success',
+                                timer: 1500,
+                                timerProgressBar: true,
                                 });
                          this.loading=false;
 
 
+
                     })
                     .catch(err => console.log(err))
-                    .finally(() => this.$router.go())
+                    .finally(() => {
+                        //this.initialData();
+                        this.tareas = {};
+                        this.tarea = [];
+                        this.request = {};
+                        this.diferencia=0;
+                    })
         },
         /* pushTarea(tarea) {
             console.log(tarea);

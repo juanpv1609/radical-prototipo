@@ -2,7 +2,8 @@
 <div>
 <template v-if="$store.state.auth">
      <v-app  >
-        <v-navigation-drawer  app v-model="drawer" absolute :width="200" >
+        <v-navigation-drawer  app v-model="drawer" absolute :width="220"
+                           >
             <v-list-item >
                 <v-list-item-content >
                     <v-list-item-title class="title">
@@ -12,15 +13,40 @@
             </v-list-item>
 
             <v-list dense nav>
-                <v-list-item v-for="item in items" :key="item.title" link :to="item.link">
-                    <v-list-item-icon>
-                        <v-icon>{{ item.icon }}</v-icon>
-                    </v-list-item-icon>
+                <div v-for="item in items" :key="item.title">
+                    <v-list-item v-if="!item.subLinks" link :to="item.link" color="primary">
+                        <v-list-item-icon>
+                            <v-icon>{{ item.icon }}</v-icon>
+                        </v-list-item-icon>
 
-                    <v-list-item-content>
-                        <v-list-item-title>{{ item.title }}</v-list-item-title>
-                    </v-list-item-content>
-                </v-list-item>
+                        <v-list-item-content>
+                            <v-list-item-title>{{ item.title }}</v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
+                    <v-list-group v-else  :key="item.title"
+                        no-action :prepend-icon="item.icon" color="primary">
+                        <template v-slot:activator >
+                              <v-list-tile>
+                                    <v-list-tile-content>
+                                    <v-list-tile-title>{{ item.title }}</v-list-tile-title>
+                                    </v-list-tile-content>
+                                </v-list-tile>
+                         </template>
+                         <v-list-item v-for="sublink in item.subLinks"
+                                        :active-class="primary"
+                                        :key="sublink.title"
+                                     link :to="sublink.link">
+
+                            <v-list-item-content>
+                                <v-list-item-title>
+                                    <v-icon>{{ sublink.icon }}</v-icon>
+                                    {{ sublink.title }}</v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+                    </v-list-group>
+
+                </div>
+
             </v-list>
 
             <template v-slot:append>
@@ -48,20 +74,27 @@
                         </v-btn>
                     </template>
 
-                    <v-list>
-                        <v-list-item >
-                            <v-list-item-title>{{ $store.state.user.name  }}</v-list-item-title
-                            >
-                        </v-list-item>
+                    <v-list dense>
+                        <v-subheader>{{ $store.state.user.name  }}</v-subheader>
                         <v-spacer></v-spacer>
+                        <v-list-item-group
+                            v-model="selectedItem"
+                            color="primary"
+                        >
                         <v-list-item  @click="dialog=true; form={}">
-                            <v-list-item-title> Cambiar contraseña </v-list-item-title
+                            <v-list-item-title>
+                                <v-icon small>mdi-lock</v-icon>
+                                Cambiar contraseña </v-list-item-title
                             >
                         </v-list-item>
                         <v-list-item @click="logout">
-                            <v-list-item-title> Salir </v-list-item-title
+                            <v-list-item-title>
+                                <v-icon small>mdi-logout</v-icon>
+                                Salir </v-list-item-title
                             >
                         </v-list-item>
+                        </v-list-item-group>
+
                     </v-list>
                 </v-menu>
             </v-app-bar>
@@ -194,34 +227,24 @@ export default {
             new_password2: null,
           },
             items: [
-                /* {
-                    title: "Configuracion",
-                    icon: "mdi-cogs",
-                    subLinks: [
-                        {
-                            to: '/update-contact',
-                            text: 'Update Contact Details',
-                        },
-                        {
-                            to: '/review-registration',
-                            text: 'Review Registration',
-                        },
-                    ],
-                }, */
-                {
-                    title: "Usuarios",
-                    link: "/usuarios",
-                    icon: "mdi-account-multiple"
-                },
-                { title: "Areas", link: "/areas", icon: "mdi-view-quilt" },
-                { title: "Tipo Tareas", link: "/tipo-tareas", icon: "mdi-ballot" },
+
+
                 { title: "Clientes", link: "/clientes", icon: "mdi-face" },
                 {
                     title: "Contratos",
                     link: "/contratos",
                     icon: "mdi-book"
                 },
-                { title: "Tareas", link: "/tareas", icon: "mdi-list-status" }
+                { title: "Tareas", link: "/tareas", icon: "mdi-list-status" },
+                {
+                    title: "Administrar",
+                    icon: "mdi-cogs",
+                    subLinks: [
+                        { title: "Usuarios", link: "/usuarios", icon: "mdi-account-multiple"},
+                         { title: "Areas", link: "/areas", icon: "mdi-view-quilt" },
+                        { title: "Tipo Tareas", link: "/tipo-tareas", icon: "mdi-ballot" },
+                    ],
+                },
             ],
             right: null,
             passwordRules1: [
@@ -236,6 +259,7 @@ export default {
         };
     },
     methods: {
+
         logout() {
             this.$swal.fire({
                 title: 'Esta seguro?',
