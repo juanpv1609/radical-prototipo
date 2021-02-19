@@ -42,6 +42,7 @@ class SendAlert extends Command
     public function handle()
     {
              $alerta_fechas = Tareas::with('contrato', 'frecuencias','estado_tarea','tipo','usuario')
+                            ->where('alerta_enviada',0)
                             ->whereRaw('fecha_alerta = curdate()')->get();
                 foreach ($alerta_fechas as $item) {
                     $details = [
