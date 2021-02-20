@@ -2,12 +2,12 @@
 <div>
 <template v-if="$store.state.auth">
      <v-app  >
-        <v-navigation-drawer  app v-model="drawer" absolute :width="220"
+        <v-navigation-drawer  app v-model="drawer" absolute  :width="220"
                            >
             <v-list-item >
                 <v-list-item-content >
                     <v-list-item-title class="title">
-                        <v-img src="../img/logo.png" alt="Logo" ></v-img>
+                        <v-img src="../img/nuevologo-radical.png" alt="Logo" ></v-img>
                     </v-list-item-title>
                 </v-list-item-content>
             </v-list-item>
@@ -49,13 +49,13 @@
 
             </v-list>
 
-            <template v-slot:append>
+            <!-- <template v-slot:append>
                 <div class="pa-2">
                 <v-btn block dense dark @click="logout">
                     Salir
                 </v-btn>
                 </div>
-            </template>
+            </template> -->
         </v-navigation-drawer >
 
             <v-app-bar  app color="accent-4" absolute dense dark>
@@ -108,14 +108,22 @@
 
             </v-container>
         </v-main>
+         <v-footer padless absolute fixed dense >
+            <v-col cols="4" class="text-left">
+                <router-link to="/"> Acerca de</router-link>
 
-        <v-footer padless>
-            <!-- <v-col
+            </v-col>
+            <v-col
             class="text-center"
-            cols="12"
-            >
-            {{ new Date().getFullYear() }} — <strong>Vuetify</strong>
-            </v-col> -->
+            cols="4"
+            ><a href="https://www.gruporadical.com/" target="_blank">Grupo Radical</a>
+            &copy;{{ new Date().getFullYear() }}. Todos los derechos reservados
+            </v-col>
+            <v-col
+            class="text-end"
+            cols="4"
+            >Version 1.0
+            </v-col>
         </v-footer>
     </v-app>
 </template>
@@ -236,6 +244,13 @@ export default {
                     icon: "mdi-book"
                 },
                 { title: "Tareas", link: "/tareas", icon: "mdi-list-status" },
+                {
+                    title: "Reportes",
+                    icon: "mdi-chart-bar",
+                    subLinks: [
+                        { title: "Tareas", link: "/reporte-tareas", icon: "mdi-list-status"},
+                    ],
+                },
                 {
                     title: "Administrar",
                     icon: "mdi-cogs",
