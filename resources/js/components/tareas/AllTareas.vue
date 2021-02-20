@@ -1,25 +1,28 @@
 <template>
+<div>
     <v-card elevation="2" :loading="loading">
-        <v-card-title>
+        <v-card-title  >
             Tareas asignadas
         </v-card-title>
         <v-card-text>
-            <v-text-field
+            <v-col cols="6" >
+                <v-text-field
+                type="date"
                 v-model="search"
                 append-icon="mdi-magnify"
-                label="Search"
+                label="Filtro"
                 single-line
                 hide-details
             ></v-text-field>
+            </v-col>
             <v-data-table
                 :headers="headers"
                 :items="tareas"
                 :search="search"
             >
             <template v-slot:item="row">
-                <tr>
+                <tr >
                     <td>{{row.item.fecha}}</td>
-                    <td>{{row.item.fecha_alerta}}</td>
                     <td>{{row.item.ticket}}</td>
                     <td>{{row.item.usuario.name}}</td>
                     <td>{{row.item.contrato.cliente.nombre_comercial}}</td>
@@ -63,10 +66,8 @@
                             </v-chip>
                     </td>
                     <td>
-                        <v-btn :disabled="row.item.estado_tarea.id==3"  icon color="grey darken-3" :to="{
-                                    name: 'tareas-edit',
-                                    params: { id: row.item.id }
-                                }">
+                        <v-btn :disabled="row.item.estado_tarea.id==3"  icon color="grey darken-3"
+                        @click="editTarea(row.item)">
                         <v-icon dark>mdi-pencil</v-icon>
                         </v-btn>
                     </td>
@@ -75,6 +76,111 @@
             </v-data-table>
         </v-card-text>
     </v-card>
+    <template>
+        <v-row justify="center">
+            <v-dialog v-model="dialog" persistent max-width="800px">
+                <v-card elevation="2" >
+                <v-card-title Tarea class="d-flex justify-space-between mb-6"
+                    ><h4>{{tarea.descripcion}}</h4>
+                    <h5>{{tarea.fecha}}</h5>
+                </v-card-title>
+                <v-card-text>
+                    <v-row>
+                        <v-col cols="3">
+                            <v-text-field
+                                v-model="tarea.ticket"
+                                label="Ticket"
+                            ></v-text-field>
+                        </v-col>
+                        <v-col cols="3">
+                            <v-select :items="estado_tarea"
+                                v-model="tarea.estado"
+                                    label="Estado" >
+                                    <template slot="selection" slot-scope="data">
+                                        <!-- HTML that describe how select should render selected items -->
+                                        {{ data.item.descripcion }}
+                                    </template>
+                                    <template slot="item" slot-scope="data">
+                                        <!-- HTML that describe how select should render items when the select is open -->
+                                        {{ data.item.descripcion }}
+                                    </template>
+                                </v-select>
+                        </v-col>
+                        <v-col cols="6">
+                            <v-file-input
+                                small-chips
+                                multiple
+                                v-model="files"
+                                label="Seleccione archivo/s"
+                                >
+                                </v-file-input>
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col cols="6">
+                            <v-textarea
+                                clearable
+                                clear-icon="mdi-close-circle"
+                                label="Observaciones"
+                                v-model="tarea.observacion"
+                                rows="2"
+                                ></v-textarea>
+                        </v-col>
+                        <v-col cols="6" v-if="files.length>0">
+                            <v-btn  text color="success" block
+                            @click="subirArchivos"
+                            :disabled="status_archivos">
+                                   Subir <strong>{{files.length}}</strong> Archivos
+                                    </v-btn>
+                             <div class="table-responsive">
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>Archivo</th>
+                                            <th>Tamaño</th>
+                                            <th>Estado</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="item in files" :key="item.name">
+                                            <td>{{ item.name}}</td>
+                                            <td> {{(item.size/1000)}} KB</td>
+                                            <td> <i v-if="status_archivos" class="fas fa-check-circle text-success"></i>
+                                                    <i v-if="!status_archivos" class="fas fa-times text-danger"></i></td>
+                                            <td>
+                                                <button class="btn btn-danger btn-sm" :disabled="status_archivos"
+                                                 type="button" @click="deleteFile(item.name)">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </v-col>
+                    </v-row>
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn
+                            color="error"
+                            text
+                            @click="dialog = false"
+                        >
+                            Cerrar
+                        </v-btn>
+                    <v-btn  text color="primary"
+                            @click="updateTarea">
+                        Actualizar
+                        </v-btn>
+                </v-card-actions>
+    </v-card>
+            </v-dialog>
+        </v-row>
+    </template>
+</div>
+
 </template>
 
 <script>
@@ -88,17 +194,21 @@ import moment from "moment";
                 dialog: false,
                 search: "",
                 headers: [
-                { text: "Fecha vencimiento", value: "fecha" },
-                { text: "Fecha alerta", value: "fecha_alerta" },
+                { text: "Fecha entrega", value: "fecha" },
                 { text: "Ticket", value: "ticket" },
                 { text: "Responsable", value: "usuario.name" },
                 { text: "Cliente", value: "contrato.cliente.nombre_comercial" },
                 { text: "Tarea", value: "tipo.nombre" },
                 { text: "Entregable", value: "descripcion" },
-                { text: "Adjuntos", value: "adjunto" },
-                { text: "Estado", value: "estado_tarea" },
+                { text: "Adjuntos", value: "adjunto",sortable: false, filterable: false },
+                { text: "Estado", value: "estado_tarea",align:'center',sortable: false, filterable: false },
                 { text: "Acciones", value: "controls", sortable: false }
-            ]
+            ],
+            tarea: {},
+                estado_tarea: [],
+                files:[],
+                ruta_archivo:[],
+                status_archivos:false,
 
             }
         },
@@ -119,8 +229,24 @@ import moment from "moment";
                     console.log(this.tareas);
                     this.loading = false;
                 });
+                    this.axios.get("/api/estado-tareas/").then(response => {
+                    this.estado_tarea = response.data;
+                });
         },
         methods: {
+            editTarea(el) {
+                console.log(el);
+                this.files = [];
+                this.ruta_archivo = [];
+                this.tarea.id = el.id;
+                this.tarea.descripcion = el.descripcion;
+                this.tarea.fecha = el.fecha;
+                this.tarea.estado = el.estado;
+                this.tarea.ticket = el.ticket;
+                this.tarea.observacion = el.observacion;
+                this.titleForm = "Editar Tarea";
+                this.dialog = true;
+            },
             downloadFile(archivo){
                 console.log(archivo);
                 let arrayArchivos = archivo.split(',');
@@ -137,6 +263,57 @@ import moment from "moment";
                         });
                 }
 
+            },
+            deleteFile(name) {
+                let i = this.files.map(data => data.name).indexOf(name);
+                this.files.splice(i, 1);
+                //this.file.length=this.file.length-1;
+            },
+            subirArchivos(){
+                console.log(this.files);
+                const config = {
+                    headers: { 'enctype': 'multipart/form-data' }
+                }
+                //console.log(this.files);
+                for (const file of this.files) {
+                    let formData = new FormData();
+                    formData.append('file', file);
+                     this.axios
+                    .post(`/api/subir-archivo`, formData,config)
+                    .then((res) => {
+                        //this.$router.push({ name: 'tareas' });
+                        console.log(res)
+                        this.ruta_archivo.push(res.data.archivo);
+                        console.log(this.ruta_archivo);
+                    }).catch((error)=>{
+                        console.log(error);
+                    });
+                }
+                this.status_archivos=true;
+            },
+            updateTarea(e) {
+                e.preventDefault();
+                this.tarea.adjuntos=this.ruta_archivo;
+                this.tarea.estado=this.tarea.estado.id;
+                console.log(this.tarea);
+                this.axios
+                    .patch(`/api/tareas/${this.tarea.id}`, this.tarea)
+                    .then((res) => {
+                        this.dialog = false;
+                        this.loading = false;
+                        this.axios
+                        .get('/api/tareas')
+                        .then(response => {
+                            this.tareas = response.data;
+                            console.log(this.tareas);
+                            this.loading = false;
+                        });
+                            this.axios.get("/api/estado-tareas/").then(response => {
+                            this.estado_tarea = response.data;
+                        });
+                    })
+                    .catch(err => console.log(err))
+                    .finally(() => this.loading = false);
             },
             deleteClient(id) {
                 this.axios

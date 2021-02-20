@@ -14,6 +14,7 @@ use App\Http\Controllers\ConfigController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ContratoController;
+use App\Http\Controllers\ReportesController;
 use App\Http\Controllers\SendMailController;
 use App\Http\Controllers\TipoTareaController;
 use App\Http\Controllers\Auth\LoginController;
@@ -96,6 +97,8 @@ Route::middleware('api')->group(function () {
     Route::get('/send-mails-client/{contrato}', [SendMailController::class, 'sendMailsClient']);
 
 
+// reportes
+Route::get('/reporte-tareas/{inicial}/{final}', [ReportesController::class, 'printTareas']);
 
 
 

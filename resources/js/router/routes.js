@@ -14,6 +14,8 @@ import AllTareas from "../components/tareas/AllTareas.vue";
 import EditTarea from "../components/tareas/EditTarea.vue";
 
 import TipoTareas from "../components/tipo_tareas/TipoTareas.vue";
+
+import ReporteTarea from "../components/reportes/ReporteTarea.vue";
 import Home from "../components/Home.vue"
 export const routes = [
     { path: "*", redirect: "/" },
@@ -108,6 +110,14 @@ export const routes = [
         name: "tipo-tareas",
         path: "/tipo-tareas",
         component: TipoTareas,
+        meta: {
+      requiresAuth: true,
+    },
+    },
+    {
+        name: "reporte-tareas",
+        path: "/reporte-tareas",
+        component: ReporteTarea,
         meta: {
       requiresAuth: true,
     },
