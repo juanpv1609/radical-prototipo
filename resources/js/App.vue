@@ -14,7 +14,7 @@
 
             <v-list dense nav>
                 <div v-for="item in items" :key="item.title">
-                    <v-list-item v-if="!item.subLinks" link :to="item.link" color="primary">
+                    <v-list-item v-if="!item.subLinks" link :to="item.link" color="blue">
                         <v-list-item-icon>
                             <v-icon>{{ item.icon }}</v-icon>
                         </v-list-item-icon>
@@ -24,16 +24,16 @@
                         </v-list-item-content>
                     </v-list-item>
                     <v-list-group v-else  :key="item.title"
-                        no-action :prepend-icon="item.icon" color="primary">
+                        no-action :prepend-icon="item.icon" color="blue">
                         <template v-slot:activator >
-                              <v-list-tile>
-                                    <v-list-tile-content>
-                                    <v-list-tile-title>{{ item.title }}</v-list-tile-title>
-                                    </v-list-tile-content>
-                                </v-list-tile>
+                              <v-list-item>
+
+                                    <v-list-item-content>
+                                    <v-list-item-title>{{ item.title }}</v-list-item-title>
+                                    </v-list-item-content>
+                                </v-list-item>
                          </template>
                          <v-list-item v-for="sublink in item.subLinks"
-                                        :active-class="primary"
                                         :key="sublink.title"
                                      link :to="sublink.link">
 
@@ -78,8 +78,6 @@
                         <v-subheader>{{ $store.state.user.name  }}</v-subheader>
                         <v-spacer></v-spacer>
                         <v-list-item-group
-                            v-model="selectedItem"
-                            color="primary"
                         >
                         <v-list-item  @click="dialog=true; form={}">
                             <v-list-item-title>
@@ -189,14 +187,14 @@
                         <v-card-actions>
                             <v-spacer></v-spacer>
                             <v-btn
-                                color="error"
+                                color="red"
                                 text
                                 @click="dialog = false"
                             >
                                 Cerrar
                             </v-btn>
                             <v-btn
-                                color="primary"
+                                color="blue"
                                 text
                                 @click="updateClave"
                             >
