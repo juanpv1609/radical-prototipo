@@ -47,7 +47,8 @@ class ReportesController extends Controller
         $pdf = App::make('dompdf.wrapper');
 
         $pdf->getDomPDF()->set_option("enable_php", true);
-
+        $pdf->getDomPDF()->set_option('isHtml5ParserEnabled', true);
+        $pdf->getDomPDF()->set_option('isRemoteEnabled', true);
         $pdf->loadView('pdf.tareas', compact('tareas'));
         return $pdf->download('reporteTareas_'.$inicial.'-'.$final.'.pdf');
     }
