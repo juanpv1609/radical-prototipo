@@ -57,7 +57,7 @@
         <table width="100%" style=" font-size: 6px;">
             <tr>
                 <td>
-                    <table width="50%">
+                    <table >
                         <tbody>
                             <tr>
                                 <td>
@@ -70,7 +70,7 @@
                     </table>
                 </td>
                 <td style="vertical-align: bottom;text-align: right;margin-top: -25px">
-                    <table width="50%">
+                    <table width="100%">
                         <tbody>
                             <tr>
                                 <td>Fecha inicial</td>
