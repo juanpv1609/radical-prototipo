@@ -98,16 +98,17 @@
             </v-app-bar>
 
         <!-- Sizes your content based upon application components -->
-        <v-main>
+        <v-main  >
             <!-- Provides the application the proper gutter -->
-            <v-container fluid>
+            <v-container fluid >
                 <!-- If using vue-router -->
                 <router-view></router-view>
 
             </v-container>
         </v-main>
-         <v-footer padless absolute fixed dense >
-            <v-col cols="4" class="text-left">
+        <v-bottom-navigation dense app fixed
+        >
+        <v-col cols="4" class="text-left">
                 <router-link to="/"> Acerca de</router-link>
 
             </v-col>
@@ -122,7 +123,7 @@
             cols="4"
             >Version 1.0
             </v-col>
-        </v-footer>
+        </v-bottom-navigation>
     </v-app>
 </template>
 <template v-else>
@@ -246,7 +247,7 @@ export default {
                     title: "Reportes",
                     icon: "mdi-chart-bar",
                     subLinks: [
-                        { title: "Tareas", link: "/reporte-tareas", icon: "mdi-list-status"},
+                        { title: "Tareas", link: "/reporte-tareas", icon: ""},
                     ],
                 },
                 {

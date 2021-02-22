@@ -105,40 +105,42 @@
         <h4 class="text-center">
             REPORTE DE TAREAS
         </h4>
-
-      <table class="table table-striped table-sm" width="100%">
-        <thead>
-            <tr>
-                <th>FECHA</th>
-                <th>RESPONSABLE</th>
-                <th>CLIENTE</th>
-                <th>TAREA</th>
-                <th>ENTREGABLE</th>
-                <th>ESTADO</th>
-            </tr>
-        </thead>
-        <tbody>
-            @for ($i = 1; $i < 10; $i++)
-                @forelse ($tareas as $item)
+        @if (count($tareas)>0)
+        <table class="table table-striped table-sm" width="100%">
+            <thead>
                 <tr>
-                    <td>{{ $item->fecha }}</td>
-                    <td>{{ $item->usuario->name }}</td>
-                    <td>{{ $item->contrato->cliente->nombre_comercial }}</td>
-                    <td>{{ $item->tipo->nombre }}</td>
-                    <td>{{ $item->descripcion }}</td>
-                    <td class="text-center">
-                        <strong class="text-{{ $item->estado_tarea->color }}">
-                            {{ strtoupper($item->estado_tarea->descripcion) }}
-                        </strong>
-                    </td>
+                    <th>FECHA</th>
+                    <th>RESPONSABLE</th>
+                    <th>CLIENTE</th>
+                    <th>TAREA</th>
+                    <th>ENTREGABLE</th>
+                    <th>ESTADO</th>
                 </tr>
-            @empty
-            @endforelse
-            @endfor
+            </thead>
+            <tbody>
+                    @foreach ($tareas as $item)
+                    <tr>
+                        <td>{{ $item->fecha }}</td>
+                        <td>{{ $item->usuario->name }}</td>
+                        <td>{{ $item->contrato->cliente->nombre_comercial }}</td>
+                        <td>{{ $item->tipo->nombre }}</td>
+                        <td>{{ $item->descripcion }}</td>
+                        <td class="text-center">
+                            <strong class="text-{{ $item->estado_tarea->color }}">
+                                {{ strtoupper($item->estado_tarea->descripcion) }}
+                            </strong>
+                        </td>
+                    </tr>
+
+                @endforeach
 
 
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+        @else
+         <p class="text-info">No se encontraron resultados </p>
+        @endif
+
     </div>
 <script type="text/php">
     if (isset($pdf)) {

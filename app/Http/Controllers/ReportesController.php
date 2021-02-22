@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Tareas;
 use PDF;
+use App\Models\Tareas;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 
 class ReportesController extends Controller
 {
@@ -43,7 +44,7 @@ class ReportesController extends Controller
         $tareas->tareas_pendientes=$tareas_pendientes;
         $tareas->tareas_terminadas=$tareas_terminadas;
 
-        $pdf = \App::make('dompdf.wrapper');
+        $pdf = App::make('dompdf.wrapper');
 
         $pdf->getDomPDF()->set_option("enable_php", true);
 
