@@ -94,11 +94,11 @@ Route::middleware('api')->group(function () {
 
 
 // send mails
-    Route::get('/send-mails-client/{contrato}', [SendMailController::class, 'sendMailsClient']);
+    Route::get('send-mails-client/{contrato}', [SendMailController::class, 'sendMailsClient']);
 
 
 // reportes
-Route::get('/reporte-tareas/{inicial}/{final}', [ReportesController::class, 'printTareas']);
+Route::get('reporte-tareas/{inicial}/{final}', [ReportesController::class, 'reporteTareas']);
 
 
 
