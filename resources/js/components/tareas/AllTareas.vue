@@ -6,15 +6,35 @@
         </v-card-title>
         <v-card-text>
             <v-col cols="6" >
+                <v-menu
+                ref="menu"
+                v-model="menu"
+                :close-on-content-click="false"
+                :return-value.sync="date"
+                transition="scale-transition"
+                offset-y
+                min-width="auto"
+            >
+                <template v-slot:activator="{ on, attrs }">
                 <v-text-field
-                type="date"
+                    v-model="search"
+                    label="Filtro por Fecha"
+                    readonly
+                    clearable
+                    prepend-inner-icon="mdi-calendar"
+                    v-bind="attrs"
+                    v-on="on"
+                ></v-text-field>
+                </template>
+                <v-date-picker
                 v-model="search"
-                append-icon="mdi-magnify"
-                label="Filtro"
-                single-line
-                hide-details
-            ></v-text-field>
+                no-title
+                scrollable
+                >
+                </v-date-picker>
+            </v-menu>
             </v-col>
+
             <v-data-table
                 :headers="headers"
                 :items="tareas"
@@ -189,6 +209,8 @@ import moment from "moment";
     export default {
         data() {
             return {
+                date: new Date().toISOString().substr(0, 10),
+            menu: false,
                 tareas: [],
                 loading: true,
                 dialog: false,

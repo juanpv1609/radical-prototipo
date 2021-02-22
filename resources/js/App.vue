@@ -26,22 +26,17 @@
                     <v-list-group v-else  :key="item.title"
                         no-action :prepend-icon="item.icon" color="blue">
                         <template v-slot:activator >
-                              <v-list-item>
-
-                                    <v-list-item-content>
                                     <v-list-item-title>{{ item.title }}</v-list-item-title>
-                                    </v-list-item-content>
-                                </v-list-item>
                          </template>
                          <v-list-item v-for="sublink in item.subLinks"
                                         :key="sublink.title"
                                      link :to="sublink.link">
 
-                            <v-list-item-content>
                                 <v-list-item-title>
-                                    <v-icon>{{ sublink.icon }}</v-icon>
                                     {{ sublink.title }}</v-list-item-title>
-                            </v-list-item-content>
+                                    <v-list-item-icon>
+                                    <v-icon v-text="sublink.icon"></v-icon>
+                                    </v-list-item-icon>
                         </v-list-item>
                     </v-list-group>
 
@@ -106,7 +101,7 @@
 
             </v-container>
         </v-main>
-        <v-bottom-navigation dense app fixed
+        <v-footer dense app fixed flat padless
         >
         <v-col cols="4" class="text-left">
                 <router-link to="/"> Acerca de</router-link>
@@ -123,7 +118,7 @@
             cols="4"
             >Version 1.0
             </v-col>
-        </v-bottom-navigation>
+        </v-footer>
     </v-app>
 </template>
 <template v-else>

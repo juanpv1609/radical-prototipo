@@ -3,6 +3,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import VueAxios from 'vue-axios';
 import axios from 'axios';
+import createPersistedState from 'vuex-persistedstate';
 axios.defaults.withCredentials = true;
 //axios.defaults.baseURL = 'http://127.0.0.1:8000';
 axios.defaults.baseURL = process.env.MIX_APP_URL;
@@ -15,6 +16,7 @@ const store = new Vuex.Store({
         auth:false,
         isUserLoggedIn: false
     },
+    plugins: [createPersistedState()],
     getters:{
         loggedIn: state => !!state.user
     },
@@ -36,7 +38,7 @@ const store = new Vuex.Store({
         },
         getUser({commit}){
             axios.get('/api/user').then(res => {
-                console.log(res.data);
+                //console.log(res.data);
                 commit("SET_USER",res.data);
 
             }).catch(() => {
@@ -49,5 +51,6 @@ const store = new Vuex.Store({
     },
     modules:{}
 })
+store.dispatch('getUser')
 
 export default store

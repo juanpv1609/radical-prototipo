@@ -16,7 +16,8 @@ import VueAxios from 'vue-axios';
 import VueRouter from 'vue-router';
 import axios from 'axios';
 import store from './store/store';
-import { routes } from './router/routes';
+//import { routes } from './router/routes';
+import  router  from './router/routes';
 import VCalendar from 'v-calendar';
 // import Multiselect from 'vue-multiselect'
 import InputTag from 'vue-input-tag'
@@ -47,28 +48,7 @@ Vue.use(VCalendar, {
 });
 Vue.component('input-tag', InputTag);
 
-const router = new VueRouter({
-    mode: 'history',
-    routes: routes
-});
-store.dispatch('getUser').then(()=>{
-    router.beforeEach((to, from, next) => {
-        console.log(store.getters.loggedIn);
-            if (  to.matched.some(record => record.meta.requiresAuth)) {
-            //store.dispatch('getUser')
 
-                if ( store.getters.loggedIn) {
-                    next()
-                    return
-                } else
-                next('/login')
-            } else {
-                next()
-            }
-        })
-}).catch(()=>{
-    next('/login')
-});
 
 const app = new Vue({
     el: '#app',

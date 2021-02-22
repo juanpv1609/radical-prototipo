@@ -50,7 +50,7 @@
                                     <v-list-item>
                                         <v-list-item-content>
                                             <v-list-item-title
-                                                >Gestión de
+                                                ><v-icon>mdi-account-multiple</v-icon>Gestión de
                                                 usuarios</v-list-item-title
                                             >
                                             <v-list-item-subtitle
@@ -62,7 +62,7 @@
                                     <v-list-item>
                                         <v-list-item-content>
                                             <v-list-item-title
-                                                >Gestión de
+                                                ><v-icon>mdi-face</v-icon>Gestión de
                                                 clientes</v-list-item-title
                                             >
                                             <v-list-item-subtitle
@@ -74,7 +74,7 @@
                                     <v-list-item>
                                         <v-list-item-content>
                                             <v-list-item-title
-                                                >Creación de
+                                                ><v-icon>mdi-book</v-icon>Creación de
                                                 contratos</v-list-item-title
                                             >
                                             <v-list-item-subtitle
@@ -87,7 +87,7 @@
                                     <v-list-item>
                                         <v-list-item-content>
                                             <v-list-item-title
-                                                >Cración automatica de
+                                                ><v-icon>mdi-format-list-checks</v-icon>Cración automatica de
                                                 tareas</v-list-item-title
                                             >
                                             <v-list-item-subtitle
@@ -100,7 +100,7 @@
                                     <v-list-item>
                                         <v-list-item-content>
                                             <v-list-item-title
-                                                >Modificación de
+                                                ><v-icon>mdi-pencil</v-icon>Modificación de
                                                 tareas</v-list-item-title
                                             >
                                             <v-list-item-subtitle
@@ -112,7 +112,7 @@
                                     <v-list-item>
                                         <v-list-item-content>
                                             <v-list-item-title
-                                                >Notidicaciones automaticas
+                                                ><v-icon>mdi-bell</v-icon>Notidicaciones automaticas
                                                 mediante correo
                                                 electronico</v-list-item-title
                                             >
@@ -126,7 +126,7 @@
                                     <v-list-item>
                                         <v-list-item-content>
                                             <v-list-item-title
-                                                >Emisión de
+                                                ><v-icon>mdi-chart-bar</v-icon>Emisión de
                                                 reportes</v-list-item-title
                                             >
                                             <v-list-item-subtitle
