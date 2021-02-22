@@ -77,19 +77,23 @@ export default {
 
     },
     methods: {
-        generarReporte(){
+        async generarReporte(){
             if (this.$refs.form.validate()) {
                 this.loading = true;
                 this.loadingUpload=true;
-                this.axios
+                let url;
+             await   this.axios
                     .get(`/api/reporte-tareas/${this.dates[0]}/${this.dates[1]}`)
                     .then(response => {
-                        const url=response.config.baseURL+response.config.url;
-                        window.open(url,'_blank');
-                        this.loading = false;
-                        this.loadingUpload=false;
-                        this.dates = [];
+                        url=response.config.baseURL+response.config.url;
+
                     }).catch((error)=>(console.log(error)));
+
+                    this.loading = false;
+                    this.loadingUpload=false;
+                    this.dates = [];
+                    this.valid = true;
+                    window.open(url,'_blank');
             }
 
         }

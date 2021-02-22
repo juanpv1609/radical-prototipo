@@ -62,7 +62,7 @@
                             <tr>
                                 <td>
                                     <div name="logo" style="vertical-align: bottom;">
-                                        <img src="{{ public_path('img/nuevologo-radical.png') }}" style="margin-top: -25px" alt="logo">
+                                        <img src="{{ base_path() }}/public/img/nuevologo-radical.png" style="margin-top: -25px" alt="logo">
                                     </div>
                                 </td>
                             </tr>

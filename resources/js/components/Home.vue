@@ -4,8 +4,8 @@
             <v-col>
                 <v-card elevation="4" class="mx-auto">
                     <v-card-title
-                        class="d-flex justify-space-between display-2"
-                    >
+                        class="d-flex justify-space-between"
+                    >&nbsp;
                         <v-btn
                             v-if="!$store.state.auth"
                             class="mx-2"
