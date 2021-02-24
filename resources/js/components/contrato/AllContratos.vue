@@ -237,7 +237,7 @@
                                         </template>
                                         <template slot="item" slot-scope="data">
                                             <!-- HTML that describe how select should render items when the select is open -->
-                                            {{ data.item.nombre }}
+                                            ({{ data.item.abreviatura }}) {{ data.item.nombre }}
                                         </template>
                                     </v-select>
                                 </v-col>

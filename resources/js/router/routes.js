@@ -18,6 +18,7 @@ import TipoTareas from "../components/tipo_tareas/TipoTareas.vue";
 
 import ReporteTarea from "../components/reportes/ReporteTarea.vue";
 import ReporteContrato from "../components/reportes/ReporteContrato.vue";
+import ReporteUsuario from "../components/reportes/ReporteUsuario.vue";
 import Home from "../components/Home.vue";
 import Frecuencia from "../components/frecuencia/Frecuencia.vue";
 import Pais from "../components/pais/Pais.vue";
@@ -129,6 +130,14 @@ const router = new VueRouter({
             name: "reporte-contratos",
             path: "/reporte-contratos",
             component: ReporteContrato,
+            meta: {
+          requiresAuth: true,
+        },
+        },
+        {
+            name: "reporte-usuario",
+            path: "/reporte-usuario",
+            component: ReporteUsuario,
             meta: {
           requiresAuth: true,
         },

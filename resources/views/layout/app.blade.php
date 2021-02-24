@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" value="{{ csrf_token() }}" />
 
-    <title>TaskApp</title>
+    <title>RGSMD</title>
 
     <link href="{{ mix('css/app.css') }}" type="text/css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
