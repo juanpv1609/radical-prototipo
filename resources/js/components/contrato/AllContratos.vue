@@ -688,7 +688,7 @@ export default {
             this.contrato.tareas = this.tareas;
 
             this.axios
-                .post(`/api/tareasAll/`, this.contrato)
+                .post(`/api/tareasAll`, this.contrato)
                 .then(() => {
                     this.$toasted.success("Tareas actualizadas correctamente");
 
