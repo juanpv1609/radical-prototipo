@@ -43,153 +43,48 @@
                                 derechos reservados
                             </v-col>
                         </v-row>
-                        <v-row class="pl-4">
-                            <v-col cols="12" sm="6">
-                                <h5>Sus principales caracteristicas:</h5>
-                                <v-list>
-                                    <v-list-item>
-                                        <v-list-item-content>
-                                            <v-list-item-title
-                                                ><v-icon>mdi-account-multiple</v-icon>Gestión de
-                                                usuarios</v-list-item-title
-                                            >
-                                            <v-list-item-subtitle
-                                                >Sesiones, seguridad,
-                                                roles</v-list-item-subtitle
-                                            >
-                                        </v-list-item-content>
-                                    </v-list-item>
-                                    <v-list-item>
-                                        <v-list-item-content>
-                                            <v-list-item-title
-                                                ><v-icon>mdi-face</v-icon>Gestión de
-                                                clientes</v-list-item-title
-                                            >
-                                            <v-list-item-subtitle
-                                                >Información de
-                                                contacto</v-list-item-subtitle
-                                            >
-                                        </v-list-item-content>
-                                    </v-list-item>
-                                    <v-list-item>
-                                        <v-list-item-content>
-                                            <v-list-item-title
-                                                ><v-icon>mdi-book</v-icon>Creación de
-                                                contratos</v-list-item-title
-                                            >
-                                            <v-list-item-subtitle
-                                                >Fechas plazo, archivos
-                                                adjuntos,
-                                                etc.</v-list-item-subtitle
-                                            >
-                                        </v-list-item-content>
-                                    </v-list-item>
-                                    <v-list-item>
-                                        <v-list-item-content>
-                                            <v-list-item-title
-                                                ><v-icon>mdi-format-list-checks</v-icon>Cración automatica de
-                                                tareas</v-list-item-title
-                                            >
-                                            <v-list-item-subtitle
-                                                >Fechas plazo, responsables,
-                                                tipo de tarea, entregable,
-                                                etc.</v-list-item-subtitle
-                                            >
-                                        </v-list-item-content>
-                                    </v-list-item>
-                                    <v-list-item>
-                                        <v-list-item-content>
-                                            <v-list-item-title
-                                                ><v-icon>mdi-pencil</v-icon>Modificación de
-                                                tareas</v-list-item-title
-                                            >
-                                            <v-list-item-subtitle
-                                                >Cambio de estado, adjuntar
-                                                documentos.</v-list-item-subtitle
-                                            >
-                                        </v-list-item-content>
-                                    </v-list-item>
-                                    <v-list-item>
-                                        <v-list-item-content>
-                                            <v-list-item-title
-                                                ><v-icon>mdi-bell</v-icon>Notidicaciones automaticas
-                                                mediante correo
-                                                electronico</v-list-item-title
-                                            >
-                                            <v-list-item-subtitle
-                                                >Depende de la fecha de entrega,
-                                                disparo automático
-                                                gestionable.</v-list-item-subtitle
-                                            >
-                                        </v-list-item-content>
-                                    </v-list-item>
-                                    <v-list-item>
-                                        <v-list-item-content>
-                                            <v-list-item-title
-                                                ><v-icon>mdi-chart-bar</v-icon>Emisión de
-                                                reportes</v-list-item-title
-                                            >
-                                            <v-list-item-subtitle
-                                                >Rango de fechas, responsables,
-                                                tareas pendientes, terminadas,
-                                                etc.</v-list-item-subtitle
-                                            >
-                                        </v-list-item-content>
-                                    </v-list-item>
-                                </v-list>
-                            </v-col>
-                           <!--  <v-col cols="12" sm="6">
-                                <h5>Accesos directos:</h5>
-                                <v-row>
-                                    <v-col cols="12" sm="6">
-                                        <v-hover>
-                                            <template v-slot:default="{ hover }">
-                                            <v-card
-                                                class="mx-auto"
-                                                color="blue"
-                                                dark
-                                            >
+                                <v-carousel
+                                    cycle
+                                    height="300"
+                                    hide-delimiter-background
+                                    show-arrows-on-hover
+                                >
+                                    <v-carousel-item
+                                    v-for="(slide, i) in slides"
+                                    :key="i"
+                                    >
+                                    <v-sheet
+                                        :color="colors[i]"
+                                        height="100%"
+                                        elevation="12"
+                                        :class="`rounded-lg`"
+                                    >
+                                        <v-row
+                                        class="fill-height"
+                                        align="center"
+                                        justify="center"
+                                        >
+                                        <div class="text-center">
+                                            <h3 class="display-3">
+                                                <v-icon x-large style="font-size:50px">
+                                                    {{ slide.icon }}
+                                                </v-icon>
+                                                    {{ slide.title }}
+                                            </h3>
+                                            <p>
+                                                {{ slide.subtitle }}
+                                            </p>
+                                            <v-btn color="dark"
+                                                    link :to="slide.link" >
+                                                Ir
+                                            </v-btn>
+                                        </div>
 
+                                        </v-row>
+                                    </v-sheet>
+                                    </v-carousel-item>
+                                </v-carousel>
 
-                                                <v-card-text>
-                                                    <v-icon x-large style="font-size:50px">mdi-account-multiple</v-icon>
-                                                <h2 class="title">
-                                                    Usuarios
-                                                </h2>
-                                                </v-card-text>
-
-
-
-                                                <v-fade-transition>
-                                                <v-overlay
-                                                    v-if="hover"
-                                                    absolute
-                                                    color="#036358"
-                                                >
-                                                    <v-btn  class="mx-2"
-
-                                                        link
-                                                        :to="'/login'">Ver usuarios</v-btn>
-                                                </v-overlay>
-                                                </v-fade-transition>
-                                            </v-card>
-                                            </template>
-                                        </v-hover>
-                                    </v-col>
-                                     <v-col cols="12" sm="6">
-
-                                    </v-col>
-                                </v-row>
-                                <v-row>
-                                    <v-col cols="12" sm="6">
-
-                                    </v-col>
-                                     <v-col cols="12" sm="6">
-
-                                    </v-col>
-                                </v-row>
-                            </v-col> -->
-                        </v-row>
                     </v-card-text>
                 </v-card>
             </v-col>
@@ -202,6 +97,59 @@
     data() {
       return {
           overlay: false,
+          slides: [
+                {
+                    title: 'Gestión de usuarios',
+                    subtitle: 'Sesiones, seguridad, roles',
+                    icon:'mdi-account-multiple',
+                    link: '/usuarios'
+                },
+                {
+                    title: 'Gestión de clientes',
+                    subtitle: 'Información de contacto',
+                    icon:'mdi-face',
+                    link: '/clientes'
+                },
+                {
+                    title: 'Creación de contratos',
+                    subtitle: 'Fechas plazo, archivos adjuntos, etc.',
+                    icon:'mdi-book',
+                    link: '/contratos'
+                },
+                {
+                    title: 'Creación automatica de tareas',
+                    subtitle: 'Fechas plazo, responsables, tipo de tarea, entregable, etc.',
+                    icon:'mdi-format-list-checks',
+                    link: '/contratos'
+                },
+                {
+                    title: 'Modificación de tareas',
+                    subtitle: 'Cambio de estado, adjuntar documentos.',
+                    icon:'mdi-pencil',
+                    link: '/tareas'
+                },
+                {
+                    title: 'Notificaciones automaticas',
+                    subtitle: 'Depende de la fecha de entrega, disparo automático gestionable.',
+                    icon:'mdi-bell',
+                    link: ''
+                },
+                {
+                    title: 'Emisión de reportes',
+                    subtitle: 'Rango de fechas, responsables, tareas pendientes, terminadas, etc.',
+                    icon:'mdi-chart-bar',
+                    link: '/reporte-tareas'
+                }
+          ],
+          colors: [
+          'indigo',
+          'warning',
+          'pink darken-2',
+          'red lighten-1',
+          'deep-purple accent-4',
+          'blue',
+          'green'
+        ],
       }
     }
   }

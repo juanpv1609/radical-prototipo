@@ -37,12 +37,17 @@
                         <td>{{row.item.nombre}}</td>
                         <td>{{row.item.descripcion}}</td>
                         <td>
-                            <v-chip
+                             <v-chip v-if="row.item.estado==1"
                             class="ma-2"
-                            color="primary"
+                            color="success"
                             small
-                            >
-                            {{(row.item.estado==1) ? 'Habilitada':'Deshabilitada'}}
+                            >Habilitada
+                            </v-chip>
+                            <v-chip v-else
+                            class="ma-2"
+                            color="error"
+                            small
+                            >Deshabilitada
                             </v-chip>
                         </td>
                         <td>

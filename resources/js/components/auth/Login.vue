@@ -1,14 +1,14 @@
 <template>
 <v-container fill-height fluid>
   <v-row align="center"
-      justify="center">
+      justify="center" class="pa-10">
       <v-col>
           <v-form
-    ref="form"
-    v-model="valid"
-    lazy-validation
-  >
-    <v-card elevation="4" :loading="loading" class="mx-auto"
+            ref="form"
+            v-model="valid"
+            lazy-validation
+        >
+    <v-card elevation="8" :loading="loading" class="m-auto "
     max-width="344">
 
 
@@ -17,7 +17,7 @@
              <h2 class="text-center"> Iniciar Sesión</h2>
                  <v-col cols="12">
                     <v-text-field
-                        label="Usuario*"
+                        label="Correo electrónico*"
                         v-model="form.email"
                         required type="email"
                         :rules="emailRules"

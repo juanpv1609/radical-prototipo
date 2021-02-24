@@ -7,7 +7,7 @@
             <v-list-item >
                 <v-list-item-content >
                     <v-list-item-title class="title">
-                        <v-img src="../img/nuevologo-radical.png" alt="Logo" ></v-img>
+                        <v-img src="../img/nuevologo-radical.png" alt="Logo"  ></v-img>
                     </v-list-item-title>
                 </v-list-item-content>
             </v-list-item>
