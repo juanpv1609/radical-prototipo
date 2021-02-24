@@ -138,8 +138,10 @@
                                 </v-file-input>
                                  <v-btn  color="success" block v-if="files.length>0"
                             @click="subirArchivos"
+                            :loading="loadingUpload"
                             :disabled="status_archivos">
-                                   Subir <strong>{{files.length}}</strong> Archivos
+                            <span v-if="status_archivos">CORRECTO</span>
+                                    <span v-else>Subir {{files.length}} Archivos</span>
                                     </v-btn>
                         </v-col>
                         <v-col cols="6" >
@@ -204,7 +206,7 @@ import moment from "moment";
                 files:[],
                 ruta_archivo:[],
                 status_archivos:false,
-
+            loadingUpload: false,
             }
         },
         /* beforeRouteEnter (to, from, next) {
@@ -265,6 +267,7 @@ import moment from "moment";
                 //this.file.length=this.file.length-1;
             },
             subirArchivos(){
+                this.loadingUpload=true;
                 console.log(this.files);
                 const config = {
                     headers: { 'enctype': 'multipart/form-data' }
@@ -284,6 +287,7 @@ import moment from "moment";
                         console.log(error);
                     });
                 }
+                this.loadingUpload=false;
                 this.status_archivos=true;
             },
             updateTarea(e) {

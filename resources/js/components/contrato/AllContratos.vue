@@ -67,9 +67,9 @@
                         <v-btn  icon color="primary" @click="editContrato(row.item)">
                             <v-icon dark>mdi-pencil</v-icon>
                             </v-btn>
-                            <v-btn  icon color="warning" @click="sendMails(row.item)">
+                            <!-- <v-btn  icon color="warning" @click="sendMails(row.item)">
                             <v-icon dark>mdi-email</v-icon>
-                        </v-btn>
+                        </v-btn> -->
                     </td>
                 </tr>
             </template>
@@ -309,7 +309,7 @@
                                         clearable
                                         rows="2"
                                         clear-icon="mdi-close-circle"
-                                        label="Descripcion del contrato"
+                                        label="Contrato"
                                         v-model="contrato.descripcion"
                                         ></v-textarea>
                                 </v-col>
@@ -319,7 +319,7 @@
                                         rows="2"
                                         clear-icon="mdi-close-circle"
                                         v-model="contrato.observacion"
-                                        label="Observaciones"
+                                        label="Descripcion del contrato"
                                         ></v-textarea>
                                      </v-col>
                             </v-row>

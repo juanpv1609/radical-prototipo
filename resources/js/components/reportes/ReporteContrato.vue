@@ -10,6 +10,27 @@
                         v-model="valid"
                         lazy-validation>
                         <v-row>
+                            <v-col
+                            cols="12"
+
+                            >
+                            <v-select :items="contratos"
+                                            v-model="contrato"
+                                                label="Seleccione un Contrato"
+                                                @change="setDates"
+                                                >
+                                            <template slot="selection" slot-scope="data">
+                                                <!-- HTML that describe how select should render selected items -->
+                                                ({{ data.item.cliente.nombre_comercial }}) {{ data.item.observacion }}
+                                            </template>
+                                            <template slot="item" slot-scope="data">
+                                                <!-- HTML that describe how select should render items when the select is open -->
+                                               ({{ data.item.cliente.nombre_comercial }}) {{ data.item.observacion }}
+                                            </template>
+                                        </v-select>
+                            </v-col>
+                        </v-row>
+                        <v-row>
                     <v-col cols="12">
                         <v-row>
                             <v-col
@@ -30,25 +51,6 @@
                             sm="6"
                             >
                             <v-row>
-                                <v-col
-                            cols="12"
-
-                            >
-                            <v-select :items="contratos"
-                                            v-model="contrato"
-                                                label="Contratos"
-                                                @change="setDates"
-                                                >
-                                            <template slot="selection" slot-scope="data">
-                                                <!-- HTML that describe how select should render selected items -->
-                                                {{ data.item.descripcion }}
-                                            </template>
-                                            <template slot="item" slot-scope="data">
-                                                <!-- HTML that describe how select should render items when the select is open -->
-                                                {{ data.item.observacion }}
-                                            </template>
-                                        </v-select>
-                            </v-col>
                                 <v-col cols="12" >
                                     <v-text-field
                                 v-model="b"
