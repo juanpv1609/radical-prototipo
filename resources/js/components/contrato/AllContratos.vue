@@ -788,24 +788,27 @@ export default {
                                 this.contratos = response.data;
                                 //console.log(response.data);
                             });
-                            this.axios.get("/api/clientes/").then(response => {
-                                this.clientes = response.data;
-                                //console.log('clientes'+response.data);
-                            });
-                            this.axios.get("/api/paises/").then(response => {
-                                this.paises = response.data;
-                                //console.log(response.data);
-                            });
-                            this.axios.get("/api/areas/").then(response => {
-                                this.areas = response.data;
-                                //console.log(response.data);
-                            });
-                            this.axios
-                                .get("/api/frecuencias/")
-                                .then(response => {
-                                    this.frecuencias = response.data;
-                                    //console.log(response.data);
-                                });
+            this.axios.get("/api/clientes/").then(response => {
+                this.clientes = response.data;
+                //console.log('clientes'+response.data);
+            });
+            this.axios.get("/api/paises/").then(response => {
+                this.paises = response.data;
+                //console.log(response.data);
+            });
+            this.axios.get("/api/areas/").then(response => {
+                this.areas = response.data;
+                //console.log(response.data);
+            });
+            this.axios
+                .get("/api/frecuencias/")
+                .then(response => {
+                    this.frecuencias = response.data;
+                    //console.log(response.data);
+                });
+                this.correos = [];
+                this.ruta_archivo = [];
+                this.files = [];
         }
     }
 };

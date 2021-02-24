@@ -98,7 +98,7 @@
     </v-card>
     <template>
         <v-row justify="center">
-            <v-dialog v-model="dialog" persistent max-width="800px">
+            <v-dialog v-model="dialog" persistent max-width="700px">
                 <v-card elevation="2" >
                 <v-card-title Tarea class="d-flex justify-space-between mb-6"
                     ><h4>{{tarea.descripcion}}</h4>
@@ -106,13 +106,13 @@
                 </v-card-title>
                 <v-card-text>
                     <v-row>
-                        <v-col cols="3">
+                        <v-col cols="6">
                             <v-text-field
                                 v-model="tarea.ticket"
                                 label="Ticket"
                             ></v-text-field>
                         </v-col>
-                        <v-col cols="3">
+                        <v-col cols="6">
                             <v-select :items="estado_tarea"
                                 v-model="tarea.estado"
                                     label="Estado" >
@@ -126,6 +126,8 @@
                                     </template>
                                 </v-select>
                         </v-col>
+                        </v-row>
+                    <v-row>
                         <v-col cols="6">
                             <v-file-input
                                 small-chips
@@ -134,10 +136,13 @@
                                 label="Seleccione archivo/s"
                                 >
                                 </v-file-input>
+                                 <v-btn  color="success" block v-if="files.length>0"
+                            @click="subirArchivos"
+                            :disabled="status_archivos">
+                                   Subir <strong>{{files.length}}</strong> Archivos
+                                    </v-btn>
                         </v-col>
-                    </v-row>
-                    <v-row>
-                        <v-col cols="6">
+                        <v-col cols="6" >
                             <v-textarea
                                 clearable
                                 clear-icon="mdi-close-circle"
@@ -145,39 +150,7 @@
                                 v-model="tarea.observacion"
                                 rows="2"
                                 ></v-textarea>
-                        </v-col>
-                        <v-col cols="6" v-if="files.length>0">
-                            <v-btn  text color="success" block
-                            @click="subirArchivos"
-                            :disabled="status_archivos">
-                                   Subir <strong>{{files.length}}</strong> Archivos
-                                    </v-btn>
-                             <div class="table-responsive">
-                                <table class="table table-sm">
-                                    <thead>
-                                        <tr>
-                                            <th>Archivo</th>
-                                            <th>Tamaño</th>
-                                            <th>Estado</th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr v-for="item in files" :key="item.name">
-                                            <td>{{ item.name}}</td>
-                                            <td> {{(item.size/1000)}} KB</td>
-                                            <td> <i v-if="status_archivos" class="fas fa-check-circle text-success"></i>
-                                                    <i v-if="!status_archivos" class="fas fa-times text-danger"></i></td>
-                                            <td>
-                                                <button class="btn btn-danger btn-sm" :disabled="status_archivos"
-                                                 type="button" @click="deleteFile(item.name)">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+
                         </v-col>
                     </v-row>
                 </v-card-text>

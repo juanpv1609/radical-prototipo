@@ -19,69 +19,45 @@ class FrecuenciaController extends Controller
         return ($frecuencias);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function indexAll()
     {
-        //
+        $frecuencias = Frecuencia::all()->toArray();
+
+        return ($frecuencias);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        $frecuencia = new Frecuencia([
+            'descripcion' => $request->input('descripcion'),
+            'alerta' => $request->input('alerta'),
+            'estado' => 1
+        ]);
+        $frecuencia->save();
+
+        return response()->json('frecuencia created!');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Area  $area
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Request $request)
+
+    public function show($id)
     {
-        //
+        $frecuencia = Frecuencia::find($id);
+        return response()->json($frecuencia);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Area  $area
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Request $request)
+    public function update($id, Request $request)
     {
-        //
+        $frecuencia = Frecuencia::find($id);
+        $frecuencia->update($request->all());
+
+        return response()->json('frecuencia updated!');
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Area  $area
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function destroy($id)
     {
-        //
-    }
+        $frecuencia = Frecuencia::find($id);
+        $frecuencia->delete();
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Area  $area
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Request $id)
-    {
-        //
+        return response()->json('frecuencia deleted!');
     }
 }

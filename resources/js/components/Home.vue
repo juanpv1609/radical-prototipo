@@ -43,7 +43,7 @@
                                 derechos reservados
                             </v-col>
                         </v-row>
-                        <v-row>
+                        <v-row class="pl-4">
                             <v-col cols="12" sm="6">
                                 <h5>Sus principales caracteristicas:</h5>
                                 <v-list>
@@ -138,6 +138,57 @@
                                     </v-list-item>
                                 </v-list>
                             </v-col>
+                           <!--  <v-col cols="12" sm="6">
+                                <h5>Accesos directos:</h5>
+                                <v-row>
+                                    <v-col cols="12" sm="6">
+                                        <v-hover>
+                                            <template v-slot:default="{ hover }">
+                                            <v-card
+                                                class="mx-auto"
+                                                color="blue"
+                                                dark
+                                            >
+
+
+                                                <v-card-text>
+                                                    <v-icon x-large style="font-size:50px">mdi-account-multiple</v-icon>
+                                                <h2 class="title">
+                                                    Usuarios
+                                                </h2>
+                                                </v-card-text>
+
+
+
+                                                <v-fade-transition>
+                                                <v-overlay
+                                                    v-if="hover"
+                                                    absolute
+                                                    color="#036358"
+                                                >
+                                                    <v-btn  class="mx-2"
+
+                                                        link
+                                                        :to="'/login'">Ver usuarios</v-btn>
+                                                </v-overlay>
+                                                </v-fade-transition>
+                                            </v-card>
+                                            </template>
+                                        </v-hover>
+                                    </v-col>
+                                     <v-col cols="12" sm="6">
+
+                                    </v-col>
+                                </v-row>
+                                <v-row>
+                                    <v-col cols="12" sm="6">
+
+                                    </v-col>
+                                     <v-col cols="12" sm="6">
+
+                                    </v-col>
+                                </v-row>
+                            </v-col> -->
                         </v-row>
                     </v-card-text>
                 </v-card>
@@ -145,3 +196,14 @@
         </v-row>
     </v-container>
 </template>
+<script>
+
+  export default {
+    data() {
+      return {
+          overlay: false,
+      }
+    }
+  }
+
+  </script>

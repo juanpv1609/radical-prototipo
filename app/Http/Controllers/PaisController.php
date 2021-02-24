@@ -16,73 +16,42 @@ class PaisController extends Controller
     {
         $paises = Pais::all()->toArray();
 
-        return array_reverse($paises);
+        return ($paises);
 
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        $pais = new Pais([
+            'nombre' => $request->input('nombre'),
+            'abreviatura' => $request->input('abreviatura'),
+            'estado' => 1
+        ]);
+        $pais->save();
+
+        return response()->json('pais created!');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Pais  $pais
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Pais $pais)
+
+    public function show($id)
     {
-        //
+        $pais = Pais::find($id);
+        return response()->json($pais);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Pais  $pais
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Pais $pais)
+    public function update($id, Request $request)
     {
-        //
+        $pais = Pais::find($id);
+        $pais->update($request->all());
+
+        return response()->json('pais updated!');
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Pais  $pais
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Pais $pais)
+    public function destroy($id)
     {
-        //
-    }
+        $pais = Pais::find($id);
+        $pais->delete();
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Pais  $pais
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Pais $pais)
-    {
-        //
+        return response()->json('pais deleted!');
     }
 }
+

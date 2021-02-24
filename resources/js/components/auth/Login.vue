@@ -10,16 +10,11 @@
   >
     <v-card elevation="4" :loading="loading" class="mx-auto"
     max-width="344">
-   <!--  <v-img
-      src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
-      height="200px"
-    >
-    <v-card-title
-            ><h3 class="text-center"> Iniciar Sesión</h3>
-        </v-card-title></v-img> -->
+
+
 
          <v-card-text>
-             <h3 class="text-center"> Iniciar Sesión</h3>
+             <h2 class="text-center"> Iniciar Sesión</h2>
                  <v-col cols="12">
                     <v-text-field
                         label="Usuario*"

@@ -47,7 +47,7 @@
     <p><small>Este correo fue generado automaticamente, por lo cual no debe responderlo.
         Si existe algun error, eliminarlo o comunicarse con <a href="#">info@gruporadical.com</a> ó <a href="#">soporte@gruporadical.com</a></small></p>
     <br>
-    <img src="{{ asset('img/logo.png') }}" alt="logo">
+    <img src="{{ asset('img/nuevologo-radical.png') }}" alt="logo">
 
 </body>
 

@@ -17,7 +17,10 @@ import EditTarea from "../components/tareas/EditTarea.vue";
 import TipoTareas from "../components/tipo_tareas/TipoTareas.vue";
 
 import ReporteTarea from "../components/reportes/ReporteTarea.vue";
+import ReporteContrato from "../components/reportes/ReporteContrato.vue";
 import Home from "../components/Home.vue";
+import Frecuencia from "../components/frecuencia/Frecuencia.vue";
+import Pais from "../components/pais/Pais.vue";
 
 const router = new VueRouter({
     mode: 'history',
@@ -118,6 +121,30 @@ const router = new VueRouter({
             name: "reporte-tareas",
             path: "/reporte-tareas",
             component: ReporteTarea,
+            meta: {
+          requiresAuth: true,
+        },
+        },
+        {
+            name: "reporte-contratos",
+            path: "/reporte-contratos",
+            component: ReporteContrato,
+            meta: {
+          requiresAuth: true,
+        },
+        },
+        {
+            name: "frecuencias",
+            path: "/frecuencias",
+            component: Frecuencia,
+            meta: {
+          requiresAuth: true,
+        },
+        },
+        {
+            name: "paises",
+            path: "/paises",
+            component: Pais,
             meta: {
           requiresAuth: true,
         },

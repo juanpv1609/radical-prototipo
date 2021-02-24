@@ -63,6 +63,7 @@ Route::middleware('api')->group(function () {
     Route::resource('tareas-tipo', TipoTareaController::class);
     Route::get('usuarios-all', [UserController::class,'indexAll']);
     Route::post('usuario-updatePassword', [UserController::class,'usuarioUpdatePassword']);
+    Route::get('frecuencias-all', [FrecuenciaController::class,'indexAll']);
 
 
     Route::post('tareasAll', [TareaController::class,'updateGroup']); //actualiza grupo de tareas
@@ -99,6 +100,7 @@ Route::middleware('api')->group(function () {
 
 // reportes
 Route::get('reporte-tareas/{inicial}/{final}', [ReportesController::class, 'reporteTareas']);
+Route::get('reporte-tareas-contrato/{inicial}/{final}/{contrato}', [ReportesController::class, 'reporteTareasContrato']);
 
 
 

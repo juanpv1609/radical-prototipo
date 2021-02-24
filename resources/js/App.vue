@@ -131,7 +131,26 @@
 
             </v-container>
         </v-main>
-    </v-app></template>
+        <v-footer dense app fixed flat padless
+        >
+        <v-col cols="4" class="text-left">
+                <router-link to="/"> Acerca de</router-link>
+
+            </v-col>
+            <v-col
+            class="text-center"
+            cols="4"
+            ><a href="https://www.gruporadical.com/" target="_blank">Grupo Radical</a>
+            &copy;{{ new Date().getFullYear() }}. Todos los derechos reservados
+            </v-col>
+            <v-col
+            class="text-end"
+            cols="4"
+            >Version 1.0
+            </v-col>
+        </v-footer>
+    </v-app>
+</template>
 
 
     <template>
@@ -224,7 +243,7 @@ export default {
             dialog:false,
             drawer: true,
             form:{
-              old_password: null,
+            old_password: null,
             new_password: null,
             new_password2: null,
           },
@@ -243,15 +262,18 @@ export default {
                     icon: "mdi-chart-bar",
                     subLinks: [
                         { title: "Tareas", link: "/reporte-tareas", icon: ""},
+                        { title: "Contratos", link: "/reporte-contratos", icon: ""},
                     ],
                 },
                 {
-                    title: "Administrar",
+                    title: "Configuracion",
                     icon: "mdi-cogs",
                     subLinks: [
                         { title: "Usuarios", link: "/usuarios", icon: "mdi-account-multiple"},
                          { title: "Areas", link: "/areas", icon: "mdi-view-quilt" },
                         { title: "Tipo Tareas", link: "/tipo-tareas", icon: "mdi-ballot" },
+                        { title: "Frecuencias", link: "/frecuencias", icon: "mdi-clock-fast" },
+                        { title: "Paises", link: "/paises", icon: "mdi-earth" },
                     ],
                 },
             ],
