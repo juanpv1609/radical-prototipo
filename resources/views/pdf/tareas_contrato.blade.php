@@ -104,15 +104,15 @@
         <table class="table table-sm" width="50%">
             <tr>
                 <td>CONTRATO:</td>
-                <td>{{ $tareas[0]->contrato->descripcion }}</td>
+                <td>{{ $tareas->contrato_nombre }}</td>
             </tr>
             <tr>
                 <td>DESCRIPCION:</td>
-                <td>{{ $tareas[0]->contrato->observacion }}</td>
+                <td>{{ $tareas->contrato_descripcion }}</td>
             </tr>
             <tr>
                 <td>CLIENTE:</td>
-                <td>{{ $tareas[0]->contrato->cliente->nombre_comercial }}</td>
+                <td>{{ $tareas->cliente_nombre_comercial }}</td>
             </tr>
         </table>
         <h4 class="text-center">REPORTE DE TAREAS</h4>

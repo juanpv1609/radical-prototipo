@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Contrato;
 use PDF;
 use App\Models\Tareas;
 use Illuminate\Http\Request;
@@ -84,10 +85,14 @@ class ReportesController extends Controller
             }
 
         }
-        $tareas->fecha_inicial=$inicial;
-        $tareas->fecha_final=$final;
-        $tareas->tareas_pendientes=$tareas_pendientes;
-        $tareas->tareas_terminadas=$tareas_terminadas;
+        $tareas->fecha_inicial      =   $inicial;
+        $tareas->fecha_final        =   $final;
+        $tareas->tareas_pendientes  =   $tareas_pendientes;
+        $tareas->tareas_terminadas  =   $tareas_terminadas;
+        $contrato = Contrato::with('cliente')->find($contrato_id);
+        $tareas->contrato_nombre            =   $contrato->descripcion;
+        $tareas->contrato_descripcion       =   $contrato->observacion;
+        $tareas->cliente_nombre_comercial   =   $contrato->cliente->nombre_comercial;
 
         $pdf = App::make('dompdf.wrapper');
 
