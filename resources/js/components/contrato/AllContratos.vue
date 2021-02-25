@@ -38,7 +38,7 @@
                     <td>{{row.item.fecha_inicio}}</td>
                     <td>{{row.item.fecha_fin }}</td>
                     <td>{{row.item.area.nombre}}</td>
-                    <td>{{row.item.solucion}}</td>
+                    <!-- <td>{{row.item.solucion}}</td> -->
                     <td>
                         <v-tooltip bottom>
                             <template v-slot:activator="{ on, attrs }">
@@ -554,7 +554,7 @@ export default {
                 { text: "Fecha inicio", value: "fecha_inicio" },
                 { text: "Fecha fin", value: "fecha_fin" },
                 { text: "Area", value: "area" },
-                { text: "Solucion", value: "solucion" },
+                // { text: "Solucion", value: "solucion" },
                 { text: "Adjunto", value: "adjunto" },
                 { text: "Tareas", value: "" },
                 { text: "Acciones", value: "controls", sortable: false }
