@@ -43,9 +43,11 @@
                                 derechos reservados
                             </v-col>
                         </v-row>
+                        <v-row >
+                            <v-col cols="12" >
                                 <v-carousel
                                     cycle
-                                    height="300"
+                                    height="400"
                                     hide-delimiter-background
                                     show-arrows-on-hover
                                 >
@@ -56,7 +58,7 @@
                                     <v-sheet
                                         :color="colors[i]"
                                         height="100%"
-                                        elevation="12"
+                                        elevation="4"
                                         :class="`rounded-lg`"
                                     >
                                         <v-row
@@ -85,6 +87,59 @@
                                     </v-carousel-item>
                                 </v-carousel>
 
+                            </v-col>
+                           <!--  <v-col cols="12" sm="6">
+                                <h5>Accesos directos:</h5>
+                                <v-row>
+                                    <v-col cols="12" sm="6">
+                                        <v-hover>
+                                            <template v-slot:default="{ hover }">
+                                            <v-card
+                                                class="mx-auto"
+                                                color="blue"
+                                                dark
+                                            >
+
+
+                                                <v-card-text>
+                                                    <v-icon x-large style="font-size:50px">mdi-account-multiple</v-icon>
+                                                <h2 class="title">
+                                                    Usuarios
+                                                </h2>
+                                                </v-card-text>
+
+
+
+                                                <v-fade-transition>
+                                                <v-overlay
+                                                    v-if="hover"
+                                                    absolute
+                                                    color="#036358"
+                                                >
+                                                    <v-btn  class="mx-2"
+
+                                                        link
+                                                        :to="'/login'">Ver usuarios</v-btn>
+                                                </v-overlay>
+                                                </v-fade-transition>
+                                            </v-card>
+                                            </template>
+                                        </v-hover>
+                                    </v-col>
+                                     <v-col cols="12" sm="6">
+
+                                    </v-col>
+                                </v-row>
+                                <v-row>
+                                    <v-col cols="12" sm="6">
+
+                                    </v-col>
+                                     <v-col cols="12" sm="6">
+
+                                    </v-col>
+                                </v-row>
+                            </v-col> -->
+                        </v-row>
                     </v-card-text>
                 </v-card>
             </v-col>
@@ -142,13 +197,13 @@
                 }
           ],
           colors: [
-          'indigo',
-          'warning',
-          'pink darken-2',
-          'red lighten-1',
-          'deep-purple accent-4',
-          'blue',
-          'green'
+          'light-blue lighten-3',
+          'light-green lighten-3',
+          'orange lighten-3',
+          'teal lighten-3',
+          'deep-purple lighten-3',
+          'red lighten-3',
+          'deep-orange lighten-3'
         ],
       }
     }
