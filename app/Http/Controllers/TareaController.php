@@ -80,6 +80,15 @@ class TareaController extends Controller
         $arrayAdjuntos = $request->input("adjuntos");
 
         $tarea = Tareas::find($id);
+        // BORRAR ARCHIVOS ANTERIORES
+        if ($tarea->adjunto!=='') {
+            $arrayAdjuntosOld = explode(",", $tarea->adjunto);
+            foreach ($arrayAdjuntosOld as $item) {
+                if (Storage::disk('local')->exists($item)) {
+                    Storage::delete($item);
+                }
+            }
+        }
         $tarea->ticket = $request->input('ticket');
         $tarea->estado = $request->input('estado');
         $tarea->observacion = $request->input('observacion');

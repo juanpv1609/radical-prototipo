@@ -809,6 +809,7 @@ export default {
                 this.correos = [];
                 this.ruta_archivo = [];
                 this.files = [];
+                this.status_archivos = false;
         }
     }
 };

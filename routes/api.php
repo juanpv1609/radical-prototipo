@@ -80,10 +80,7 @@ Route::middleware('api')->group(function () {
 
 
     Route::get('get-file/{archivo}', function ($archivo) {
-        $url = url('/') . '/public/upload/'.$archivo;
-        $headers = array(
-                    'Content-Type'=> 'application/pdf'
-                    );
+        
 
         //verificamos si el archivo existe y lo retornamos
         if (Storage::disk('local')->exists($archivo)) {

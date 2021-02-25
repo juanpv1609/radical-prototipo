@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Tarea;
 use App\Models\Contrato;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\SendMailController;
 
 class ContratoController extends Controller
@@ -56,6 +57,16 @@ class ContratoController extends Controller
         $arrayAdjuntos = $request->input("adjuntos");
 
         $contrato = Contrato::find($id);
+        // BORRAR ARCHIVOS ANTERIORES
+        if ($contrato->adjunto!=='') {
+            $arrayAdjuntosOld = explode(",", $contrato->adjunto);
+            foreach ($arrayAdjuntosOld as $item) {
+                if (Storage::disk('local')->exists($item)) {
+                    Storage::delete($item);
+                }
+            }
+        }
+
         $contrato->descripcion = $request->input("descripcion");
         $contrato->fecha_inicio = $request->input("fecha_inicio");
         $contrato->fecha_fin = $request->input("fecha_fin");

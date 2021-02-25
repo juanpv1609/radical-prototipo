@@ -49,10 +49,16 @@
                     <td>{{row.item.tipo.nombre}}</td>
                     <td>{{row.item.descripcion}}</td>
                     <td>
-                        <v-btn  icon color="primary" @click="downloadFile(row.item.adjunto)" target="_blank"
+                        <v-tooltip bottom>
+                            <template v-slot:activator="{ on, attrs }">
+                        <v-btn  icon v-bind="attrs"
+                                     v-on="on" color="primary" @click="downloadFile(row.item.adjunto)" target="_blank"
                         :disabled="row.item.adjunto==null || row.item.adjunto==''">
                             <v-icon dark>mdi-download</v-icon>
                             </v-btn>
+                            </template>
+                            <span>{{ row.item.adjunto }}</span>
+                        </v-tooltip>
                     </td>
                     <td>
                         <v-chip v-if="row.item.estado_tarea.id==1"
@@ -235,6 +241,7 @@ import moment from "moment";
                 console.log(el);
                 this.files = [];
                 this.ruta_archivo = [];
+                this.status_archivos = false;
                 this.tarea.id = el.id;
                 this.tarea.descripcion = el.descripcion;
                 this.tarea.fecha = el.fecha;
@@ -300,6 +307,7 @@ import moment from "moment";
                     .then((res) => {
                         this.dialog = false;
                         this.loading = false;
+                        this.status_archivos = false;
                         this.axios
                         .get('/api/tareas')
                         .then(response => {
