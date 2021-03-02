@@ -96,6 +96,9 @@
                         @click="editTarea(row.item)">
                         <v-icon dark>mdi-pencil</v-icon>
                         </v-btn>
+                         <v-btn  icon color="warning" @click="sendMails(row.item)">
+                            <v-icon dark>mdi-email</v-icon>
+                        </v-btn>
                     </td>
                 </tr>
             </template>
@@ -329,7 +332,47 @@ import moment from "moment";
                         let i = this.clientes.map(data => data.id).indexOf(id);
                         this.clientes.splice(i, 1)
                     });
-            }
+            },
+             async sendMails(el){
+                 console.log(el);
+            //this.correos='';
+           /* await this.axios
+            .get(`/api/contratos/${el.id}`)
+            .then((res) => {
+                console.log(res.data);
+                this.correos = res.data.correos.replace(',','<br>')
+            }); */
+             await this.$swal.fire({
+                title: 'Esta seguro?',
+                html: `Se enviara un correo a la siguiente dirección:\n${el.usuario.email}`,
+                icon: 'question',
+                showConfirmButton: true,
+                showCancelButton: true
+
+                }).then(res => {
+                if (res.value) {
+                    this.$swal.fire({
+                        title: 'Espere',
+                        text: 'Enviando correos...',
+                        icon: 'info',
+                        allowOutsideClick: false
+                    });
+                        this.$swal.showLoading();
+                        this.axios.get(`/api/send-mail-user/${el.id}`).then(()=>{
+                            this.$swal.fire({
+                                title: 'Correcto',
+                                text: 'Correos enviados correctamente!',
+                                icon: 'success'
+                                })
+
+
+                        }).catch(()=>(console.log('error'))).finally(()=>{
+
+                        });
+                    }
+                })
+
+        },
         }
     }
 </script>

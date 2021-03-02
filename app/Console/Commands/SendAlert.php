@@ -58,7 +58,9 @@ class SendAlert extends Command
                         'tipo_tarea' => $item->tipo->nombre.' '.$item->frecuencias->descripcion,
 
                     ];
-                    Mail::to($item->usuario->email)->send(new TareasEmail($details));
+                    Mail::to($item->usuario->email)
+                    ->cc(['paul.canchignia@gruporadical.com','xavier.montoya@gruporadical.com'])
+                    ->send(new TareasEmail($details));
                     $item->alerta_enviada = 1;
                     $item->save();
                 }

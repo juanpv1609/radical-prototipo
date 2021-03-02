@@ -80,7 +80,7 @@ Route::middleware('api')->group(function () {
 
 
     Route::get('get-file/{archivo}', function ($archivo) {
-        
+
 
         //verificamos si el archivo existe y lo retornamos
         if (Storage::disk('local')->exists($archivo)) {
@@ -93,6 +93,7 @@ Route::middleware('api')->group(function () {
 
 // send mails
     Route::get('send-mails-client/{contrato}', [SendMailController::class, 'sendMailsClient']);
+    Route::get('send-mail-user/{tarea}', [SendMailController::class, 'sendMailUser']);
 
 
 // reportes

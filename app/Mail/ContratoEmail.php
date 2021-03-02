@@ -29,7 +29,7 @@ class ContratoEmail extends Mailable
      */
     public function build()
     {
-        return $this->from('juan.perugachi@gruporadical.com')
+        return $this->from('soporte@gruporadical.com')
                     ->subject('Contrato Registrado')
                     ->view('emails.contratoEmail');
 

@@ -29,7 +29,7 @@ class TareasEmail extends Mailable
      */
     public function build()
     {
-        return $this->from('juan.perugachi@gruporadical.com')
+        return $this->from('soporte@gruporadical.com')
                     ->subject('Notificacion tareas')
                     ->view('emails.tareasEmail');
 
