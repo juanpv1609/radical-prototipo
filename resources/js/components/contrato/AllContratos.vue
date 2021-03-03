@@ -395,7 +395,7 @@
                                         <th style="width:20%">Responsable</th>
                                         <th style="width:20%">Tarea</th>
                                         <th>Entragable</th>
-                                        <th style="width:10%">Fecha</th>
+                                        <th style="width:15%">Fecha</th>
                                         <th style="width:10%">Estado</th>
                                     </tr>
                                 </thead>

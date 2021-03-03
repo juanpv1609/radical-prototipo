@@ -96,7 +96,7 @@
                         @click="editTarea(row.item)">
                         <v-icon dark>mdi-pencil</v-icon>
                         </v-btn>
-                         <v-btn  icon color="warning" @click="sendMails(row.item)">
+                         <v-btn  icon color="warning" v-if="$store.state.user.role==2" @click="sendMails(row.item)">
                             <v-icon dark>mdi-email</v-icon>
                         </v-btn>
                     </td>
@@ -335,13 +335,6 @@ import moment from "moment";
             },
              async sendMails(el){
                  console.log(el);
-            //this.correos='';
-           /* await this.axios
-            .get(`/api/contratos/${el.id}`)
-            .then((res) => {
-                console.log(res.data);
-                this.correos = res.data.correos.replace(',','<br>')
-            }); */
              await this.$swal.fire({
                 title: 'Esta seguro?',
                 html: `Se enviara un correo a la siguiente dirección:\n${el.usuario.email}`,

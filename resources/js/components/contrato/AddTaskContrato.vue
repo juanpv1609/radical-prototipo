@@ -144,7 +144,7 @@
                                                 <th style="width:20%">Responsable</th>
                                                 <th style="width:20%">Tarea</th>
                                                 <th >Entregable</th>
-                                                <th style="width:10%">Fecha</th>
+                                                <th style="width:15%">Fecha</th>
                                                 <th style="width:5%">Alerta</th>
                                                 <th></th>
                                             </tr>
