@@ -34,8 +34,8 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('send:alert')
-        //->dailyAt('07:00');
-        ->twiceDaily(7, 13);
+        ->dailyAt('07:00');
+        //->twiceDaily(7, 13);
          //->everyMinute();
         //->daily();
 
