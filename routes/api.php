@@ -59,6 +59,7 @@ Route::middleware('api')->group(function () {
     Route::resource('frecuencias', FrecuenciaController::class);
     Route::resource('areas', AreaController::class);
     Route::resource('tareas', TareaController::class);
+    Route::get('tareas/{inicial}/{final}', [TareaController::class, 'tareasPorFecha']);
     Route::resource('usuarios', UserController::class);
     Route::resource('tareas-tipo', TipoTareaController::class);
     Route::get('usuarios-all', [UserController::class,'indexAll']);

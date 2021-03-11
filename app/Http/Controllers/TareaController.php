@@ -30,6 +30,26 @@ class TareaController extends Controller
 
         return $this->tareas;
     }
+    public function tareasPorFecha($inicial,$final)
+    {
+        //$products = Product::all()->toArray();
+        if (auth()->user()->role==2) {
+            $this->tareas = Tareas::with('contrato.cliente', 'frecuencias','estado_tarea','tipo','usuario')
+            ->whereBetween('fecha',[$inicial,$final])
+            ->orderBy('fecha')->get()->toArray();
+        }else{
+            $cond=[
+                'responsable' => auth()->user()->id
+            ];
+            $this->tareas = Tareas::with('contrato.cliente', 'frecuencias','estado_tarea','tipo','usuario')
+                        ->where($cond)
+                        ->whereBetween('fecha',[$inicial,$final])
+                        ->orderBy('fecha')->get()->toArray();
+        }
+
+
+        return $this->tareas;
+    }
 
     public function store(Request $request)
     {

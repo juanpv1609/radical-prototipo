@@ -2,7 +2,16 @@
 <div>
             <v-card elevation="2" :loading="loading">
                 <v-card-title class="d-flex justify-space-between mb-6"
-                    >Clientes
+                    >
+                    <v-badge
+                :content="clientes.length"
+                :value="clientes.length"
+                color="green"
+
+            >
+            Clientes
+            </v-badge>
+
                     <v-btn
                         class="mx-2"
                         fab

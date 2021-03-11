@@ -2,7 +2,15 @@
     <div>
             <v-card elevation="2" :loading="loading">
                 <v-card-title class="d-flex justify-space-between mb-6"
-                    >Usuarios
+                    >
+                    <v-badge
+                :content="usuarios.length"
+                :value="usuarios.length"
+                color="green"
+
+            >
+            Usuarios
+            </v-badge>
                     <v-btn
                         class="mx-2"
                         fab

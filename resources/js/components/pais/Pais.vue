@@ -3,7 +3,16 @@
     <div>
         <v-card elevation="2" :loading="loading">
             <v-card-title class="d-flex justify-space-between mb-6"
-                >Paises
+                >
+                <v-badge
+                :content="paises.length"
+                :value="paises.length"
+                color="green"
+
+            >
+            Paises
+            </v-badge>
+
                 <v-btn
                     class="mx-2"
                     fab

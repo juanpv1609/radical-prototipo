@@ -3,7 +3,16 @@
     <div>
         <v-card elevation="2" :loading="loading">
             <v-card-title class="d-flex justify-space-between mb-6"
-                >Tipos de Tareas
+                >
+                <v-badge
+                :content="tipo_tareas.length"
+                :value="tipo_tareas.length"
+                color="green"
+
+            >
+            Tipos de Tareas
+            </v-badge>
+
                 <v-btn
                     class="mx-2"
                     fab

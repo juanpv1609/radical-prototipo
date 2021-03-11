@@ -1,39 +1,89 @@
 <template>
 <div>
     <v-card elevation="2" :loading="loading">
-        <v-card-title  >
+        <v-card-title  class="d-flex justify-space-between mb-6">
+            <v-badge
+                :content="tareas.length"
+                :value="tareas.length"
+                color="green"
+
+            >
             Tareas asignadas
+            </v-badge>
+
+            <v-btn
+                    class="mx-2"
+                    fab
+                    small
+                    :disabled="this.tareas_email.length==0"
+                    @click="sendAlertMultiple"
+                >
+                    <v-badge
+                        :content="alertas"
+                        :value="alertas"
+                        color="green"
+
+                    >
+                        <v-icon large>
+                        mdi-email
+                        </v-icon>
+                    </v-badge>
+                </v-btn>
         </v-card-title>
         <v-card-text>
-            <v-col cols="6" >
+            <v-row>
+                 <v-col cols="4">
                 <v-menu
-                ref="menu"
-                v-model="menu"
-                :close-on-content-click="false"
-                :return-value.sync="date"
-                transition="scale-transition"
-                offset-y
-                min-width="auto"
-            >
+                    v-model="menu"
+                    :close-on-content-click="false"
+                    :nudge-right="40"
+                    transition="scale-transition"
+                    offset-y
+                    min-width="auto"
+                >
                 <template v-slot:activator="{ on, attrs }">
                 <v-text-field
-                    v-model="search"
-                    label="Filtro por Fecha"
+                    v-model="dateRangeText"
+                    label="Filtro por rango de fechas"
+                    prepend-icon="mdi-calendar"
                     readonly
-                    clearable
-                    prepend-inner-icon="mdi-calendar"
                     v-bind="attrs"
                     v-on="on"
                 ></v-text-field>
                 </template>
                 <v-date-picker
-                v-model="search"
-                no-title
-                scrollable
+                v-model="dates"
+                range
                 >
+                <v-spacer></v-spacer>
+                <v-btn
+                    text
+                    color="primary"
+                    @click="limpiarFiltro"
+                >
+                    Cancelar
+                </v-btn>
+                <v-btn
+                    text
+                    color="primary"
+                    @click="filtrarPorFecha"
+                >
+                    Filtrar
+                </v-btn>
                 </v-date-picker>
-            </v-menu>
+        </v-menu>
             </v-col>
+            <v-col cols="4">
+                <v-text-field
+                v-model="search"
+                append-icon="mdi-magnify"
+                label="Buscar"
+                single-line
+                hide-details
+            ></v-text-field>
+            </v-col>
+            </v-row>
+
 
             <v-data-table
                 :headers="headers"
@@ -42,24 +92,13 @@
             >
             <template v-slot:item="row">
                 <tr >
+                    <td>{{row.item.contrato.cliente.nombre_comercial}}</td>
                     <td>{{row.item.fecha}}</td>
                     <td>{{row.item.ticket}}</td>
                     <td>{{row.item.usuario.name}}</td>
-                    <td>{{row.item.contrato.cliente.nombre_comercial}}</td>
                     <td>{{row.item.tipo.nombre}}</td>
                     <td>{{row.item.descripcion}}</td>
-                    <td>
-                        <v-tooltip bottom>
-                            <template v-slot:activator="{ on, attrs }">
-                        <v-btn  icon v-bind="attrs"
-                                     v-on="on" color="primary" @click="downloadFile(row.item.adjunto)" target="_blank"
-                        :disabled="row.item.adjunto==null || row.item.adjunto==''">
-                            <v-icon dark>mdi-download</v-icon>
-                            </v-btn>
-                            </template>
-                            <span>{{ row.item.adjunto }}</span>
-                        </v-tooltip>
-                    </td>
+
                     <td>
                         <v-chip v-if="row.item.estado_tarea.id==1"
                             class="ma-2"
@@ -99,6 +138,16 @@
                          <v-btn  icon color="warning" v-if="$store.state.user.role==2" @click="sendMails(row.item)">
                             <v-icon dark>mdi-email</v-icon>
                         </v-btn>
+                        <v-tooltip bottom>
+                            <template v-slot:activator="{ on, attrs }">
+                        <v-btn  icon v-bind="attrs"
+                                     v-on="on" color="primary" @click="downloadFile(row.item.adjunto)" target="_blank"
+                        :disabled="row.item.adjunto==null || row.item.adjunto==''">
+                            <v-icon dark>mdi-download</v-icon>
+                            </v-btn>
+                            </template>
+                            <span>{{ row.item.adjunto }}</span>
+                        </v-tooltip>
                     </td>
                 </tr>
             </template>
@@ -200,15 +249,15 @@ import moment from "moment";
                 dialog: false,
                 search: "",
                 headers: [
-                { text: "Fecha entrega", value: "fecha" },
-                { text: "Ticket", value: "ticket" },
-                { text: "Responsable", value: "usuario.name" },
-                { text: "Cliente", value: "contrato.cliente.nombre_comercial" },
-                { text: "Tarea", value: "tipo.nombre" },
-                { text: "Entregable", value: "descripcion" },
-                { text: "Adjuntos", value: "adjunto",sortable: false, filterable: false },
-                { text: "Estado", value: "estado_tarea",align:'center',sortable: false, filterable: false },
-                { text: "Acciones", value: "controls", sortable: false }
+                    { text: "Cliente", value: "contrato.cliente.nombre_comercial" },
+                    { text: "Fecha entrega", value: "fecha" },
+                    { text: "Ticket", value: "ticket" },
+                    { text: "Responsable", value: "usuario.name" },
+                    { text: "Tarea", value: "tipo.nombre" },
+                    { text: "Entregable", value: "descripcion" },
+                   // { text: "Adjuntos", value: "adjunto",sortable: false, filterable: false },
+                    { text: "Estado", value: "estado_tarea",align:'center',sortable: false, filterable: false },
+                    { text: "Acciones", value: "controls", sortable: false }
             ],
             tarea: {},
                 estado_tarea: [],
@@ -216,8 +265,18 @@ import moment from "moment";
                 ruta_archivo:[],
                 status_archivos:false,
             loadingUpload: false,
+            dates: [],
+            alertas:0,
+            tareas_email: [],
             }
+
         },
+        computed: {
+            dateRangeText () {
+                return this.dates.join(' ~ ')
+            },
+        },
+
         /* beforeRouteEnter (to, from, next) {
             if (to.query.redirectFrom) {
                     next(vm => {
@@ -234,12 +293,45 @@ import moment from "moment";
                     this.tareas = response.data;
                     console.log(this.tareas);
                     this.loading = false;
+                    for (const item of this.tareas) {
+                        if ((item.fecha_alerta==moment().format('YYYY-MM-DD'))
+                        && (item.alerta_enviada==0)
+                        ) {
+                            this.alertas++;
+                            this.tareas_email.push(item);
+
+                        }
+                    }
                 });
                     this.axios.get("/api/estado-tareas/").then(response => {
                     this.estado_tarea = response.data;
                 });
         },
         methods: {
+            filtrarPorFecha(){
+                 this.loading = true;
+                this.axios
+                .get(`/api/tareas/${this.dates[0]}/${this.dates[1]}`)
+                .then(response => {
+                    this.tareas = response.data;
+                    console.log(this.tareas);
+                    this.loading = false;
+                     this.menu = false;
+                });
+            },
+            limpiarFiltro(){
+                this.loading = true;
+
+                this.axios
+                .get('/api/tareas')
+                .then(response => {
+                    this.menu = false;
+                this.dates=[];
+                    this.tareas = response.data;
+                    console.log(this.tareas);
+                    this.loading = false;
+                });
+            },
             editTarea(el) {
                 console.log(el);
                 this.files = [];
@@ -332,6 +424,12 @@ import moment from "moment";
                         let i = this.clientes.map(data => data.id).indexOf(id);
                         this.clientes.splice(i, 1)
                     });
+            },
+            async sendAlertMultiple(){
+                console.log(this.tareas_email);
+                for (const item of this.tareas_email) {
+                    await this.sendMails(item);
+                }
             },
              async sendMails(el){
                  console.log(el);

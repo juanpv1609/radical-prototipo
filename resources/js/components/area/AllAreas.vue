@@ -3,7 +3,16 @@
     <div>
         <v-card elevation="2" :loading="loading">
             <v-card-title class="d-flex justify-space-between mb-6"
-                >Areas
+                >
+                <v-badge
+                :content="areas.length"
+                :value="areas.length"
+                color="green"
+
+            >
+            Areas
+            </v-badge>
+
                 <v-btn
                     class="mx-2"
                     fab
