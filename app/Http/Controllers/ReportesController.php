@@ -8,9 +8,34 @@ use App\Models\Tareas;
 use App\Models\Contrato;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Date;
 
 class ReportesController extends Controller
 {
+    public function reporteContratos()
+    {
+        $hoy = date("Y-m-d");
+        $terminados=0;
+        $iniciados=0;
+        $contratos = Contrato::with('cliente', 'pais', 'area', 'tarea','estado_contrato')->get();
+        //dd($contratos);
+        foreach ($contratos as $item) {
+            if ($item->estado==1)
+                $iniciados++;
+            else
+                $terminados++;
+        }
+        $contratos->total_iniciados=$iniciados;
+        $contratos->total_terminados=$terminados;
+        $pdf = App::make('dompdf.wrapper');
+
+        $pdf->getDomPDF()->set_option("enable_php", true);
+        $pdf->getDomPDF()->set_option('isHtml5ParserEnabled', true);
+        $pdf->getDomPDF()->set_option('isRemoteEnabled', true);
+        $pdf->loadView('pdf.contratos', compact('contratos'));
+
+        return $pdf->download('reporteContratos_'.$hoy.'.pdf');
+    }
     public function reporteTareas($inicial, $final)
     {
         $tareas_pendientes=0;

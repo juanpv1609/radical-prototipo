@@ -18,7 +18,7 @@ class ClienteController extends Controller
         //    return view('cliente.index')->with('clientes', $clientes);
         $cond=['is_deleted' => 0];
 
-        $clientes = Cliente::with('tipo_identificacion')->where($cond)->get()->toArray();
+        $clientes = Cliente::with('tipo_identificacion')->where($cond)->orderBy('nombre_comercial')->get()->toArray();
         return $clientes;
     }
 

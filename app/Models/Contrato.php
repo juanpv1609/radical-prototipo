@@ -2,11 +2,12 @@
 
 namespace App\Models;
 
-use App\Models\Frecuencia;
-use App\Models\Pais;
-use App\Models\Cliente;
 use App\Models\Area;
+use App\Models\Pais;
 use App\Models\Tareas;
+use App\Models\Cliente;
+use App\Models\Frecuencia;
+use App\Models\EstadoContrato;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -44,7 +45,7 @@ class Contrato extends Model
     }
     public function estado_contrato()
     {
-        return $this->hasMany(EstadoContrato::class, 'estado', 'id');
+        return $this->hasMany(EstadoContrato::class, 'id', 'estado');
     }
 
 }

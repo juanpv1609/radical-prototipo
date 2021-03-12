@@ -101,6 +101,8 @@ Route::middleware('api')->group(function () {
 Route::get('reporte-tareas/{inicial}/{final}', [ReportesController::class, 'reporteTareas']);
 Route::get('reporte-tareas-contrato/{inicial}/{final}/{contrato}', [ReportesController::class, 'reporteTareasContrato']);
 Route::get('reporte-tareas-usuario/{inicial}/{final}/{usuario}', [ReportesController::class, 'reporteTareasUsuario']);
+//contratos
+Route::get('reporte-contratos', [ReportesController::class, 'reporteContratos']);
 
 
 

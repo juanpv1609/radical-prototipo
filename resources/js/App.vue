@@ -261,9 +261,10 @@ export default {
                     title: "Reportes",
                     icon: "mdi-chart-bar",
                     subLinks: [
-                        { title: "Por Tareas", link: "/reporte-tareas", icon: ""},
-                        { title: "Por Contrato", link: "/reporte-contratos", icon: ""},
-                        { title: "Por Usuario", link: "/reporte-usuario", icon: ""},
+                        { title: "Tareas", link: "/reporte-tareas", icon: ""},
+                        { title: "Tareas & Contrato", link: "/reporte-contratos", icon: ""},
+                        { title: "Tareas & Usuario", link: "/reporte-usuario", icon: ""},
+                        { title: "Contratos", link: "/reporte-allContratos", icon: ""},
                     ],
                 },
                 {

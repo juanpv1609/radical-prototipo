@@ -42,7 +42,7 @@
             <template v-slot:item="row">
                 <tr>
                     <td>{{row.item.id}}</td>
-                    <td>{{row.item.descripcion}}</td>
+                    <td>{{row.item.observacion}}</td>
                     <td>{{row.item.cliente.nombre_comercial}}</td>
                     <td>{{row.item.fecha_inicio}}</td>
                     <td>{{row.item.fecha_fin }}</td>
