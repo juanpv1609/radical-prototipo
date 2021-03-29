@@ -141,8 +141,8 @@
                             <table class="table table-sm" v-if="tareas.length>0">
                                         <thead class="table-dark">
                                             <tr>
-                                                <th style="width:20%">Responsable</th>
-                                                <th style="width:20%">Tarea</th>
+                                                <th style="width:18%">Responsable</th>
+                                                <th style="width:22%">Tarea</th>
                                                 <th >Entregable</th>
                                                 <th style="width:15%">Fecha</th>
                                                 <th style="width:5%">Alerta</th>
@@ -183,11 +183,10 @@
                                                             </select>
                                                     </td>
                                                     <td>
-                                                        <input
-                                                            type="text"
-                                                            class="form-control form-control-sm"
-                                                            v-model="value.descripcion"
-                                                        />
+                                                        <textarea class="form-control form-control-sm"
+                                                         v-model="value.descripcion"
+                                                         rows="1">
+                                                         </textarea>
                                                     </td>
                                                     <td>
                                                         <input
@@ -400,7 +399,11 @@ export default {
             let fecha_inicio = moment(this.contrato.fecha_inicio);
             let fecha_fin = moment(this.contrato.fecha_fin);
             let frecuencia = this.frecuencias.value.id;
+            if (!this.dias.value) {
+                this.dias.value=1
+            }
             let num_dia = this.dias.value;
+
             let dia_preferido;
             let alerta=this.frecuencias.value.alerta;
             switch (frecuencia) {
@@ -446,7 +449,7 @@ export default {
                         if (dia_preferido.day() == parseInt(num_dia)) {
                             this.datos.push({
                                 id: i,
-                                descripcion: 'INFORME '+this.tipo_tareas.value.nombre+' '+i,
+                                descripcion: 'INFORME '+this.tipo_tareas.value.nombre+' '+moment(dia_preferido).format( "MMM-YYYY"),
                                 contrato_id: this.contrato.id,
                                 dia_elegido: this.dias.value,
                                 fecha: moment(dia_preferido).format( "YYYY-MM-DD"),

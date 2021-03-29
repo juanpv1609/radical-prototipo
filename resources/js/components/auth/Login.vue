@@ -9,11 +9,12 @@
             lazy-validation
         >
     <v-card elevation="8" :loading="loading" class="m-auto "
-    max-width="344">
+    max-width="400">
 
 
 
          <v-card-text>
+        <v-img src="../img/nuevologo-radical.png" alt="Logo"  ></v-img>
              <h2 class="text-center"> Iniciar Sesión</h2>
                  <v-col cols="12">
                     <v-text-field
@@ -77,14 +78,20 @@
       ],
       }
     },
+    created(){
+        this.$store.commit('SET_LAYOUT', 'auth-layout')
+    },
     methods: {
         login() {
         if (this.$refs.form.validate()) {
             this.loading = true;
-          this.$store.dispatch("login", this.form).then(()=>{
+            this.$store.dispatch("login", this.form).then(()=>{
                this.loading = false;
                 //this.$router.push({ path: this.redirect || "/contratos" }, () => { }, () => { });
-               this.$router.push({ name: 'home' }).catch(() => [])
+               this.$router.push({ name: 'home' }).then(()=>{
+                   this.$store.commit('SET_LAYOUT', 'main-layout')
+                   }).catch(() => [])
+
            }).catch((error) =>{
                this.loading = false;
                 if (error.response) {

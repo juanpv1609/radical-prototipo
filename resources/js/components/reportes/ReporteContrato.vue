@@ -119,6 +119,14 @@ export default {
 
     },
     methods: {
+        customFilter (item, queryText, itemText) {
+        const textOne = item.name.toUpperCase()
+        const textTwo = item.abbr.toUpperCase()
+        const searchText = queryText.toUpperCase()
+
+        return textOne.indexOf(searchText) > -1 ||
+          textTwo.indexOf(searchText) > -1
+      },
         setDates(contrato){
             console.log(contrato);
              this.dates[0] = contrato.fecha_inicio;

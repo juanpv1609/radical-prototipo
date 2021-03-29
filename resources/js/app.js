@@ -34,6 +34,7 @@ Vue.use(VueSweetalert2);
 Vue.use(Toasted, options)
 Vue.use(VueRouter);
 //Vue.use(Swal);
+Vue.config.productionTip = false
 axios.defaults.withCredentials = true;
 //axios.defaults.baseURL = 'http://127.0.0.1:8000';
 axios.defaults.baseURL = process.env.MIX_APP_URL;

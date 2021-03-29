@@ -100,35 +100,14 @@
                     <td>{{row.item.descripcion}}</td>
 
                     <td>
-                        <v-chip v-if="row.item.estado_tarea.id==1"
-                            class="ma-2"
-                            small
-                            color="orange"
-
-                            text-color="white"
-                            > {{ row.item.estado_tarea.descripcion}}
-                            </v-chip>
-                            <v-chip v-else-if="row.item.estado_tarea.id==2"
-                            class="ma-2"
-                            small
-                            color="green"
-                            text-color="white"
-                            > {{ row.item.estado_tarea.descripcion}}
-                            </v-chip>
-                            <v-chip v-else-if="row.item.estado_tarea.id==3"
-                            class="ma-2"
-                            small
-                            color="red"
-                            text-color="white"
-                            > {{ row.item.estado_tarea.descripcion}}
-                            </v-chip>
-                            <v-chip v-else-if="row.item.estado_tarea.id==4"
-                            class="ma-2"
-                            small
-                            color="blue-grey"
-                            text-color="white"
-                            > {{ row.item.estado_tarea.descripcion}}
-                            </v-chip>
+                        <v-tooltip bottom>
+                            <template v-slot:activator="{ on, attrs }">
+                                <v-icon v-bind="attrs" v-on="on" :color="row.item.estado_tarea.color">
+                                    mdi-circle
+                                </v-icon>
+                            </template>
+                                <span>{{ row.item.estado_tarea.descripcion }}</span>
+                        </v-tooltip>
                     </td>
                     <td>
                         <v-btn :disabled="row.item.estado_tarea.id==3"  icon color="grey darken-3"
@@ -223,7 +202,7 @@
                         >
                             Cerrar
                         </v-btn>
-                    <v-btn  text color="primary"
+                    <v-btn   color="primary"
                             @click="updateTarea">
                         Actualizar
                         </v-btn>

@@ -62,14 +62,14 @@
 
                     </td>
                     <td>
-                        <v-btn  icon color="primary" @click="findTareas(row.item)">
+                        <v-btn  icon color="black" @click="findTareas(row.item)">
                             <v-icon dark>mdi-eye</v-icon>
                             </v-btn>
                             <v-btn  icon color="success" :to="{
                                                 name: 'contratos-tasks',
                                                 params: { id: row.item.id }
                                             }">
-                            <v-icon dark>mdi-plus</v-icon>
+                            <v-icon dark>mdi-plus-circle</v-icon>
                             </v-btn>
                     </td>
                     <td>
@@ -393,16 +393,12 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <div
-                            class="table-responsive overflow-auto "
-                            v-bind:style="{ heigth: '50%' }"
-                            v-if="tareas.length > 0"
-                        >
-                            <table class="table table-sm table-bordered" >
+
+                            <!-- <table class="table table-sm table-bordered" >
                                 <thead class="table-dark">
                                     <tr>
-                                        <th style="width:20%">Responsable</th>
-                                        <th style="width:20%">Tarea</th>
+                                        <th style="width:18%">Responsable</th>
+                                        <th style="width:22%">Tarea</th>
                                         <th>Entragable</th>
                                         <th style="width:15%">Fecha</th>
                                         <th style="width:10%">Estado</th>
@@ -442,11 +438,10 @@
                                             </select>
                                         </td>
                                         <td>
-                                            <input
-                                                type="text"
-                                                class="form-control form-control-sm"
-                                                v-model="value.descripcion"
-                                            />
+                                            <textarea class="form-control form-control-sm"
+                                                         v-model="value.descripcion"
+                                                         rows="1">
+                                                         </textarea>
                                         </td>
                                         <td>
                                             <input
@@ -501,10 +496,82 @@
                                         </td>
                                     </tr>
                                 </tbody>
-                            </table>
-                        </div>
-                            <p v-else class="alert alert-info">No se encontraron resultados :(</p>
-                    </div>
+                            </table> -->
+
+                        <v-data-table :headers="headersTareas"
+                                        :items="tareas"
+                                        >
+
+
+                            <template v-slot:item="{item}" >
+                                <tr  >
+                                    <td style="width:20%">
+                                        <select
+                                                v-model="item.responsable"
+                                                class="custom-select"
+                                            >
+                                                <option
+                                                    v-for="item in responsables"
+                                                    v-bind:key="item.id"
+                                                    v-bind:value="item.id"
+                                                >
+                                                    {{ item.name }}
+                                                </option>
+                                            </select>
+                                        </td>
+                                        <td style="width:24%">
+                                            <select
+                                                v-model="item.tipo_tarea"
+                                                class="custom-select"
+                                            >
+                                                <option
+                                                    v-for="item in tipo_tareas"
+                                                    v-bind:key="item.id"
+                                                    v-bind:value="item.id"
+                                                >
+                                                    {{ item.nombre }}
+                                                </option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <textarea class="form-control form-control-sm"
+                                                         v-model="item.descripcion"
+                                                         rows="1">
+                                                         </textarea>
+                                        </td>
+                                        <td style="width:15%">
+                                            <input
+                                                type="date"
+                                                class="form-control"
+                                                v-model="item.fecha"
+                                            />
+                                        </td>
+                                        <th style="width:10%">
+                                            <v-tooltip right>
+                                                <template v-slot:activator="{ on, attrs }">
+                                                    <v-icon v-bind="attrs" v-on="on" :color="item.estado_tarea.color">
+                                                        mdi-circle
+                                                    </v-icon>
+                                                </template>
+                                                    <span>{{ item.estado_tarea.descripcion }}</span>
+                                            </v-tooltip>
+                                            <!-- <span v-if="item.estado_tarea.id==1"
+                                             class="badge badge-warning">
+                                             {{ item.estado_tarea.descripcion}}</span>
+                                            <span v-if="item.estado_tarea.id==2"
+                                             class="badge badge-success">
+                                             {{ item.estado_tarea.descripcion}}</span>
+                                            <span v-if="item.estado_tarea.id==3"
+                                             class="badge badge-danger">
+                                             {{ item.estado_tarea.descripcion}}</span>
+                                            <span v-if="item.estado_tarea.id==4"
+                                             class="badge badge-info">
+                                             {{ item.estado_tarea.descripcion}}</span> -->
+                                        </th>
+                                </tr>
+                            </template>
+                       </v-data-table>
+                         </div>
                     <div class="modal-footer">
                         <div class="d-flex justify-content-between">
                             <v-btn
@@ -516,7 +583,7 @@
                         </v-btn>
                         <v-btn
                             color="primary"
-                            text
+
                            @click="updateTareas"
                                 v-if="tareas.length>0"
                         >
@@ -547,7 +614,7 @@ export default {
             frecuencias: {},
             responsables: [],
             tipo_tareas: [],
-            tareas: {},
+            tareas: [],
             contrato: {},
              dialog: false,
              dialogTareas: false,
@@ -568,11 +635,13 @@ export default {
                 { text: "Tareas", value: "" },
                 { text: "Acciones", value: "controls", sortable: false }
             ],
+            searchTareas: "",
             headersTareas: [
-                { text: "Responsable", value: "responsable" },
-                { text: "Tipo", value: "tipo_tarea" },
-                { text: "Fecha", value: "fecha" },
-                { text: "Estado", value: "estado_tarea" },
+                 { text: "Responsable", value: "responsable" },
+                 { text: "Tarea", value: "tipo_tarea" },
+                 { text: "Entregable", value: "entregable" },
+                 { text: "Fecha", value: "fecha" },
+                 { text: "Estado", value: "estado_tarea" },
             ],
             date: new Date().toISOString().substr(0, 10),
             menu: false,

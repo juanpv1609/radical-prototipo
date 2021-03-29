@@ -14,7 +14,8 @@ const store = new Vuex.Store({
     state: {
         user:null,
         auth:false,
-        isUserLoggedIn: false
+        isUserLoggedIn: false,
+        layout: 'auth-layout'
     },
     plugins: [createPersistedState()],
     getters:{
@@ -25,7 +26,10 @@ const store = new Vuex.Store({
             state.user = user
             state.auth = Boolean(user)
             state.isUserLoggedIn = Boolean(user)
-        }
+        },
+        SET_LAYOUT (state, newLayout) {
+            state.layout = newLayout
+          }
     },
     actions:{
         async login({dispatch},credentials){
@@ -36,14 +40,16 @@ const store = new Vuex.Store({
             await axios.post('/api/logout');
             return dispatch("getUser");
         },
-        getUser({commit}){
-            axios.get('/api/user').then(res => {
+       async getUser({commit}){
+        await axios.get('/api/user').then(res => {
                 //console.log(res.data);
                 commit("SET_USER",res.data);
+                commit('SET_LAYOUT', 'main-layout');
 
             }).catch(() => {
 
                 commit("SET_USER", null);
+                commit('SET_LAYOUT', 'auth-layout');
 
             });
         }
