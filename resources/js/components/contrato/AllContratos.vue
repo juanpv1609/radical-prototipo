@@ -41,7 +41,6 @@
             >
             <template v-slot:item="row">
                 <tr>
-                    <td>{{row.item.id}}</td>
                     <td>{{row.item.observacion}}</td>
                     <td>{{row.item.cliente.nombre_comercial}}</td>
                     <td>{{row.item.fecha_inicio}}</td>
@@ -84,47 +83,7 @@
             </template>
     </v-data-table>
         </v-card-text>
-
-        <v-card-actions> </v-card-actions>
     </v-card>
-    <!-- <template>
-        <v-row justify="center" >
-           <v-dialog v-model="dialogTareas" max-width="600px">
-               <v-card>
-                   <v-card-title>
-                       <span class="headline">
-
-                       </span>
-                   </v-card-title>
-                   <v-card-text>
-                       <v-data-table :headers="headersTareas"
-                                        :items="tareas">
-
-                       </v-data-table>
-                       <template v-slot:item="row">
-                        <tr>
-                            <td>
-                                <v-select :items="tareas"
-                                v-model="frecuencias.value"
-                                    label="Frecuencia" >
-                                <template slot="selection" slot-scope="data">
-                                    {{ data.item.descripcion }}
-                                </template>
-                                <template slot="item" slot-scope="data">
-                                    {{ data.item.descripcion }}
-                                </template>
-                            </v-select>
-                                {{row.item.responsable}}</td>
-                            <td>{{row.item.tipo_tarea}}</td>
-                            <td>{{row.item.fecha}}</td>
-                            <td>{{row.item.estado_tarea.id}}</td>
-                        </tr>
-                       </template>
-                   </v-card-text>
-               </v-card>
-           </v-dialog>
-        </v-row>
-    </template> -->
     <template>
         <v-row justify="center">
             <v-dialog v-model="dialog" persistent max-width="800px">
@@ -394,110 +353,6 @@
                     </div>
                     <div class="modal-body">
 
-                            <!-- <table class="table table-sm table-bordered" >
-                                <thead class="table-dark">
-                                    <tr>
-                                        <th style="width:18%">Responsable</th>
-                                        <th style="width:22%">Tarea</th>
-                                        <th>Entragable</th>
-                                        <th style="width:15%">Fecha</th>
-                                        <th style="width:10%">Estado</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr
-                                        v-for="value in tareas"
-                                        v-bind:key="value.id"
-                                    >
-                                        <td>
-                                            <select
-                                                v-model="value.responsable"
-                                                class="form-control form-control-sm"
-                                            >
-                                                <option
-                                                    v-for="item in responsables"
-                                                    v-bind:key="item.id"
-                                                    v-bind:value="item.id"
-                                                >
-                                                    {{ item.name }}
-                                                </option>
-                                            </select>
-                                        </td>
-                                        <td>
-                                            <select
-                                                v-model="value.tipo_tarea"
-                                                class="form-control form-control-sm"
-                                            >
-                                                <option
-                                                    v-for="item in tipo_tareas"
-                                                    v-bind:key="item.id"
-                                                    v-bind:value="item.id"
-                                                >
-                                                    {{ item.nombre }}
-                                                </option>
-                                            </select>
-                                        </td>
-                                        <td>
-                                            <textarea class="form-control form-control-sm"
-                                                         v-model="value.descripcion"
-                                                         rows="1">
-                                                         </textarea>
-                                        </td>
-                                        <td>
-                                            <input
-                                                type="date"
-                                                class="form-control form-control-sm"
-                                                v-model="value.fecha"
-                                            />
-                                        </td>
-                                        <td>
-                                            <span
-                                                v-if="
-                                                    value.estado_tarea.id == 1
-                                                "
-                                                class="badge badge-warning"
-                                            >
-                                                {{
-                                                    value.estado_tarea
-                                                        .descripcion
-                                                }}</span
-                                            >
-                                            <span
-                                                v-else-if="
-                                                    value.estado_tarea.id == 2
-                                                "
-                                                class="badge badge-success"
-                                            >
-                                                {{
-                                                    value.estado_tarea
-                                                        .descripcion
-                                                }}</span
-                                            >
-                                            <span
-                                                v-else-if="
-                                                    value.estado_tarea.id == 3
-                                                "
-                                                class="badge badge-danger"
-                                            >
-                                                {{
-                                                    value.estado_tarea
-                                                        .descripcion
-                                                }}</span
-                                            >
-                                            <span
-                                                v-else
-                                                class="badge badge-info"
-                                            >
-                                                {{
-                                                    value.estado_tarea
-                                                        .descripcion
-                                                }}</span
-                                            >
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table> -->
-
                         <v-data-table :headers="headersTareas"
                                         :items="tareas"
                                         >
@@ -624,7 +479,6 @@ export default {
                 titleForm: null,
                 search: "",
                 headers: [
-                { text: "ID", value: "id" },
                 { text: "Descripcion", value: "descripcion" },
                 { text: "Cliente", value: "cliente.nombre_comercial" },
                 { text: "Fecha inicio", value: "fecha_inicio" },

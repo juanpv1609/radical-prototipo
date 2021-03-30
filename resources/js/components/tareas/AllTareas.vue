@@ -89,10 +89,14 @@
                 :headers="headers"
                 :items="tareas"
                 :search="search"
+                sort-by="fecha"
+                group-by="contrato.cliente.nombre_comercial"
+                show-group-by
             >
+
             <template v-slot:item="row">
                 <tr >
-                    <td>{{row.item.contrato.cliente.nombre_comercial}}</td>
+                    <td v-if="headers.text=='Cliente'">{{row.item.contrato.cliente.nombre_comercial}}</td>
                     <td>{{row.item.fecha}}</td>
                     <td>{{row.item.ticket}}</td>
                     <td>{{row.item.usuario.name}}</td>
@@ -228,15 +232,15 @@ import moment from "moment";
                 dialog: false,
                 search: "",
                 headers: [
-                    { text: "Cliente", value: "contrato.cliente.nombre_comercial" },
-                    { text: "Fecha entrega", value: "fecha" },
-                    { text: "Ticket", value: "ticket" },
-                    { text: "Responsable", value: "usuario.name" },
-                    { text: "Tarea", value: "tipo.nombre" },
-                    { text: "Entregable", value: "descripcion" },
+                    { text: "Cliente", value: "contrato.cliente.nombre_comercial" ,align: 'start',groupable: true},
+                    { text: "Fecha entrega", value: "fecha" ,groupable: false},
+                    { text: "Ticket", value: "ticket" ,groupable: false},
+                    { text: "Responsable", value: "usuario.name" ,groupable: false},
+                    { text: "Tarea", value: "tipo.nombre" ,groupable: false},
+                    { text: "Entregable", value: "descripcion" ,groupable: false},
                    // { text: "Adjuntos", value: "adjunto",sortable: false, filterable: false },
-                    { text: "Estado", value: "estado_tarea",align:'center',sortable: false, filterable: false },
-                    { text: "Acciones", value: "controls", sortable: false }
+                    { text: "Estado", value: "estado_tarea",align:'center',sortable: false, filterable: false ,groupable: false},
+                    { text: "Acciones", value: "controls", sortable: false ,groupable: false}
             ],
             tarea: {},
                 estado_tarea: [],
@@ -382,12 +386,15 @@ import moment from "moment";
                         this.dialog = false;
                         this.loading = false;
                         this.status_archivos = false;
+
                         this.axios
                         .get('/api/tareas')
                         .then(response => {
                             this.tareas = response.data;
                             console.log(this.tareas);
                             this.loading = false;
+                            if (this.dates.length>0) this.filtrarPorFecha()
+
                         });
                             this.axios.get("/api/estado-tareas/").then(response => {
                             this.estado_tarea = response.data;
