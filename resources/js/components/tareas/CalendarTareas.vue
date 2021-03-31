@@ -223,7 +223,7 @@
                 details: `Fecha de entrega: ${item.fecha}<br>
                             Responsable: ${item.usuario.name}<br>
                         Cliente: ${item.contrato.cliente.nombre_comercial} <br>
-                        Ticket: ${(item.ticket==null) ? '' : item.ticket} <br>
+                        Ticket: ${item.ticket} <br>
                         Estado: ${item.estado_tarea.descripcion}`,
             })
             }
