@@ -14,7 +14,7 @@
     <h1 class="h1">{{ $details['title'] }}</h1>
 
     <p>{{ $details['body'] }}</p>
-    <table width="80%" class="table table-striped">
+    <table width="100%" class="table table-striped">
         <tbody>
             <tr>
                 <td>Cliente:</td>
@@ -44,10 +44,10 @@
     </table>
     <br>
     <br>
-    <p><small>Este correo fue generado automaticamente, por lo cual no debe responderlo.
-        Si existe algun error, eliminarlo o comunicarse con <a href="#">info@gruporadical.com</a> ó <a href="#">soporte@gruporadical.com</a></small></p>
+    <img src="https://www.gruporadical.com/build/radical/nuevologo-radical.png" alt="logo">
     <br>
-    <img src="{{ asset('img/nuevologo-radical.png') }}" alt="logo">
+    <p><small style="font-size: 10px">Este correo fue generado automaticamente, por lo cual no debe responderlo.
+        Si existe algún error, eliminarlo o comunicarse con <a href="#">soporte@gruporadical.com</a></small></p>
 
 </body>
 

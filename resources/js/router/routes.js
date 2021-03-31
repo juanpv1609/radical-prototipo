@@ -12,6 +12,7 @@ import AllAreas from "../components/area/AllAreas.vue";
 import AllUsuarios from "../components/usuario/AllUsuarios.vue";
 
 import AllTareas from "../components/tareas/AllTareas.vue";
+import CalendarTareas from "../components/tareas/CalendarTareas.vue";
 import EditTarea from "../components/tareas/EditTarea.vue";
 
 import TipoTareas from "../components/tipo_tareas/TipoTareas.vue";
@@ -91,6 +92,14 @@ const router = new VueRouter({
             name: "tareas",
             path: "/tareas",
             component: AllTareas,
+            meta: {
+          requiresAuth: true,
+        },
+        },
+        {
+            name: "calendar-tareas",
+            path: "/calendar-tareas",
+            component: CalendarTareas,
             meta: {
           requiresAuth: true,
         },

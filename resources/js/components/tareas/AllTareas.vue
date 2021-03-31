@@ -8,27 +8,38 @@
                 color="green"
 
             >
-            Tareas asignadas
+            Tareas registradas
             </v-badge>
-
+            <v-btn-toggle
+                mandatory
+                >
             <v-btn
-                    class="mx-2"
+
                     fab
                     small
                     :disabled="this.tareas_email.length==0"
                     @click="sendAlertMultiple"
                 >
                     <v-badge
+                        bottom
+                        left
                         :content="alertas"
                         :value="alertas"
-                        color="green"
+                        color="red"
 
                     >
-                        <v-icon large>
+                        <v-icon >
                         mdi-email
                         </v-icon>
                     </v-badge>
                 </v-btn>
+                <v-btn
+                    fab
+                    small :to="{
+                                    name: 'calendar-tareas'}">
+                    <v-icon >mdi-calendar</v-icon>
+                </v-btn>
+            </v-btn-toggle>
         </v-card-title>
         <v-card-text>
             <v-row>

@@ -48,7 +48,7 @@ class SendAlert extends Command
                 foreach ($alerta_fechas as $item) {
                     $details = [
 
-                        'title' => 'Notificacion de alerta',
+                        'title' => 'Notificación de alerta',
                         'body' => 'Estimad@ '.$item->usuario->name.' el software RGSDM (Radical Gestión SDM) ha generado la siguiente alerta:',
                         'entregable' => $item->descripcion,
                         'cliente' => $item->contrato->cliente->razon_social,
