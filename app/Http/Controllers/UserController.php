@@ -11,7 +11,7 @@ class UserController extends Controller
     public function index()
     {
         $cond=[ 'is_deleted' => 0];
-         $usuarios = User::where($cond)->get()->toArray();
+         $usuarios = User::where($cond)->orderBy('name')->get()->toArray();
 
         return ($usuarios);
 
@@ -20,7 +20,7 @@ class UserController extends Controller
     {
         $cond=['is_deleted' => 0];
 
-        $usuarios = User::where($cond)->get()->toArray();
+        $usuarios = User::where($cond)->orderBy('name')->get()->toArray();
 
         return ($usuarios);
 
