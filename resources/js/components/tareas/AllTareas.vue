@@ -109,10 +109,10 @@
                 <tr >
                     <td v-if="headers.text=='Cliente'">{{row.item.contrato.cliente.nombre_comercial}}</td>
                     <td>{{row.item.fecha}}</td>
-                    <td>{{row.item.ticket}}</td>
                     <td>{{row.item.usuario.name}}</td>
-                    <td>{{row.item.tipo.nombre}}</td>
+                    <!-- <td>{{row.item.tipo.nombre}}</td> -->
                     <td>{{row.item.descripcion}}</td>
+                    <td>{{row.item.ticket}}</td>
 
                     <td>
                         <v-tooltip bottom>
@@ -245,10 +245,10 @@ import moment from "moment";
                 headers: [
                     { text: "Cliente", value: "contrato.cliente.nombre_comercial" ,align: 'start',groupable: true},
                     { text: "Fecha entrega", value: "fecha" ,groupable: false},
-                    { text: "Ticket", value: "ticket" ,groupable: false},
                     { text: "Responsable", value: "usuario.name" ,groupable: false},
-                    { text: "Tarea", value: "tipo.nombre" ,groupable: false},
+                    // { text: "Tarea", value: "tipo.nombre" ,groupable: false},
                     { text: "Entregable", value: "descripcion" ,groupable: false},
+                    { text: "Ticket", value: "ticket" ,groupable: false},
                    // { text: "Adjuntos", value: "adjunto",sortable: false, filterable: false },
                     { text: "Estado", value: "estado_tarea",align:'center',sortable: false, filterable: false ,groupable: false},
                     { text: "Acciones", value: "controls", sortable: false ,groupable: false}
