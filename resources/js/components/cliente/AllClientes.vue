@@ -41,12 +41,37 @@
                     >
                     <template v-slot:item="row">
                         <tr>
-                            <td>{{row.item.id}}</td>
                             <td>{{row.item.razon_social}}</td>
                             <td>{{row.item.nombre_comercial}}</td>
-                            <td>{{row.item.correo }}</td>
-                            <td>{{row.item.telefono}}</td>
-                            <td>{{row.item.direccion}}</td>
+                            <td>
+                                <v-tooltip bottom>
+                                    <template v-slot:activator="{ on, attrs }">
+                                        <v-btn  icon small v-bind="attrs"
+                                            v-on="on" >
+                                            <v-icon >mdi-email</v-icon>
+                                        </v-btn>
+                                    </template>
+                                    <span>{{ row.item.correo }}</span>
+                                </v-tooltip>
+                                <v-tooltip bottom>
+                                    <template v-slot:activator="{ on, attrs }">
+                                        <v-btn  icon small v-bind="attrs"
+                                            v-on="on" >
+                                            <v-icon >mdi-phone</v-icon>
+                                        </v-btn>
+                                    </template>
+                                    <span>{{ row.item.telefono }}</span>
+                                </v-tooltip>
+                                <v-tooltip bottom>
+                                    <template v-slot:activator="{ on, attrs }">
+                                        <v-btn  icon small v-bind="attrs"
+                                            v-on="on" >
+                                            <v-icon >mdi-map-marker</v-icon>
+                                        </v-btn>
+                                    </template>
+                                    <span>{{ row.item.direccion }}</span>
+                                </v-tooltip>
+                            </td>
                             <td>
                                 <v-btn  icon color="primary" @click="editClient(row.item)">
                                     <v-icon dark>mdi-pencil</v-icon>
@@ -186,17 +211,9 @@
                 titleForm: null,
                 search: "",
                 headers: [
-                {
-                    text: "Id",
-                    // align: 'start',
-                    // filterable: false,
-                    value: "id"
-                },
                 { text: "Razon Social", value: "razon_social" },
                 { text: "Nombre Comercial", value: "nombre_comercial" },
-                { text: "Correo", value: "correo" },
-                { text: "Telefono", value: "telefono" },
-                { text: "Direccion", value: "direccion" },
+                { text: "Contacto", value: "contacto" },
                 { text: "Acciones", value: "controls", sortable: false }
             ]
 

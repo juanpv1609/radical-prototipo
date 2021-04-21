@@ -1,8 +1,10 @@
 <template>
 <div>
     <v-card elevation="2" :loading="loading">
-        <v-card-title class="d-flex justify-space-between mb-6"
+        <v-card-title class="d-flex justify-space-between"
             >Creación de Tareas
+            <v-spacer></v-spacer>
+
         </v-card-title>
 
         <v-card-text>
@@ -10,62 +12,54 @@
                 <v-col cols="8">
                     <v-row>
                         <v-col cols="6">
-                             <v-select :items="usuarios"
-                                v-model="usuarios.value"
-                                    label="Seleccione un responsable" >
-                                <template slot="selection" slot-scope="data">
-                                    <!-- HTML that describe how select should render selected items -->
-                                    {{ data.item.name }}
-                                </template>
-                                <template slot="item" slot-scope="data">
-                                    <!-- HTML that describe how select should render items when the select is open -->
-                                    {{ data.item.name }}
-                                </template>
-                            </v-select>
+
+                            <v-autocomplete
+                                    :items="usuarios"
+                                    item-text="name"
+                                    item-value="id"
+                                    v-model="usuario"
+                                    label="Seleccione un responsable"
+                                    return-object
+                                    dense
+                                ></v-autocomplete>
                         </v-col>
                         <v-col cols="6">
-                            <v-select :items="tipo_tareas"
-                                v-model="tipo_tareas.value"
-                                    label="Seleccione un tipo de tarea" >
-                                <template slot="selection" slot-scope="data">
-                                    <!-- HTML that describe how select should render selected items -->
-                                    {{ data.item.nombre }}
-                                </template>
-                                <template slot="item" slot-scope="data">
-                                    <!-- HTML that describe how select should render items when the select is open -->
-                                    {{ data.item.nombre }}
-                                </template>
-                            </v-select>
+
+                            <v-autocomplete
+                                    :items="tipo_tareas"
+                                    item-text="nombre"
+                                    item-value="id"
+                                    v-model="tipo_tarea"
+                                    label="Seleccione un tipo de tarea"
+                                    return-object
+                                    dense
+                                ></v-autocomplete>
                         </v-col>
                     </v-row>
                      <v-row>
                         <v-col cols="6">
-                            <v-select :items="frecuencias"
-                                v-model="frecuencias.value"
-                                    label="Frecuencia" >
-                                <template slot="selection" slot-scope="data">
-                                    <!-- HTML that describe how select should render selected items -->
-                                    {{ data.item.descripcion }}
-                                </template>
-                                <template slot="item" slot-scope="data">
-                                    <!-- HTML that describe how select should render items when the select is open -->
-                                    {{ data.item.descripcion }}
-                                </template>
-                            </v-select>
+
+                            <v-autocomplete
+                                    :items="frecuencias"
+                                    item-text="descripcion"
+                                    item-value="id"
+                                    v-model="frecuencia"
+                                    label="Frecuencia"
+                                    return-object
+                                    dense
+                                ></v-autocomplete>
                         </v-col>
                         <v-col cols="6">
-                            <v-select :items="dias"
-                                v-model="dias.value"
-                                    label="Cada dia" >
-                                <template slot="selection" slot-scope="data">
-                                    <!-- HTML that describe how select should render selected items -->
-                                    {{ data.item.text }}
-                                </template>
-                                <template slot="item" slot-scope="data">
-                                    <!-- HTML that describe how select should render items when the select is open -->
-                                    {{ data.item.text }}
-                                </template>
-                            </v-select>
+
+                            <v-autocomplete
+                                    :items="dias"
+                                    item-text="text"
+                                    item-value="id"
+                                    v-model="dia"
+                                    label="Cada dia"
+                                    return-object
+                                    dense
+                                ></v-autocomplete>
                         </v-col>
 
 
@@ -91,8 +85,6 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                <td>Contrato N</td>
-                                <td>{{contrato.id}}</td>
                                 </tr>
                                 <tr>
                                     <td>Cliente</td>
@@ -106,55 +98,50 @@
                                     <td>Fecha final</td>
                                     <td><span class="text-danger">{{contrato.fecha_fin}}</span></td>
                                 </tr>
-                               <!--  <tr>
-                                    <td>Pais</td>
-                                    <td>{{contrato.pais.nombre}}</td>
-                                </tr>
-                                <tr>
-                                    <td>Area</td>
-                                    <td>{{contrato.area.nombre}}</td>
-                                </tr>
-                                <tr>
-                                    <td>Solucion</td>
-                                    <td>{{contrato.solucion}}</td>
-                                </tr>
-                                <tr>
-                                    <td>Marca</td>
-                                    <td>{{contrato.marca}}</td>
-                                </tr> -->
                             </tbody>
 
                         </table>
                         <v-btn
-                        color="success" block
+                        color="success"
+                        block
                         :loading="loading"
                         :disabled="(loading || !tareas.length>0)"
                         @click="addTarea"
                         >
-                        Enviar {{parseInt(diferencia)}} tareas
+                        Enviar {{(parseInt(diferencia)>0) ? parseInt(diferencia) : '' }} tareas
                         </v-btn>
+
                 </v-col>
             </v-row>
             <v-row>
-                        <v-col cols="12">
-
-                            <table class="table table-sm" v-if="tareas.length>0">
-                                        <thead class="table-dark">
-                                            <tr>
+                        <v-col cols="12" v-if="tareas.length>0">
+                            <v-simple-table  fixed-header height="500px">
+                                <template v-slot:default>
+                                    <thead >
+                                        <tr>
                                                 <th style="width:18%">Responsable</th>
-                                                <th style="width:22%">Tarea</th>
+                                                <th style="width:15%">Tarea</th>
                                                 <th >Entregable</th>
                                                 <th style="width:15%">Fecha</th>
-                                                <th style="width:5%">Alerta</th>
+                                                <th style="width:5%">
+                                                    <input
+                                                            type="text"
+                                                            class="form-control form-control-sm"
+                                                            v-model="alerta"
+                                                            @keyup.enter="cambiaAlertas"
+                                                        />
+                                                        Alerta
+
+                                                </th>
                                                 <th></th>
                                             </tr>
-                                        </thead>
-                                            <tbody>
-                                                <tr
-                                                    v-for="value in tareas"
-                                                    v-bind:key="value.id"
-                                                >
-                                                    <td>
+                                    </thead>
+                                    <tbody>
+                                        <tr
+                                        v-for="value in tareas"
+                                        :key="value.id"
+                                        >
+                                        <td>
                                                         <select
                                                                 v-model="value.responsable"
                                                                 class="form-control form-control-sm"
@@ -207,61 +194,10 @@
                                                             <v-icon dark>mdi-delete</v-icon>
                                                             </v-btn>
                                                     </th>
-                                                </tr>
-                                                <!-- <tr >
-                                                    <td>
-                                                        <select
-                                                                v-model="tarea.responsable"
-                                                                class="form-control form-control-sm"
-                                                            >
-                                                                <option
-                                                                    v-for="item in usuarios"
-                                                                    v-bind:key="item.id"
-                                                                    v-bind:value="item.id"
-                                                                >
-                                                                    {{ item.name }}
-                                                                </option>
-                                                            </select>
-                                                    </td>
-                                                    <td>
-                                                        <select
-                                                                v-model="tarea.tipo_tarea"
-                                                                class="form-control form-control-sm"
-                                                            >
-                                                                <option
-                                                                    v-for="item in tipo_tareas"
-                                                                    v-bind:key="item.id"
-                                                                    v-bind:value="item.id"
-                                                                >
-                                                                    {{ item.nombre }}
-                                                                </option>
-                                                            </select>
-                                                    </td>
-                                                    <td>
-                                                        <input
-                                                            type="date"
-                                                            class="form-control form-control-sm"
-                                                            v-model="tarea.fecha"
-                                                        />
-                                                    </td>
-                                                    <td>
-                                                        <input
-                                                            type="text"
-                                                            class="form-control form-control-sm"
-                                                            v-model="tarea.alerta"
-                                                        />
-                                                    </td>
-                                                    <th>
-                                                        <button
-                                                            class="btn btn-sm btn-primary"
-                                                            type="button"
-                                                            v-on:click="pushTarea(tarea)">
-                                                            <i class="fas fa-plus"></i>
-                                                        </button>
-                                                    </th>
-                                                </tr> -->
-                                            </tbody>
-                            </table>
+                                        </tr>
+                                    </tbody>
+                                    </template>
+                            </v-simple-table>
                         </v-col>
                     </v-row>
         </v-card-text>
@@ -277,6 +213,7 @@ import moment from "moment";
 export default {
     data() {
         return {
+            alerta:null,
             contrato: {},
             frecuencias: {},
             usuarios: [],
@@ -287,6 +224,10 @@ export default {
             tipo_tareas: [],
             datos: [],
             loading: false,
+            usuario:{},
+            tipo_tarea:{},
+            frecuencia:{},
+            dia:{},
             dias: [
                 { text: "LUNES", value: 1 },
                 { text: "MARTES", value: 2 },
@@ -313,6 +254,11 @@ export default {
         //console.log(moment().format('MMMM Do YYYY, h:mm:ss a'));
     },
     methods: {
+        cambiaAlertas(){
+            this.tareas.forEach(element => {
+                element.alerta=this.alerta
+            });
+        },
         initialData(){
             this.axios
             .get("/api/frecuencias/")
@@ -395,17 +341,18 @@ export default {
             this.diferencia--;
         },
         generarFechas() {
+            moment.locale('es');
             this.datos  = [];
             let fecha_inicio = moment(this.contrato.fecha_inicio);
             let fecha_fin = moment(this.contrato.fecha_fin);
-            let frecuencia = this.frecuencias.value.id;
-            if (!this.dias.value) {
-                this.dias.value=1
+            let frecuencia = this.frecuencia.id;
+            if (!this.dia.value) {
+                this.dia.value=1
             }
-            let num_dia = this.dias.value;
+            let num_dia = this.dia.value;
 
             let dia_preferido;
-            let alerta=this.frecuencias.value.alerta;
+            let alerta=this.frecuencia.alerta;
             switch (frecuencia) {
                 case 2: //semanal
                 //this.algoritmo(fecha_inicio,fecha_fin,frecuencia,alerta,num_dia,"week","weeks",1);
@@ -419,12 +366,12 @@ export default {
                         if (dia_preferido.day() == parseInt(num_dia)) {
                             this.datos.push({
                                 id: i,
-                                descripcion: 'INFORME '+this.tipo_tareas.value.nombre+' '+i,
+                                descripcion: ('INFORME '+this.frecuencia.descripcion+' '+moment(dia_preferido).format( "MMM-YYYY")).toUpperCase(),
                                 contrato_id: this.contrato.id,
-                                dia_elegido: this.dias.value,
+                                dia_elegido: this.dia.value,
                                 fecha: moment(dia_preferido).format( "YYYY-MM-DD"),
-                                responsable: this.usuarios.value.id,
-                                tipo_tarea: this.tipo_tareas.value.id,
+                                responsable: this.usuario.id,
+                                tipo_tarea: this.tipo_tarea.id,
                                 frecuencia: frecuencia,
                                 alerta: alerta
                             });
@@ -447,14 +394,15 @@ export default {
                             dia_preferido.add(1, "day");
                         }
                         if (dia_preferido.day() == parseInt(num_dia)) {
+                            var aux_fecha= moment(dia_preferido);
                             this.datos.push({
                                 id: i,
-                                descripcion: 'INFORME '+this.tipo_tareas.value.nombre+' '+moment(dia_preferido).format( "MMM-YYYY"),
+                                descripcion: (`INFORME ${this.frecuencia.descripcion} ${moment(dia_preferido).format( "YYYY")} ${moment(aux_fecha.subtract(1,"months")).format( "MMMM")}-${moment(dia_preferido).format( "MMMM")}`).toUpperCase(),
                                 contrato_id: this.contrato.id,
-                                dia_elegido: this.dias.value,
+                                dia_elegido: this.dia.value,
                                 fecha: moment(dia_preferido).format( "YYYY-MM-DD"),
-                                responsable: this.usuarios.value.id,
-                                tipo_tarea: this.tipo_tareas.value.id,
+                                responsable: this.usuario.id,
+                                tipo_tarea: this.tipo_tarea.id,
                                 frecuencia: frecuencia,
                                 alerta: alerta
                             });
@@ -476,12 +424,12 @@ export default {
                         if (dia_preferido.day() == parseInt(num_dia)) {
                             this.datos.push({
                                id: i,
-                                descripcion: 'INFORME '+this.tipo_tareas.value.nombre+' '+i,
+                                descripcion: ('INFORME '+this.frecuencia.descripcion+' '+moment(dia_preferido).format( "YYYY")+' ('+i+'/'+parseInt(this.diferencia)+')').toUpperCase(),
                                 contrato_id: this.contrato.id,
-                                dia_elegido: this.dias.value,
+                                dia_elegido: this.dia.value,
                                 fecha: moment(dia_preferido).format( "YYYY-MM-DD"),
-                                responsable: this.usuarios.value.id,
-                                tipo_tarea: this.tipo_tareas.value.id,
+                                responsable: this.usuario.id,
+                                tipo_tarea: this.tipo_tarea.id,
                                 frecuencia: frecuencia,
                                 alerta: alerta
                             });
@@ -504,12 +452,12 @@ export default {
                         if (dia_preferido.day() == parseInt(num_dia)) {
                             this.datos.push({
                                 id: i,
-                                descripcion: 'INFORME '+this.tipo_tareas.value.nombre+' '+i,
+                                descripcion: ('INFORME '+this.frecuencia.descripcion+' '+moment(dia_preferido).format( "YYYY")+' ('+i+'/'+parseInt(this.diferencia)+')').toUpperCase(),
                                 contrato_id: this.contrato.id,
-                                dia_elegido: this.dias.value,
+                                dia_elegido: this.dia.value,
                                 fecha: moment(dia_preferido).format( "YYYY-MM-DD"),
-                                responsable: this.usuarios.value.id,
-                                tipo_tarea: this.tipo_tareas.value.id,
+                                responsable: this.usuario.id,
+                                tipo_tarea: this.tipo_tarea.id,
                                 frecuencia: frecuencia,
                                 alerta: alerta
                             });
@@ -531,12 +479,12 @@ export default {
                         if (dia_preferido.day() == parseInt(num_dia)) {
                             this.datos.push({
                                 id: i,
-                                descripcion: 'INFORME '+this.tipo_tareas.value.nombre+' '+i,
+                                descripcion: ('INFORME '+this.frecuencia.descripcion+' '+moment(dia_preferido).format( "YYYY")+' ('+i+'/'+parseInt(this.diferencia)+')').toUpperCase(),
                                 contrato_id: this.contrato.id,
-                                dia_elegido: this.dias.value,
+                                dia_elegido: this.dia.value,
                                 fecha: moment(dia_preferido).format( "YYYY-MM-DD"),
-                                responsable: this.usuarios.value.id,
-                                tipo_tarea: this.tipo_tareas.value.id,
+                                responsable: this.usuario.id,
+                                tipo_tarea: this.tipo_tarea.id,
                                 frecuencia: frecuencia,
                                 alerta: alerta
                             });

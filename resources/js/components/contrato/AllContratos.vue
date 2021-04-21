@@ -62,7 +62,7 @@
                     </td>
                     <td>
                         <v-btn  icon color="black" @click="findTareas(row.item)">
-                            <v-icon dark>mdi-eye</v-icon>
+                            <v-icon dark>mdi-list-status</v-icon>
                             </v-btn>
                             <v-btn  icon color="success" :to="{
                                                 name: 'contratos-tasks',
@@ -340,7 +340,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">
-                            Tareas Registradas
+                            {{titleTareas}}
                         </h5>
                         <button
                             type="button"
@@ -410,18 +410,6 @@
                                                 </template>
                                                     <span>{{ item.estado_tarea.descripcion }}</span>
                                             </v-tooltip>
-                                            <!-- <span v-if="item.estado_tarea.id==1"
-                                             class="badge badge-warning">
-                                             {{ item.estado_tarea.descripcion}}</span>
-                                            <span v-if="item.estado_tarea.id==2"
-                                             class="badge badge-success">
-                                             {{ item.estado_tarea.descripcion}}</span>
-                                            <span v-if="item.estado_tarea.id==3"
-                                             class="badge badge-danger">
-                                             {{ item.estado_tarea.descripcion}}</span>
-                                            <span v-if="item.estado_tarea.id==4"
-                                             class="badge badge-info">
-                                             {{ item.estado_tarea.descripcion}}</span> -->
                                         </th>
                                 </tr>
                             </template>
@@ -460,6 +448,7 @@ import $ from "jquery";
 export default {
     data() {
         return {
+            titleTareas:"",
             loadingUpload: false,
             contratos: [],
             correos:[],
@@ -611,6 +600,7 @@ export default {
                 //this.contratos = res.data;
                 console.log(res.data);
                 this.tareas = res.data;
+                this.titleTareas = el.cliente.razon_social;
                 $("#exampleModal2").modal("show");
                 //this.dialogTareas=true;
             });
