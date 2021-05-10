@@ -48,10 +48,10 @@ class SendAlert extends Command
                 foreach ($alerta_fechas as $item) {
                     $details = [
 
-                        'title' => 'Notificación de alerta',
+                        'title' => 'Notificación de entregable',
                         'body' => 'Estimad@ '.$item->usuario->name.' el software RGSDM (Radical Gestión SDM) ha generado la siguiente alerta:',
                         'entregable' => $item->descripcion,
-                        'cliente' => $item->contrato->cliente->razon_social,
+                        'cliente' => $item->contrato->cliente->nombre_comercial,
                         'descripcion_contrato' => $item->contrato->descripcion,
                         'observacion_contrato' => $item->contrato->observacion,
                         'fecha_entrega' => $item->fecha,
@@ -59,8 +59,23 @@ class SendAlert extends Command
                         'tipo_tarea' => $item->tipo->nombre.' '.$item->frecuencias->descripcion,
 
                     ];
+                    $mail_tercero='';
+                    switch ($item->contrato->area_id) {
+                        case 3: //SOC
+                            $mail_tercero='soc.radical@gruporadical.com';
+                            break;
+                        case 8: //Infraestructura
+                            $mail_tercero='infraestructura@gruporadical.com';
+                            break;
+                        case 9: //Ciberseguridad
+                            $mail_tercero='soporte@gruporadical.com';
+                            break;
+                        default:
+                            # code...
+                            break;
+                    }
                     Mail::to($item->usuario->email)
-                    ->cc(['paul.canchignia@gruporadical.com','xavier.montoya@gruporadical.com'])
+                    ->cc(['paul.canchignia@gruporadical.com','xavier.montoya@gruporadical.com',$mail_tercero])
                     ->send(new TareasEmail($details));
                     $item->alerta_enviada = 1;
                     $item->save();

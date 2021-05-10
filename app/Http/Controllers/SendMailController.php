@@ -37,17 +37,17 @@ class SendMailController extends Controller
     }
     public function sendMailUser($tarea_id)
     {
-        
+
         $tarea = Tareas::with('contrato', 'frecuencias','estado_tarea','tipo','usuario')
                             ->find($tarea_id);
                             //->whereRaw('fecha_alerta = curdate()')->get();
                             //dd($tarea);
                     $details = [
 
-                        'title' => 'Notificacion de alerta',
+                        'title' => 'Notificación de entregable',
                         'body' => 'Estimad@ '.$tarea->usuario->name.' el software RGSDM (Radical Gestión SDM) ha generado la siguiente alerta:',
                         'entregable' => $tarea->descripcion,
-                        'cliente' => $tarea->contrato->cliente->razon_social,
+                        'cliente' => $tarea->contrato->cliente->nombre_comercial,
                         'descripcion_contrato' => $tarea->contrato->descripcion,
                         'observacion_contrato' => $tarea->contrato->observacion,
                         'fecha_entrega' => $tarea->fecha,
@@ -55,8 +55,23 @@ class SendMailController extends Controller
                         'tipo_tarea' => $tarea->tipo->nombre.' '.$tarea->frecuencias->descripcion,
 
                     ];
+                    $mail_tercero='';
+                    switch ($tarea->contrato->area_id) {
+                        case 3: //SOC
+                            $mail_tercero='soc.radical@gruporadical.com';
+                            break;
+                        case 8: //Infraestructura
+                            $mail_tercero='infraestructura@gruporadical.com';
+                            break;
+                        case 9: //Ciberseguridad
+                            $mail_tercero='soporte@gruporadical.com';
+                            break;
+                        default:
+                            # code...
+                            break;
+                    }
                     Mail::to($tarea->usuario->email)
-                    ->cc(['paul.canchignia@gruporadical.com','xavier.montoya@gruporadical.com'])
+                    ->cc(['paul.canchignia@gruporadical.com','xavier.montoya@gruporadical.com',$mail_tercero])
                     ->send(new TareasEmail($details));
                     $tarea->alerta_enviada = 1;
                     $tarea->save();
