@@ -44,6 +44,7 @@ class SendAlert extends Command
         $hoy = date("Y-m-d");
              $alerta_fechas = Tareas::with('contrato', 'frecuencias','estado_tarea','tipo','usuario')
                             ->where('alerta_enviada',0)
+                            ->where('estado',1)
                             ->where('fecha_alerta',$hoy)->get();
                 foreach ($alerta_fechas as $item) {
                     $details = [
