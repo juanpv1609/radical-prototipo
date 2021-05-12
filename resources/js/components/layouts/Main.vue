@@ -2,7 +2,7 @@
 <div>
      <v-app  >
         <v-navigation-drawer  app v-model="drawer" absolute  :width="220"
-                           >
+                        :mini-variant.sync="mini"   >
             <v-list-item >
                 <v-list-item-content >
                     <v-list-item-title class="title">
@@ -53,7 +53,7 @@
         </v-navigation-drawer >
 
             <v-app-bar  app color="accent-4" absolute dense dark>
-                <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+                <v-app-bar-nav-icon @click.stop="mini = !mini"></v-app-bar-nav-icon>
 
 
                 <v-spacer></v-spacer>
@@ -63,14 +63,18 @@
                 <v-menu left bottom >
 
                     <template v-slot:activator="{ on, attrs }">
-                        <v-btn icon v-bind="attrs" v-on="on">
+                        <v-btn icon v-bind="attrs" v-on="on" >
                             <v-icon>mdi-dots-vertical</v-icon>
                         </v-btn>
                     </template>
 
                     <v-list dense>
-                        <v-subheader>{{ $store.state.user.name  }}</v-subheader>
-                        <v-spacer></v-spacer>
+                        <v-list-item>
+                            <v-list-item-content>
+                                <v-list-item-title> <v-icon>mdi-account</v-icon>{{ $store.state.user.name  }}</v-list-item-title>
+                                 </v-list-item-content>
+                        </v-list-item>
+                                <v-divider></v-divider>
                         <v-list-item-group
                         >
                         <v-list-item  @click="dialog=true; form={}">
@@ -86,6 +90,8 @@
                             >
                         </v-list-item>
                         </v-list-item-group>
+
+
 
                     </v-list>
                 </v-menu>
@@ -137,7 +143,7 @@
                                     color="red"
                                     type="error"
                                     >{{error}}</v-alert>
-                                <v-row>
+                                <v-row dense>
                                     <v-col cols="12">
                                         <v-text-field
                                             v-model="form.old_password"
@@ -145,10 +151,11 @@
                                             required
                                             type="password"
                                             :rules="[passwordRules2]"
+                                            dense
                                         ></v-text-field>
                                     </v-col>
                                 </v-row>
-                                <v-row>
+                                <v-row dense>
                                     <v-col cols="12">
                                         <v-text-field
                                             v-model="form.new_password"
@@ -156,10 +163,11 @@
                                             required
                                             type="password"
                                             :rules="[passwordRules2]"
+                                            dense
                                         ></v-text-field>
                                     </v-col>
                                 </v-row>
-                                <v-row>
+                                <v-row dense>
                                     <v-col cols="12">
                                         <v-text-field
                                             v-model="form.new_password2"
@@ -167,6 +175,7 @@
                                             required
                                             type="password"
                                             :rules="[(form.new_password===form.new_password2) || 'Las claves no coinciden']"
+                                            dense
                                         ></v-text-field>
                                     </v-col>
                                 </v-row>
@@ -201,6 +210,7 @@
 export default {
     data(){
         return {
+            mini:true,
             dialog:false,
             drawer: true,
             form:{
@@ -231,7 +241,7 @@ export default {
                     link: "/contratos",
                     icon: "mdi-book"
                 },
-                { title: "Tareas", link: "/tareas", icon: "mdi-list-status" },
+                { title: "Entregables", link: "/tareas", icon: "mdi-list-status" },
                 {
                     title: "Reportes",
                     icon: "mdi-chart-bar",

@@ -1,9 +1,9 @@
 <template>
 <div>
             <v-card elevation="2" :loading="loading">
-                <v-card-title class="d-flex justify-space-between mb-6"
-                    >
-                    <v-badge
+                <v-card-title
+          >
+           <v-badge
                 :content="clientes.length"
                 :value="clientes.length"
                 color="green"
@@ -11,29 +11,35 @@
             >
             Clientes
             </v-badge>
+          <v-spacer></v-spacer>
+          <v-col cols="auto">
+              <v-text-field
+              v-model="search"
+              append-icon="mdi-magnify"
+              label="Buscar"
+              single-line
+              hide-details
+              filled
+            rounded
+            dense
+          ></v-text-field>
+          </v-col>
 
-                    <v-btn
-                        class="mx-2"
-                        fab
-                        dark
-                        small
-                        color="primary"
-                        @click="addClient"
-                    >
-                        <v-icon dark>
-                            mdi-plus
-                        </v-icon>
-                    </v-btn>
-                </v-card-title>
+          <v-btn
+              class="mx-2"
+              fab
+              dark
+              small
+              color="primary"
+              @click="addClient"
+          >
+              <v-icon dark>
+                  mdi-plus
+              </v-icon>
+          </v-btn>
+        </v-card-title>
 
                 <v-card-text>
-                    <v-text-field
-                        v-model="search"
-                        append-icon="mdi-magnify"
-                        label="Search"
-                        single-line
-                        hide-details
-                    ></v-text-field>
                     <v-data-table
                         :headers="headers"
                         :items="clientes"

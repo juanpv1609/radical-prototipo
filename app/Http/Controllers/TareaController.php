@@ -16,13 +16,14 @@ class TareaController extends Controller
     public function index()
     {
         //$products = Product::all()->toArray();
+        $cond=[
+            'responsable' => auth()->user()->id
+        ];
         if (auth()->user()->role==2) {
             $this->tareas = Tareas::with('contrato.cliente', 'frecuencias','estado_tarea','tipo','usuario')
             ->orderBy('fecha')->get()->toArray();
         }else{
-            $cond=[
-                'responsable' => auth()->user()->id
-            ];
+
             $this->tareas = Tareas::with('contrato.cliente', 'frecuencias','estado_tarea','tipo','usuario')
                         ->where($cond)->orderBy('fecha')->get()->toArray();
         }

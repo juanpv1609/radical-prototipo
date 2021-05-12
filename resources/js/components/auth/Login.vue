@@ -15,38 +15,53 @@
 
          <v-card-text>
         <v-img src="../img/nuevologo-radical.png" alt="Logo"  ></v-img>
-             <h2 class="text-center"> Iniciar Sesión</h2>
+             <h2 class="text-center text-primary"> Iniciar Sesión</h2>
                  <v-col cols="12">
                     <v-text-field
                         label="Correo electrónico*"
+                        rounded
                         v-model="form.email"
                         required type="email"
                         :rules="emailRules"
+                        prepend-inner-icon="mdi-email"
+                        outlined
+                        dense
+                        color="primary"
                     ></v-text-field>
                 </v-col>
                 <v-col cols="12">
                     <v-text-field
                         label="Contraseña*"
+                        rounded
                         v-model="form.password"
                         required type="password"
+                        outlined
+                        dense
+                        color="primary"
                         :rules="passwordRules"
                         @keyup.enter="login"
+                        :type="show ? 'text' : 'password'"
+                        :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
+                        @click:append="show = !show"
+                        prepend-inner-icon="mdi-lock"
                     ></v-text-field>
                 </v-col>
                 <v-alert v-if="has_error"
                     color="red"
                     type="error"
                     >{{error}}</v-alert>
-         </v-card-text>
-         <v-card-actions>
-             <v-btn block
+                    <v-btn block
                 color="primary"
-                depressed
+                dark
+                block
+                medium
+                rounded
+                :loading="loading"
                 @click="login"
             >
                 Enviar
             </v-btn>
-         </v-card-actions>
+         </v-card-text>
     </v-card>
     </v-form>
       </v-col>
@@ -60,6 +75,7 @@
   export default {
     data() {
       return {
+          show:false,
           valid: true,
           loading:false,
           form:{
@@ -88,7 +104,7 @@
             this.$store.dispatch("login", this.form).then(()=>{
                this.loading = false;
                 //this.$router.push({ path: this.redirect || "/contratos" }, () => { }, () => { });
-               this.$router.push({ name: 'home' }).then(()=>{
+               this.$router.push({ name: 'tareas' }).then(()=>{
                    this.$store.commit('SET_LAYOUT', 'main-layout')
                    }).catch(() => [])
 

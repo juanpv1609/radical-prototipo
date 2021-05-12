@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Tareas;
 use App\Models\Contrato;
 use App\Mail\TareasEmail;
@@ -44,7 +45,8 @@ class SendMailController extends Controller
                             //dd($tarea);
                     $details = [
 
-                        'title' => 'Notificación de entregable',
+                        'title' => 'Notificación de entregable (1ra Alerta)',
+                        'alerta' => 2,
                         'body' => 'Estimad@ '.$tarea->usuario->name.' el software RGSDM (Radical Gestión SDM) ha generado la siguiente alerta:',
                         'entregable' => $tarea->descripcion,
                         'cliente' => $tarea->contrato->cliente->nombre_comercial,
@@ -52,6 +54,7 @@ class SendMailController extends Controller
                         'observacion_contrato' => $tarea->contrato->observacion,
                         'fecha_entrega' => $tarea->fecha,
                         'fecha_alerta' => $tarea->fecha_alerta,
+                        'plazo_entrega' => Carbon::parse($tarea->fecha)->diffInDays(Carbon::now()),
                         'tipo_tarea' => $tarea->tipo->nombre.' '.$tarea->frecuencias->descripcion,
 
                     ];

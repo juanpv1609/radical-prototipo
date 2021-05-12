@@ -31,6 +31,7 @@ class TareasEmail extends Mailable
     {
         return $this->from('soporte@gruporadical.com')
                     ->subject($this->details['cliente'].'> Notificación de entregable')
+                    ->priority(1)
                     ->view('emails.tareasEmail');
 
     }
