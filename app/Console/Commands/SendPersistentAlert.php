@@ -3,28 +3,26 @@
 namespace App\Console\Commands;
 
 use Carbon\Carbon;
-use App\Models\User;
 use App\Models\Tareas;
 use App\Mail\TareasEmail;
-use App\Mail\TicketEmail;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Mail;
 
-class SendAlert extends Command
+class SendPersistentAlert extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'send:alert';
+    protected $signature = 'send:alertp';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Alert sendend to user';
+    protected $description = 'Persistent Alert sendend to user';
 
     /**
      * Create a new command instance.
@@ -44,17 +42,18 @@ class SendAlert extends Command
     public function handle()
     {
         $hoy = date("Y-m-d");
+       
              $alerta_fechas = Tareas::with('contrato', 'frecuencias','estado_tarea','tipo','usuario')
-                            ->where('alerta_enviada',0)
+                            ->where('alerta_enviada',1) //se envio la primera
+                            ->where('segunda_alerta_enviada',1) // y se envio la segunda
                             ->where('estado',1)
-                            ->where('fecha_alerta',$hoy)
+                            ->whereDate('fecha' ,'<',$hoy) //implica que se paso la fecha de entrega
                             ->get();
                 foreach ($alerta_fechas as $item) {
                     $details = [
 
-                        'title' => 'Notificación de entregable (1ra Alerta)',
-                        'alerta' => 1,
-                        'responsable' => $item->usuario->name,
+                        'title' => 'Notificación de entregable (Alerta Persistente)',
+                        'alerta' => 2,
                         'body' => 'Estimad@ '.$item->usuario->name.' el software RGSDM (Radical Gestión SDM) ha generado la siguiente alerta:',
                         'entregable' => $item->descripcion,
                         'cliente' => $item->contrato->cliente->nombre_comercial,
@@ -64,7 +63,6 @@ class SendAlert extends Command
                         'fecha_alerta' => $item->fecha_alerta,
                         //'plazo_entrega' => (Carbon::parse($item->fecha)->diffInDays($hoy))+1,
                         'plazo_entrega' => Carbon::now()->diffInDays(Carbon::parse($item->fecha),false),
-
                         'tipo_tarea' => $item->tipo->nombre.' '.$item->frecuencias->descripcion,
 
                     ];
@@ -86,11 +84,6 @@ class SendAlert extends Command
                     Mail::to($item->usuario->email)
                     ->cc(['paul.canchignia@gruporadical.com','xavier.montoya@gruporadical.com',$mail_tercero])
                     ->send(new TareasEmail($details));
-                    // SOLICITUD APERTURA DE TICKET
-                    Mail::to('soporte@gruporadical.com')
-                    //->cc('paul.canchignia@gruporadical.com')
-                    ->send(new TicketEmail($details));
-                    $item->alerta_enviada = 1;
                     $item->cuenta_alertas=$item->cuenta_alertas+1;
                     $item->save();
                 }

@@ -87,8 +87,14 @@
                 <td><strong>{{ $details['fecha_entrega'] }}</strong></td>
             </tr>
             <tr>
-                <td>Entrega en:</td>
-                <td ><strong style="color: red">{{ $details['plazo_entrega'] }} día/s</strong></td>
+                @if ($details['plazo_entrega'] >= 0)
+                    <td>Se entrega en:</td>
+                    <td ><strong style="color: rgb(11, 79, 204)">{{ $details['plazo_entrega']+1 }} día/s</strong></td>
+                @else
+                    <td>Retrasado por:</td>
+                    <td ><strong style="color: #D32F2F">{{ abs($details['plazo_entrega']) }} día/s</strong></td>
+                @endif
+
             </tr>
             <tr>
                 <td>Tarea:</td>

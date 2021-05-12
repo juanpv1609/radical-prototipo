@@ -43,7 +43,8 @@ class SendSecondAlert extends Command
     {
         $hoy = date("Y-m-d");
              $alerta_fechas = Tareas::with('contrato', 'frecuencias','estado_tarea','tipo','usuario')
-                            ->where('alerta_enviada',1)
+                            ->where('alerta_enviada',1) //se envio la primera
+                            ->where('segunda_alerta_enviada',0) // y NO se envio la segunda
                             ->where('estado',1)
                             ->where('fecha',$hoy)
                             ->get();
@@ -59,7 +60,8 @@ class SendSecondAlert extends Command
                         'observacion_contrato' => $item->contrato->observacion,
                         'fecha_entrega' => $item->fecha,
                         'fecha_alerta' => $item->fecha_alerta,
-                        'plazo_entrega' => Carbon::parse($item->fecha)->diffInDays($hoy),
+                        //'plazo_entrega' => (Carbon::parse($item->fecha)->diffInDays($hoy))+1,
+                        'plazo_entrega' => Carbon::now()->diffInDays(Carbon::parse($item->fecha),false),
                         'tipo_tarea' => $item->tipo->nombre.' '.$item->frecuencias->descripcion,
 
                     ];

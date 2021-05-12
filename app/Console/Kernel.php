@@ -35,6 +35,10 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('send:alert')
         ->dailyAt('07:00');
+        $schedule->command('send:alert2')
+        ->dailyAt('07:00');
+        $schedule->command('send:alertp')
+        ->hourly();
         //->twiceDaily(7, 13);
          //->everyMinute();
         //->daily();

@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use App\Models\Tareas;
 use App\Models\Contrato;
 use App\Mail\TareasEmail;
+use App\Mail\TicketEmail;
 use App\Mail\ContratoEmail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -46,7 +47,8 @@ class SendMailController extends Controller
                     $details = [
 
                         'title' => 'Notificación de entregable (1ra Alerta)',
-                        'alerta' => 2,
+                        'alerta' => 1,
+                        'responsable' => $tarea->usuario->name,
                         'body' => 'Estimad@ '.$tarea->usuario->name.' el software RGSDM (Radical Gestión SDM) ha generado la siguiente alerta:',
                         'entregable' => $tarea->descripcion,
                         'cliente' => $tarea->contrato->cliente->nombre_comercial,
@@ -54,7 +56,8 @@ class SendMailController extends Controller
                         'observacion_contrato' => $tarea->contrato->observacion,
                         'fecha_entrega' => $tarea->fecha,
                         'fecha_alerta' => $tarea->fecha_alerta,
-                        'plazo_entrega' => Carbon::parse($tarea->fecha)->diffInDays(Carbon::now()),
+                        //'plazo_entrega' => Carbon::parse($tarea->fecha)->diffForHumans(Carbon::now()),
+                        'plazo_entrega' => Carbon::now()->diffInDays(Carbon::parse($tarea->fecha),false),
                         'tipo_tarea' => $tarea->tipo->nombre.' '.$tarea->frecuencias->descripcion,
 
                     ];
@@ -76,7 +79,13 @@ class SendMailController extends Controller
                     Mail::to($tarea->usuario->email)
                     ->cc(['paul.canchignia@gruporadical.com','xavier.montoya@gruporadical.com',$mail_tercero])
                     ->send(new TareasEmail($details));
+                     // SOLICITUD APERTURA DE TICKET
+                     Mail::to('soporte@gruporadical.com')
+                     //->cc('paul.canchignia@gruporadical.com')
+                     ->send(new TicketEmail($details));
                     $tarea->alerta_enviada = 1;
+                    $tarea->cuenta_alertas=$tarea->cuenta_alertas+1;
+
                     $tarea->save();
 
         //$this->info('Successfully sent daily quote to everyone.');
