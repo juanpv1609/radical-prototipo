@@ -39,6 +39,7 @@ class SendMailController extends Controller
     }
     public function sendMailUser($tarea_id)
     {
+        $destinatarios = ['paul.canchignia@gruporadical.com','xavier.montoya@gruporadical.com'];
 
         $tarea = Tareas::with('contrato', 'frecuencias','estado_tarea','tipo','usuario')
                             ->find($tarea_id);
@@ -58,26 +59,29 @@ class SendMailController extends Controller
                         'fecha_alerta' => $tarea->fecha_alerta,
                         //'plazo_entrega' => Carbon::parse($tarea->fecha)->diffForHumans(Carbon::now()),
                         'plazo_entrega' => Carbon::now()->diffInDays(Carbon::parse($tarea->fecha),false),
-                        'tipo_tarea' => $tarea->tipo->nombre.' '.$tarea->frecuencias->descripcion,
+                        'tipo_tarea' => $tarea->tipo->nombre,
 
                     ];
-                    $mail_tercero='';
                     switch ($tarea->contrato->area_id) {
                         case 3: //SOC
-                            $mail_tercero='soc.radical@gruporadical.com';
+                            array_push($destinatarios,'soc.radical@gruporadical.com');
                             break;
                         case 8: //Infraestructura
-                            $mail_tercero='infraestructura@gruporadical.com';
+                            array_push($destinatarios,'infraestructura@gruporadical.com');
                             break;
                         case 9: //Ciberseguridad
-                            $mail_tercero='soporte@gruporadical.com';
+                            array_push($destinatarios,'soporte@gruporadical.com');
                             break;
                         default:
                             # code...
                             break;
                     }
+                    if ($tarea->tipo_tarea==2 && $tarea->contrato_id==18) { // contrato COGA TEMPORAL
+                        array_push($destinatarios,'cinthia.pissani@gruporadical.com');
+                    }
+                    //dd($destinatarios);
                     Mail::to($tarea->usuario->email)
-                    ->cc(['paul.canchignia@gruporadical.com','xavier.montoya@gruporadical.com',$mail_tercero])
+                    ->cc($destinatarios)
                     ->send(new TareasEmail($details));
                      // SOLICITUD APERTURA DE TICKET
                      Mail::to('soporte@gruporadical.com')

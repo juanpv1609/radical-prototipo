@@ -105,11 +105,12 @@
 
         <v-card-text>
 
-
+            <v-skeleton-loader v-if="firstLoad" :loading="loading" type="table"></v-skeleton-loader>
             <v-data-table
                 :headers="headers"
                 :items="tareas"
                 :search="search"
+                v-show="!firstLoad"
                 sort-by="fecha"
                 group-by="contrato.cliente.nombre_comercial"
                 show-group-by
@@ -290,6 +291,7 @@ import moment from "moment";
     export default {
         data() {
             return {
+                firstLoad: true,
                 date: new Date().toISOString().substr(0, 10),
             menu: false,
                 tareas: [],
@@ -549,6 +551,8 @@ import moment from "moment";
 
                         }
                     }
+                    this.loading=false;
+                    this.firstLoad=false;
                 });
                     this.axios.get("/api/estado-tareas/").then(response => {
                     this.estado_tarea = response.data;
