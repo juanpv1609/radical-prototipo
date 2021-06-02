@@ -42,7 +42,7 @@ class SendSecondAlert extends Command
     public function handle()
     {
         $hoy = date("Y-m-d");
-        $destinatarios = ['paul.canchignia@gruporadical.com','xavier.montoya@gruporadical.com'];
+        $destinatarios = ['paul.canchignia@gruporadical.com'];
 
              $alerta_fechas = Tareas::with('contrato', 'frecuencias','estado_tarea','tipo','usuario')
                             ->where('alerta_enviada',1) //se envio la primera
@@ -67,19 +67,16 @@ class SendSecondAlert extends Command
                         'tipo_tarea' => $item->tipo->nombre,
 
                     ];
-                    switch ($item->contrato->area_id) {
-                        case 3: //SOC
-                            array_push($destinatarios,'soc.radical@gruporadical.com');
-                            break;
-                        case 8: //Infraestructura
-                            array_push($destinatarios,'infraestructura@gruporadical.com');
-                            break;
-                        case 9: //Ciberseguridad
-                            array_push($destinatarios,'soporte@gruporadical.com');
-                            break;
-                        default:
-                            # code...
-                            break;
+                    if ($item->contrato->area_id == 3) { //SOC
+                        array_push($destinatarios, 'soc.radical@gruporadical.com');
+                    } else if ($item->contrato->area_id == 8) { //Infraestructura
+                        array_push($destinatarios, 'infraestructura@gruporadical.com');
+                    } else if ($item->contrato->area_id == 9) { //Ciberseguridad
+                        array_push($destinatarios, 'soporte@gruporadical.com');
+                    }
+
+                    if ($item->contrato_id !== 9 || $item->contrato_id !== 14) { //utpl y jep
+                        array_push($destinatarios, 'xavier.montoya@gruporadical.com');
                     }
                     if ($item->tipo_tarea==2 && $item->contrato_id==18) { // contrato COGA TEMPORAL
                         array_push($destinatarios,'cinthia.pissani@gruporadical.com');

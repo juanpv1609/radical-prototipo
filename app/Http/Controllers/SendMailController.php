@@ -39,7 +39,7 @@ class SendMailController extends Controller
     }
     public function sendMailUser($tarea_id)
     {
-        $destinatarios = ['paul.canchignia@gruporadical.com','xavier.montoya@gruporadical.com'];
+        $destinatarios = ['paul.canchignia@gruporadical.com'];
 
         $tarea = Tareas::with('contrato', 'frecuencias','estado_tarea','tipo','usuario')
                             ->find($tarea_id);
@@ -62,19 +62,17 @@ class SendMailController extends Controller
                         'tipo_tarea' => $tarea->tipo->nombre,
 
                     ];
-                    switch ($tarea->contrato->area_id) {
-                        case 3: //SOC
-                            array_push($destinatarios,'soc.radical@gruporadical.com');
-                            break;
-                        case 8: //Infraestructura
-                            array_push($destinatarios,'infraestructura@gruporadical.com');
-                            break;
-                        case 9: //Ciberseguridad
-                            array_push($destinatarios,'soporte@gruporadical.com');
-                            break;
-                        default:
-                            # code...
-                            break;
+
+                    if ($tarea->contrato->area_id == 3) { //SOC
+                        array_push($destinatarios, 'soc.radical@gruporadical.com');
+                    } else if ($tarea->contrato->area_id == 8) { //Infraestructura
+                        array_push($destinatarios, 'infraestructura@gruporadical.com');
+                    } else if ($tarea->contrato->area_id == 9) { //Ciberseguridad
+                        array_push($destinatarios, 'soporte@gruporadical.com');
+                    }
+
+                    if ($tarea->contrato_id !== 9 || $tarea->contrato_id !== 14) { //utpl y jep
+                        array_push($destinatarios, 'xavier.montoya@gruporadical.com');
                     }
                     if ($tarea->tipo_tarea==2 && $tarea->contrato_id==18) { // contrato COGA TEMPORAL
                         array_push($destinatarios,'cinthia.pissani@gruporadical.com');
