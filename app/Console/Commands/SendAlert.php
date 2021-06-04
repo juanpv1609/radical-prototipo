@@ -79,7 +79,7 @@ class SendAlert extends Command
                         array_push($destinatarios, 'soporte@gruporadical.com');
                     }
 
-                    if ($item->contrato_id !== 9 || $item->contrato_id !== 14){ //utpl y jep
+                    if ($item->contrato_id !== 9 || $item->contrato_id !== 14 || $item->contrato_id !== 12){ //utpl y jep
                         array_push($destinatarios, 'xavier.montoya@gruporadical.com');
                     }
 
