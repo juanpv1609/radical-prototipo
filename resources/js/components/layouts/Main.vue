@@ -261,6 +261,7 @@ export default {
                         { title: "Tipo Tareas", link: "/tipo-tareas", icon: "mdi-ballot" },
                         { title: "Frecuencias", link: "/frecuencias", icon: "mdi-clock-fast" },
                         { title: "Paises", link: "/paises", icon: "mdi-earth" },
+                        { title: "Casos de Uso", link: "/casos-de-uso", icon: "mdi-sitemap" },
                     ],
                 },
             ],

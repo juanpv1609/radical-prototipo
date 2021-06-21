@@ -24,9 +24,10 @@ import ReporteAllContratos from "../components/reportes/ReporteAllContratos.vue"
 import Home from "../components/Home.vue";
 import Frecuencia from "../components/frecuencia/Frecuencia.vue";
 import Pais from "../components/pais/Pais.vue";
+import CasosDeUso from "../components/casos/AllCasosDeUso.vue";
 
 const router = new VueRouter({
-    mode: 'history',
+    mode: "history",
     routes: [
         { path: "*", redirect: "/" },
         {
@@ -34,32 +35,32 @@ const router = new VueRouter({
             path: "/",
             component: Home,
             meta: {
-                requiresAuth: true,
-              },
+                requiresAuth: true
+            }
         },
         {
             path: "/register",
             name: "register",
             component: Register,
             meta: {
-          requiresAuth: false,
-        },
+                requiresAuth: false
+            }
         },
         {
             path: "/login",
             name: "login",
             component: Login,
             meta: {
-          requiresAuth: false,
-        },
+                requiresAuth: false
+            }
         },
         {
             name: "clientes",
             path: "/clientes",
             component: AllClientes,
             meta: {
-          requiresAuth: true,
-        },
+                requiresAuth: true
+            }
         },
         // contratos
         {
@@ -67,16 +68,16 @@ const router = new VueRouter({
             path: "/contratos",
             component: AllContratos,
             meta: {
-          requiresAuth: true,
-        },
+                requiresAuth: true
+            }
         },
         {
             name: "contratos-tasks",
             path: "/contratos/tasks/:id",
             component: AddTaskContrato,
             meta: {
-          requiresAuth: true,
-        },
+                requiresAuth: true
+            }
         },
         // areas
         {
@@ -84,8 +85,8 @@ const router = new VueRouter({
             path: "/areas",
             component: AllAreas,
             meta: {
-          requiresAuth: true,
-        },
+                requiresAuth: true
+            }
         },
         // tareas
         {
@@ -93,89 +94,97 @@ const router = new VueRouter({
             path: "/tareas",
             component: AllTareas,
             meta: {
-          requiresAuth: true,
-        },
+                requiresAuth: true
+            }
         },
         {
             name: "calendar-tareas",
             path: "/calendar-tareas",
             component: CalendarTareas,
             meta: {
-          requiresAuth: true,
-        },
+                requiresAuth: true
+            }
         },
         {
             name: "tareas-edit",
             path: "/tareas/edit/:id",
             component: EditTarea,
             meta: {
-          requiresAuth: true,
-        },
+                requiresAuth: true
+            }
         },
         {
             name: "usuarios",
             path: "/usuarios",
             component: AllUsuarios,
             meta: {
-          requiresAuth: true,
-        },
+                requiresAuth: true
+            }
         },
         {
             name: "tipo-tareas",
             path: "/tipo-tareas",
             component: TipoTareas,
             meta: {
-          requiresAuth: true,
-        },
+                requiresAuth: true
+            }
         },
         {
             name: "reporte-tareas",
             path: "/reporte-tareas",
             component: ReporteTarea,
             meta: {
-          requiresAuth: true,
-        },
+                requiresAuth: true
+            }
         },
         {
             name: "reporte-contratos",
             path: "/reporte-contratos",
             component: ReporteContrato,
             meta: {
-          requiresAuth: true,
-        },
+                requiresAuth: true
+            }
         },
         {
             name: "reporte-usuario",
             path: "/reporte-usuario",
             component: ReporteUsuario,
             meta: {
-          requiresAuth: true,
-        },
+                requiresAuth: true
+            }
         },
         {
             name: "reporte-allContratos",
             path: "/reporte-allContratos",
             component: ReporteAllContratos,
             meta: {
-          requiresAuth: true,
-        },
+                requiresAuth: true
+            }
         },
         {
             name: "frecuencias",
             path: "/frecuencias",
             component: Frecuencia,
             meta: {
-          requiresAuth: true,
-        },
+                requiresAuth: true
+            }
         },
         {
             name: "paises",
             path: "/paises",
             component: Pais,
             meta: {
-          requiresAuth: true,
+                requiresAuth: true
+            }
         },
-        },
+        {
+            name: "casos-de-uso",
+            path: "/casos-de-uso",
+            component: CasosDeUso,
+            meta: {
+                requiresAuth: true
+            }
+        }
     ]
 });
 

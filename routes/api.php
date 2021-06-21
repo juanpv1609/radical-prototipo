@@ -1,6 +1,7 @@
 <?php
 
 use App\User;
+use App\Models\CasosDeUso;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
@@ -18,8 +19,8 @@ use App\Http\Controllers\ReportesController;
 use App\Http\Controllers\SendMailController;
 use App\Http\Controllers\TipoTareaController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\CasosDeUsoController;
 use App\Http\Controllers\FrecuenciaController;
-
 
 /*
 |--------------------------------------------------------------------------
@@ -103,6 +104,9 @@ Route::get('reporte-tareas-contrato/{inicial}/{final}/{contrato}', [ReportesCont
 Route::get('reporte-tareas-usuario/{inicial}/{final}/{usuario}', [ReportesController::class, 'reporteTareasUsuario']);
 //contratos
 Route::get('reporte-contratos', [ReportesController::class, 'reporteContratos']);
+
+    //casos de uso
+Route::resource('casos-de-uso', CasosDeUsoController::class);
 
 
 
