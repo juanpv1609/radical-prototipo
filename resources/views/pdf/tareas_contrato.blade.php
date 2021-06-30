@@ -89,11 +89,11 @@
                                 <td>{{ \Carbon\Carbon::now()->format('d-m-Y') }}</td>
                             </tr> --}}
                             <tr>
-                                <td>Tareas pendientes</td>
+                                <td>Entregables pendientes</td>
                                 <td>{{ $tareas->tareas_pendientes  }}</td>
                             </tr>
                             <tr>
-                                <td>Tareas terminadas</td>
+                                <td>Entregables terminados</td>
                                 <td>{{ $tareas->tareas_terminadas }}</td>
                             </tr>
                         </tbody>
@@ -115,14 +115,14 @@
                 <td>{{ $tareas->cliente_nombre_comercial }}</td>
             </tr>
         </table>
-        <h4 class="text-center">REPORTE DE TAREAS</h4>
+        <h4 class="text-center">REPORTE DE ENTREGABLES</h4>
         @if (count($tareas)>0)
         <table class="table table-striped table-sm" width="100%">
             <thead>
                 <tr>
                     <th>FECHA</th>
                     <th>RESPONSABLE</th>
-                    <th>TAREA</th>
+                    {{-- <th>TAREA</th> --}}
                     <th>ENTREGABLE</th>
                     <th>TICKET</th>
                     <th>ESTADO</th>
@@ -133,7 +133,7 @@
                     <tr>
                         <td>{{ $item->fecha }}</td>
                         <td>{{ $item->usuario->name }}</td>
-                        <td>{{ $item->tipo->nombre }}</td>
+                        {{-- <td>{{ $item->tipo->nombre }}</td> --}}
                         <td>{{ $item->descripcion }}</td>
                         <td>{{ $item->ticket }}</td>
                         <td class="text-center">
