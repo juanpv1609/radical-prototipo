@@ -124,6 +124,7 @@
                     <th>RESPONSABLE</th>
                     <th>TAREA</th>
                     <th>ENTREGABLE</th>
+                    <th>TICKET</th>
                     <th>ESTADO</th>
                 </tr>
             </thead>
@@ -134,6 +135,7 @@
                         <td>{{ $item->usuario->name }}</td>
                         <td>{{ $item->tipo->nombre }}</td>
                         <td>{{ $item->descripcion }}</td>
+                        <td>{{ $item->ticket }}</td>
                         <td class="text-center">
                             <strong class="text-{{ $item->estado_tarea->color }}">
                                 {{ strtoupper($item->estado_tarea->descripcion) }}
