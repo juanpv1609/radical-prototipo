@@ -13,9 +13,12 @@
 
     <h2>Solicitud Apertura de ticket</h2>
     <br>
-    <p>Estimad@s solicitando a ustedes de favor la apertura de un ticket de requerimiento de acuerdo a lo siguiente: <br>
-    Para el cliente <strong>{{ $details['cliente'] }}</strong> sobre el ENTREGABLE <strong>"{{ $details['entregable'] }}"" </strong>
-    asignarlo a: <strong>{{ $details['responsable'] }}</strong></p>
+    <p>Estimad@s solicitando a ustedes de favor la apertura de un ticket TT REQ  de acuerdo a lo siguiente: <br>
+    Para el cliente <strong>{{ $details['cliente'] }}</strong> sobre la finalización de operaciones las cuales terminan el <strong> {{ $details['fecha_fin'] }}. </strong>
+    Tiempo restante de servicio <strong>{{ $details['plazo_finalizacion']+1 }} </strong> días</p>
+    <br>
+    <p>Notificar al cliente.</p>
+    <br>
     <p>De antemano muchas gracias.</p>
 
     <br>

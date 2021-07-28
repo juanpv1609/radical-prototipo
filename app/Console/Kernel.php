@@ -39,6 +39,14 @@ class Kernel extends ConsoleKernel
         ->dailyAt('07:00');
         $schedule->command('send:alertp')
         ->hourly();
+        $schedule->command('send:alertendcontract30')
+        ->dailyAt('07:00');
+        $schedule->command('send:alertendcontract15')
+        ->dailyAt('07:00');
+        $schedule->command('send:alertendcontract7')
+        ->dailyAt('07:00');
+
+
         //->twiceDaily(7, 13);
          //->everyMinute();
         //->daily();

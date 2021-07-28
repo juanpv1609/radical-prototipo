@@ -37,30 +37,18 @@
                 <td>{{ $details['descripcion_contrato'] }} / {{ $details['observacion_contrato'] }}</td>
             </tr>
             <tr>
-                <td>Fecha de alerta:</td>
-                <td><strong>{{ $details['fecha_alerta'] }}</strong></td>
+                <td>Fecha de inicio:</td>
+                <td><strong>{{ $details['fecha_inicio'] }}</strong></td>
             </tr>
             <tr>
-                <td>Fecha de entrega:</td>
-                <td><strong>{{ $details['fecha_entrega'] }}</strong></td>
+                <td>Fecha de finalización:</td>
+                <td><strong>{{ $details['fecha_fin'] }}</strong></td>
             </tr>
             <tr>
-                @if ($details['plazo_entrega'] >= 0)
-                    <td>Se entrega en:</td>
-                    <td ><strong style="color: rgb(11, 79, 204)">{{ $details['plazo_entrega']+1 }} día/s</strong></td>
-                @else
-                    <td>Retrasado por:</td>
-                    <td ><strong style="color: #D32F2F">{{ abs($details['plazo_entrega']) }} día/s</strong></td>
-                @endif
+                    <td>Tiempo restante de servicio:</td>
+                    <td ><strong style="color: rgb(11, 79, 204)">{{ $details['plazo_finalizacion']+1 }} días</strong></td>
 
-            </tr>
-            <tr>
-                <td>Tarea:</td>
-                <td>{{ $details['tipo_tarea'] }}</td>
-            </tr>
-            <tr>
-                <td>Entregable:</td>
-                <td style="font-size: 20px"><strong>{{ $details['entregable'] }}</strong></td>
+
             </tr>
         </tbody>
     </table>
