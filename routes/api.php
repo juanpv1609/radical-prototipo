@@ -13,6 +13,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\TareaController;
 use App\Http\Controllers\ConfigController;
 use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\PersonaController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ContratoController;
 use App\Http\Controllers\ReportesController;
@@ -21,6 +22,10 @@ use App\Http\Controllers\TipoTareaController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\CasosDeUsoController;
 use App\Http\Controllers\FrecuenciaController;
+use App\Http\Controllers\NivelEstudioController;
+use App\Http\Controllers\PerfilPuestoController;
+use App\Http\Controllers\PersonaMeritoController;
+use App\Http\Controllers\CertificacionesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -108,6 +113,20 @@ Route::get('reporte-contratos', [ReportesController::class, 'reporteContratos'])
     //casos de uso
 Route::resource('casos-de-uso', CasosDeUsoController::class);
 
+// PERSONAL
+Route::get('estado-estudio', [ConfigController::class,'estadoEstudio']);
+Route::resource('persona', PersonaController::class);
+Route::get('persona-estudios/{id}', [PersonaController::class,'estudios']);
+Route::resource('nivel-estudio', NivelEstudioController::class);
+Route::get('get-nivel-estudio', [NivelEstudioController::class,'listarNiveles']);
+Route::resource('certificaciones', CertificacionesController::class);
+Route::resource('certificaciones', CertificacionesController::class);
+Route::get('get-certificaciones', [CertificacionesController::class,'listarCertificaciones']);
+Route::get('reporte-certificaciones/{certificaciones}', [ReportesController::class, 'reporteCertificaciones']);
+Route::get('reporte-persona/{persona}', [ReportesController::class, 'reportePersona']);
+
+Route::resource('perfil-puesto', PerfilPuestoController::class);
+Route::resource('persona-merito', PersonaMeritoController::class);
 
 
 });

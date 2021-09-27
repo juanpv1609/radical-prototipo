@@ -13,7 +13,7 @@
 
             <v-list dense nav>
                 <div v-for="item in items" :key="item.title">
-                    <v-list-item v-if="!item.subLinks" link :to="item.link" color="blue">
+                    <v-list-item v-if="!item.subLinks" link :to="item.link" color="orange darken-4">
                         <v-list-item-icon>
                             <v-icon>{{ item.icon }}</v-icon>
                         </v-list-item-icon>
@@ -23,7 +23,7 @@
                         </v-list-item-content>
                     </v-list-item>
                     <v-list-group v-else-if="(item.subLinks) && ($store.state.user.role==2)"  :key="item.title"
-                        no-action :prepend-icon="item.icon" color="blue">
+                        no-action :prepend-icon="item.icon" color="orange darken-4">
                         <template v-slot:activator >
                                     <v-list-item-title>{{ item.title }}</v-list-item-title>
                          </template>
@@ -98,7 +98,7 @@
             </v-app-bar>
 
         <!-- Sizes your content based upon application components -->
-        <v-main  >
+        <v-main style="background:#F5F5F5;" >
             <!-- Provides the application the proper gutter -->
             <v-container fluid >
                 <!-- If using vue-router -->
@@ -106,7 +106,7 @@
 
             </v-container>
         </v-main>
-        <v-footer dense app fixed flat padless
+        <!-- <v-footer dense app fixed flat padless
         >
         <v-col cols="4" class="text-left">
                 <router-link to="/"> Acerca de</router-link>
@@ -123,7 +123,7 @@
             cols="4"
             >Version 1.0
             </v-col>
-        </v-footer>
+        </v-footer> -->
     </v-app>
 <template>
             <v-row justify="center">
@@ -235,7 +235,8 @@ export default {
             items: [
 
 
-                { title: "Clientes", link: "/clientes", icon: "mdi-face" },
+                { title: "Clientes", link: "/clientes", icon: "mdi-face-agent" },
+                { title: "Personal", link: "/personal", icon: "mdi-card-account-details" },
                 {
                     title: "Contratos",
                     link: "/contratos",
@@ -246,10 +247,16 @@ export default {
                     title: "Reportes",
                     icon: "mdi-chart-bar",
                     subLinks: [
-                        { title: "Tareas", link: "/reporte-tareas", icon: ""},
-                        { title: "Tareas & Contrato", link: "/reporte-contratos", icon: ""},
-                        { title: "Tareas & Usuario", link: "/reporte-usuario", icon: ""},
+                        { title: "Tareas", link: "/reporte-tareas", icon: "mdi-check"},
+                        { title: "Tareas & Contrato", link: "/reporte-contratos", icon: "mdi-checkbox-marked"},
+                        { title: "Tareas & Usuario", link: "/reporte-usuario", icon: "mdi-account-check"},
                         { title: "Contratos", link: "/reporte-allContratos", icon: ""},
+                        {
+                            title: "Certificacion",link: "/reporte-certificacion",icon: "mdi-certificate"
+                        },
+                        {
+                            title: "Persona", link: "/reporte-persona",icon: "mdi-card-account-details"
+                        }
                     ],
                 },
                 {
@@ -262,6 +269,17 @@ export default {
                         { title: "Frecuencias", link: "/frecuencias", icon: "mdi-clock-fast" },
                         { title: "Paises", link: "/paises", icon: "mdi-earth" },
                         { title: "Casos de Uso", link: "/casos-de-uso", icon: "mdi-sitemap" },
+                        { title: "Perfil Laboral", link: "/perfil-puesto", icon: "mdi-sitemap" },
+                        {
+                            title: "Certificaciones",
+                            link: "/certificaciones",
+                            icon: "mdi-certificate"
+                        },
+                        {
+                            title: "Niveles Estudio",
+                            link: "/nivel-estudio",
+                            icon: "mdi-graph-outline"
+                        }
                     ],
                 },
             ],

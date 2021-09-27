@@ -15,8 +15,10 @@
 
          <v-card-text>
         <v-img src="../img/nuevologo-radical.png" alt="Logo"  ></v-img>
-             <h2 class="text-center text-primary"> Iniciar Sesión</h2>
-                 <v-col cols="12">
+        <v-divider></v-divider>
+             <h2 class="text-center "> Iniciar Sesión</h2>
+
+                 <v-col cols="12" dense>
                     <v-text-field
                         label="Correo electrónico*"
                         rounded
@@ -26,10 +28,10 @@
                         prepend-inner-icon="mdi-email"
                         outlined
                         dense
-                        color="primary"
+                        color="orange darken-4"
                     ></v-text-field>
                 </v-col>
-                <v-col cols="12">
+                <v-col cols="12" dense>
                     <v-text-field
                         label="Contraseña*"
                         rounded
@@ -37,7 +39,7 @@
                         required type="password"
                         outlined
                         dense
-                        color="primary"
+                        color="orange darken-4"
                         :rules="passwordRules"
                         @keyup.enter="login"
                         :type="show ? 'text' : 'password'"
@@ -50,17 +52,19 @@
                     color="red"
                     type="error"
                     >{{error}}</v-alert>
+                    <v-col cols="12" dense>
                     <v-btn block
-                color="primary"
-                dark
-                block
-                medium
-                rounded
-                :loading="loading"
-                @click="login"
-            >
-                Enviar
-            </v-btn>
+                            color="orange darken-4"
+                            dark
+                            large
+                            rounded
+                            :loading="loading"
+                            @click="login"
+                        >
+                            Enviar
+                        </v-btn>
+                    </v-col>
+            <br>
          </v-card-text>
     </v-card>
     </v-form>

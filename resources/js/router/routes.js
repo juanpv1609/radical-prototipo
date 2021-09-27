@@ -25,7 +25,18 @@ import Home from "../components/Home.vue";
 import Frecuencia from "../components/frecuencia/Frecuencia.vue";
 import Pais from "../components/pais/Pais.vue";
 import CasosDeUso from "../components/casos/AllCasosDeUso.vue";
+//----------PERSONAL-----------
+import Personal from "../components/personal/Personal.vue";
+import PersonalNew from "../components/personal/PersonalNew.vue";
+import PersonalEdit from "../components/personal/PersonalEdit.vue";
+import Certificaciones from "../components/certificaciones/Certificaciones.vue";
+import NivelEstudio from "../components/nivelEstudio/NivelEstudio.vue";
+import ReporteCertificacion from "../components/reportes/ReporteCertificacion.vue";
+import ReporteGeneral from "../components/reportes/ReporteGeneral.vue";
+import ReportePersona from "../components/reportes/ReportePersona.vue";
 
+//nuevas funciones ISO
+import PerfilPuesto from "../components/perfilPuesto/PerfilPuesto.vue";
 const router = new VueRouter({
     mode: "history",
     routes: [
@@ -184,7 +195,82 @@ const router = new VueRouter({
             meta: {
                 requiresAuth: true
             }
-        }
+        },
+        //  PERSONAL
+
+        {
+            name: "personal",
+            path: "/personal",
+            component: Personal,
+            meta: {
+                requiresAuth: true,
+            },
+        },
+        {
+            name: "personal-new",
+            path: "/personal-new",
+            component: PersonalNew,
+            meta: {
+                requiresAuth: true,
+            },
+        },
+        {
+            name: "personal-edit",
+            path: "/personal/edit/:id",
+            component: PersonalEdit,
+            meta: {
+                requiresAuth: true,
+            },
+        },
+        {
+            name: "certificaciones",
+            path: "/certificaciones",
+            component: Certificaciones,
+            meta: {
+                requiresAuth: true,
+            },
+        },
+        {
+            name: "nivel-estudio",
+            path: "/nivel-estudio",
+            component: NivelEstudio,
+            meta: {
+                requiresAuth: true,
+            },
+        },
+        //REPORTES
+        {
+            name: "reporte-certificacion",
+            path: "/reporte-certificacion",
+            component: ReporteCertificacion,
+            meta: {
+                requiresAuth: true,
+            },
+        },
+        {
+            name: "reporte-persona",
+            path: "/reporte-persona",
+            component: ReportePersona,
+            meta: {
+                requiresAuth: true,
+            },
+        },
+        {
+            name: "reporte-general",
+            path: "/reporte-general",
+            component: ReporteGeneral,
+            meta: {
+                requiresAuth: true,
+            },
+        },
+        {
+            name: "perfil-puesto",
+            path: "/perfil-puesto",
+            component: PerfilPuesto,
+            meta: {
+                requiresAuth: true,
+            },
+        },
     ]
 });
 

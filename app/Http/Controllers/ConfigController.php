@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\TipoTarea;
 use App\Models\EstadoTarea;
 use Illuminate\Http\Request;
+use App\Models\EstadoEstudio;
 use App\Models\TipoIdentificacion;
 
 class ConfigController extends Controller
@@ -27,6 +28,12 @@ class ConfigController extends Controller
         $tipo_tarea = TipoTarea::where('is_deleted',0)->get()->toArray();
 
         return $tipo_tarea;
+    }
+    public function estadoEstudio()
+    {
+        $estado = EstadoEstudio::all()->toArray();
+
+        return $estado;
     }
 
 }

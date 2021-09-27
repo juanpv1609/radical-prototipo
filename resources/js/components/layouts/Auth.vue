@@ -1,6 +1,6 @@
 <template >
 <v-app >
-        <v-main>
+        <v-main style="background:#F5F5F5;">
             <!-- Provides the application the proper gutter -->
             <v-container fluid>
                 <!-- If using vue-router -->
