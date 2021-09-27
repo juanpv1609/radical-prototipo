@@ -15,8 +15,19 @@
 
                 <v-form v-model="valid">
                 <v-card elevation="2" outlined shaped :loading="loading" >
-                    <v-subheader class="text-primary">
+                    <v-subheader class="text-primary mt-4">
                         <strong>DATOS PERSONALES</strong>
+                        <v-spacer></v-spacer>
+                        <v-col cols="auto">
+                            <v-autocomplete
+                                :items="perfiles"
+                                item-text="descripcion"
+                                item-value="id"
+                                v-model="persona.perfil_puesto_id"
+                                label="Seleccione un perfil laboral"
+
+                            ></v-autocomplete>
+                        </v-col>
                     </v-subheader>
                     <v-card-text>
                         <v-row>
@@ -43,7 +54,7 @@
 
                             </v-col>
                             <v-col cols="12" md="10">
-                                <v-row >
+                                <v-row dense>
                                     <v-col cols="12" md="4">
                                         <v-text-field
                                             v-model="persona.nombre"
@@ -158,10 +169,96 @@
                                             </v-menu>
                                             </template>
                                     </v-col>
+                                    <v-col cols="12" sm="6">
+                                        <v-combobox
+                                            v-model="modelSkills"
+                                            :items="itemsSkills"
+                                            hide-selected
+                                            color="primary"
+                                            hint="Ingrese la habilidad, conocimiento y presione Enter o TAB "
+                                            label="Habilidades / conocimientos"
+                                            multiple
+                                            persistent-hint
+                                            small-chips
+                                            deletable-chips
+
+
+                                        >
+                                        </v-combobox>
+                                    </v-col>
+                                    <v-col cols="12" sm="6">
+                                        <v-file-input
+                                            v-model="documentos"
+                                            label="Documentos (CV, contrato, ascensos, etc)"
+                                            hint="Nomenclatura: Archivo_NombreApellido.ext"
+                                            chips
+                                            counter
+                                            multiple
+                                            :disabled="status_archivos"
+
+                                            ></v-file-input>
+                                    <v-btn  color="orange darken-4" block
+                                        @click="subirArchivos"
+                                        :loading="loadingUpload"
+                                        :disabled="status_archivos">
+                                    <span v-if="status_archivos">CORRECTO</span>
+                                    <span v-else>Subir {{documentos.length}} Archivos</span>
+
+                                    </v-btn>
+                                    </v-col>
+
                                 </v-row>
+
 
                             </v-col>
 
+                        </v-row>
+                         <v-row dense>
+                            <v-col cols="12" sm="4">
+                                <v-combobox
+                                    v-model="modelFunciones"
+                                    :items="itemsFunciones"
+                                    hide-selected
+                                    hint="Ingrese la función específica y presione Enter o TAB "
+                                    label="Funciones Específicas"
+                                    multiple
+                                    persistent-hint
+                                    small-chips
+                                    deletable-chips
+
+                                >
+                                </v-combobox>
+                            </v-col>
+                            <v-col cols="12" sm="4">
+                                 <v-combobox
+                                    v-model="modelResponsabilidades"
+                                    :items="itemsResponsabilidades"
+                                    hide-selected
+                                    hint="Ingrese la responsabilidad específica y presione Enter o TAB "
+                                    label="Responsabilidades Específicas"
+                                    multiple
+                                    persistent-hint
+                                    small-chips
+                                    deletable-chips
+
+                                >
+                                </v-combobox>
+                            </v-col>
+                            <v-col cols="12" sm="4">
+                                <v-combobox
+                                    v-model="modelAutoridades"
+                                    :items="itemsAutoridades"
+                                    hide-selected
+                                    hint="Ingrese la Capacidad de autoridad y presione Enter o TAB "
+                                    label="Autoridades Específicas"
+                                    multiple
+                                    persistent-hint
+                                    small-chips
+                                    deletable-chips
+
+                                >
+                                </v-combobox>
+                            </v-col>
                         </v-row>
                         <v-row>
                             <v-col cols="12">
@@ -247,7 +344,7 @@
                 <br>
                 <v-card elevation="2" outlined shaped >
                     <v-subheader class="text-primary">
-                        <strong>AÑADIR EDUCACION</strong>
+                        <strong>FORMACIÓN ACADÉMICA</strong>
                     </v-subheader>
                     <v-card-text>
                                 <v-row >
@@ -597,7 +694,20 @@ export default {
                 estudio_estado: [
                     v => !!v || 'Este campo es requerido'
                 ],
-            }
+            },
+            modelSkills:[],
+            itemsSkills:[],
+            modelFunciones:[],
+            itemsFunciones:[],
+            modelResponsabilidades:[],
+            itemsResponsabilidades:[],
+            modelAutoridades:[],
+            itemsAutoridades:[],
+            perfiles: [],
+            ruta_archivo:[],
+            status_archivos:false,
+            loadingUpload:false,
+            documentos:[]
         };
     },
     watch: {
@@ -715,26 +825,68 @@ export default {
                 let i = this.estudios.map(data => data.id).indexOf(el.id);
                 this.estudios.splice(i, 1);
             },
+
+    async subirArchivos(){
+    this.loadingUpload=true;
+        console.log(this.documentos);
+        const config = {
+            headers: { 'enctype': 'multipart/form-data' }
+        }
+        //console.log(this.files);
+        for (const file of this.documentos) {
+            let formData = new FormData();
+            formData.append('file', file);
+            console.log(formData);
+            await this.axios
+            .post(`/api/subir-archivo`, formData,config)
+            .then((res) => {
+                //this.$router.push({ name: 'tareas' });
+                //console.log(res)
+                this.ruta_archivo.push(res.data.archivo);
+                // console.log(this.ruta_archivo);
+            }).catch((error)=>{
+                console.log(error);
+            });
+        }
+    this.loadingUpload=false;
+        this.status_archivos=true;
+    },
         createPerson() {
             this.loading = true;
             this.persona.estudios=this.estudios;
             this.persona.fecha_nacimiento=this.date;
+            this.persona.documentos=this.ruta_archivo;
+            this.persona.funcion_especifica=this.modelFunciones;
+            this.persona.responsabilidad_especifica=this.modelResponsabilidades;
+            this.persona.autoridad_especifica=this.modelAutoridades;
+            this.persona.skills=this.modelSkills;
+
 
 
             console.log(this.persona);
-              this.axios
+               this.axios
                 .post("/api/persona", this.persona)
-                .then(response => {
-                    this.dialog = false;
-                    this.loading = false;
-                    this.persona = {};
-                    this.estudios = [];
-                    this.estudio = {};
+                .then(() => {
+                    this.refresh();
                     this.initialData();
 
                 })
                 .catch(err => console.log(err))
                 .finally(() => (this.loading = false));
+        },
+        refresh(){
+            this.dialog = false;
+            this.loading = false;
+            this.persona = {};
+            this.estudios = [];
+            this.modelSkills=[];
+            this.modelFunciones=[];
+            this.modelResponsabilidades=[];
+            this.modelAutoridades=[];
+            this.estudio = {};
+            this.ruta_archivo = [];
+            this.documentos = [];
+            this.status_archivos = false;
         },
         initialData(){
 
@@ -755,6 +907,17 @@ export default {
                 this.certificaciones = response.data;
                 //console.log(response.data);
             });
+            this.axios
+                .get('/api/perfil-puesto')
+                .then(response => {
+                    this.perfiles = response.data;
+                    this.perfiles.forEach(element => {
+
+                        element.funciones=element.funciones.split(',');
+                        element.responsabilidades=element.responsabilidades.split(',');
+                    });
+                    this.loading = false;
+                });
         },
         createCertificate() {
                 this.certificacion.estado = (this.certificacion.estado) ? 1 : 0;

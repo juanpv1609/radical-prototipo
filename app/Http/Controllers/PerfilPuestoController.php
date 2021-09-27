@@ -33,8 +33,8 @@ class PerfilPuestoController extends Controller
         $perfil = new PerfilPuesto([
             'area_id'                => $request->input('area_id'),
             'descripcion'            => $request->input('descripcion'),
-            'funciones'          => implode(",", $request->input('funciones')),
-            'responsabilidades'             => implode(",", $request->input('responsabilidades')),
+            'funciones'          => implode(",",$request->input('funciones')),
+            'responsabilidades'             => implode(",",$request->input('responsabilidades')),
             'is_deleted'           => 0,
         ]);
         $perfil->save();
@@ -64,8 +64,8 @@ class PerfilPuestoController extends Controller
          $perfil = PerfilPuesto::find($id);
         $perfil->area_id                = $request->input('area_id');
         $perfil->descripcion            = $request->input('descripcion');
-        $perfil->funciones              = implode(",", $request->input('funciones'));
-        $perfil->responsabilidades      = implode(",", $request->input('responsabilidades'));
+        $perfil->funciones              = implode(",",$request->input('funciones'));
+        $perfil->responsabilidades      = implode(",",$request->input('responsabilidades'));
         $perfil->save();
 
     }

@@ -144,11 +144,10 @@ class TareaController extends Controller
     public function subirArchivo(Request $request)
     {
         $file = $request->file('file');
-
         $fileName = $request->file->getClientOriginalName();
         //$request->file->move(storage_path('app/public/'), $fileName);
        // $file->storeAs('public',$fileName);
-        Storage::disk('local')->put($fileName, File($file));
+        Storage::disk('local')->put('personal/'.$fileName, File($file));
 
 
         return response()->json(['archivo'=>$fileName]);

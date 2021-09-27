@@ -59,6 +59,18 @@
                             <td>{{ row.item.telefono }}</td>
                             <td>{{ row.item.fecha_nacimiento }}</td>
                             <td>
+                                <v-tooltip bottom>
+                                    <template v-slot:activator="{ on, attrs }">
+                                        <v-btn  icon v-bind="attrs"
+                                            v-on="on" color="primary" @click="downloadFile(row.item.documentos)" target="_blank"
+                                            :disabled="row.item.documentos==null || row.item.documentos==''">
+                                            <v-icon dark>mdi-download</v-icon>
+                                        </v-btn>
+                                    </template>
+                                    <span>{{ row.item.documentos }}</span>
+                                    </v-tooltip>
+                            </td>
+                            <td>
                                 <v-btn
                                     icon
                                     color="primary"
@@ -113,7 +125,7 @@
                                 ></v-text-field></v-col>
                             </v-card-title>
                             <v-card-text>
-                                
+
                                 <v-data-table
                                     :headers="headersEstudios"
                                     :items="persona_estudios"
@@ -182,6 +194,7 @@ export default {
                 { text: "Email", value: "email" },
                 { text: "Telefono", value: "telefono" },
                 { text: "Fecha nacimiento", value: "fecha_nacimiento" },
+                { text: "Documentos", value: "documentos" },
                 { text: "Estudios", value: "estudios" },
                 { text: "Acciones", value: "controls", sortable: false }
             ],
@@ -239,7 +252,24 @@ export default {
                 this.personas.splice(i, 1);
                 this.loading = false;
             });
-        }
+        },
+        downloadFile(archivo){
+                console.log(archivo);
+                let arrayArchivos = archivo.split(',');
+                for (const file of arrayArchivos) {
+                    this.axios
+                        .get(`/api/get-file/${file}`)
+                        .then(response => {
+                            const url=response.config.baseURL+response.config.url;
+                            window.open(url,'_blank');
+                        },error => {
+                            console.log(error);
+                            this.$toasted.error(`No se encontro el archivo: ${file}`)
+
+                        });
+                }
+
+            },
     }
 };
 </script>

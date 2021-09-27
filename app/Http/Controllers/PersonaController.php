@@ -34,6 +34,7 @@ class PersonaController extends Controller
     public function store(Request $request)
     {
         $arrayEstudios = $request->input("estudios");
+        //dd($request);
         $persona = new Persona([
             'ci'                => $request->input('ci'),
             'nombre'            => $request->input('nombre'),
@@ -44,11 +45,13 @@ class PersonaController extends Controller
             'telefono'          => $request->input('telefono'),
             'fecha_nacimiento'  => $request->input('fecha_nacimiento'),
             'foto'              => $request->input('fotoString'),
+            //---------------------------
             'perfil_puesto_id'              => $request->input('perfil_puesto_id'),
-            'funcion_especifica'              => $request->input('funcion_especifica'),
-            'responsabilidad_especifica'              => $request->input('responsabilidad_especifica'),
-            'documentos'              => $request->input('documentos'),
-            'skills'              => $request->input('skills'),
+            'funcion_especifica'            => implode(",",$request->input('funcion_especifica')),
+            'responsabilidad_especifica'    => implode(",",$request->input('responsabilidad_especifica')),
+            'autoridad_especifica'          => implode(",",$request->input('autoridad_especifica')),
+            'documentos'                    => implode(",",$request->input('documentos')),
+            'skills'                        => implode(",",$request->input('skills')),
         ]);
         $persona->save();
         foreach ($arrayEstudios as $item) {
@@ -100,11 +103,14 @@ class PersonaController extends Controller
         $persona->telefono          = $request->input('telefono');
         $persona->fecha_nacimiento  = $request->input('fecha_nacimiento');
         $persona->foto              = $request->input('fotoString');
-        $persona->perfil_puesto_id  = $request->input('perfil_puesto_id');
-        $persona->funcion_especifica  = $request->input('funcion_especifica');
-        $persona->responsabilidad_especifica  = $request->input('responsabilidad_especifica');
-        $persona->documentos  = $request->input('documentos');
-        $persona->skills  = $request->input('skills');
+        //-----------------------------------
+        $persona->perfil_puesto_id              = $request->input('perfil_puesto_id');
+        $persona->funcion_especifica            = implode(",",$request->input('funcion_especifica'));
+        $persona->responsabilidad_especifica    = implode(",",$request->input('responsabilidad_especifica'));
+        $persona->autoridad_especifica    = implode(",", $request->input('autoridad_especifica'));
+
+        $persona->documentos                    = implode(",",$request->input('documentos'));
+        $persona->skills                    = implode(",",$request->input('skills'));
 
 
 

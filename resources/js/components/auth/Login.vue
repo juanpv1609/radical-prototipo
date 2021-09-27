@@ -36,7 +36,7 @@
                         label="Contraseña*"
                         rounded
                         v-model="form.password"
-                        required type="password"
+                        required 
                         outlined
                         dense
                         color="orange darken-4"
