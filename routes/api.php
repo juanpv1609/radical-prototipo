@@ -129,5 +129,6 @@ Route::resource('perfil-puesto', PerfilPuestoController::class);
 Route::resource('persona-merito', PersonaMeritoController::class);
 
 
+
 });
 

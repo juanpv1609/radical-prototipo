@@ -35,7 +35,7 @@ class PersonaMeritoController extends Controller
             'fecha'            => $request->input('fecha'),
             'autoridad_id'          => $request->input('autoridad_id'),
             'is_merito'             => $request->input('is_merito'),
-            'descripcion'             => $request->input('is_merito'),
+            'descripcion'             => $request->input('descripcion'),
             'is_deleted'           => 0,
         ]);
         $metito->save();
@@ -50,8 +50,19 @@ class PersonaMeritoController extends Controller
      */
     public function show($id)
     {
-        //
+
+
+        $arr = [
+            'is_deleted' => 0,
+            'persona_id' => $id,
+        ];
+
+
+         $meritos = PersonaMerito::with('persona', 'autoridad')->where($arr)->get();
+        return $meritos;
+
     }
+   
 
     /**
      * Update the specified resource in storage.

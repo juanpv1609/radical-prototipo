@@ -235,8 +235,8 @@ export default {
             items: [
 
 
-                { title: "Clientes", link: "/clientes", icon: "mdi-face-agent" },
-                { title: "Personal", link: "/personal", icon: "mdi-card-account-details" },
+                { title: "Clientes", link: "/clientes", icon: "mdi-card-account-details" },
+                { title: "Personal", link: "/personal", icon: "mdi-face-agent" },
                 {
                     title: "Contratos",
                     link: "/contratos",
@@ -250,7 +250,7 @@ export default {
                         { title: "Tareas", link: "/reporte-tareas", icon: "mdi-check"},
                         { title: "Tareas & Contrato", link: "/reporte-contratos", icon: "mdi-checkbox-marked"},
                         { title: "Tareas & Usuario", link: "/reporte-usuario", icon: "mdi-account-check"},
-                        { title: "Contratos", link: "/reporte-allContratos", icon: ""},
+                        { title: "Contratos", link: "/reporte-allContratos", icon: "mdi-notebook-check"},
                         {
                             title: "Certificacion",link: "/reporte-certificacion",icon: "mdi-certificate"
                         },

@@ -44,9 +44,19 @@
                     :headers="headers"
                     :items="casosDeUso"
                     :search="search"
+                    item-key="id"
+                        v-model="selected"
+                        show-select
                 >
                     <template v-slot:item="row">
                         <tr>
+                            <td><v-checkbox
+                                :input-value="row.isSelected"
+                                @change="row.select($event)"
+                                hide-details
+
+                                ></v-checkbox>
+                                </td>
                             <td>{{ row.item.nombre }}</td>
                             <td>{{ row.item.descripcion }}</td>
                             <!-- <td>{{ row.item.resultado_esperado }}</td> -->
@@ -126,9 +136,6 @@
                             <span class="headline">{{ titleForm }}</span>
                         </v-card-title>
                         <v-card-text>
-                            <v-container>
-                                <v-form @submit.prevent="createCasoDeUso">
-                                </v-form>
                                 <v-row dense>
                                     <v-col cols="12">
                                         <v-text-field
@@ -186,7 +193,6 @@
                                         </v-radio-group>
                                     </v-col>
                                 </v-row>
-                            </v-container>
                         </v-card-text>
                         <v-card-actions>
                             <v-switch
@@ -257,7 +263,8 @@ export default {
                 // { text: "Escenario", value: "escenario" },
                 { text: "Estado", value: "estado" },
                 { text: "Acciones", sortable: false }
-            ]
+            ],
+            selected:[],
         };
     },
     created() {
