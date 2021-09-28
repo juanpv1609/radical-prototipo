@@ -5,7 +5,15 @@
 <head>
 
     <title>Grupo radical</title>
+<style>
+    @font-face {
+            font-family: "source_sans_proregular";
+            src: local("Source Sans Pro"), url("fonts/sourcesans/sourcesanspro-regular-webfont.ttf") format("truetype");
+            font-weight: normal;
+            font-style: normal;
 
+        }
+</style>
 </head>
 
 <body>

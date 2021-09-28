@@ -183,7 +183,8 @@
                                     persistent-hint
                                     small-chips
                                     deletable-chips
-
+                                    :delimiters="[',']"
+                                    @change="delimitFunciones"
                                 >
                                 </v-combobox>
                             </v-col>
@@ -198,6 +199,8 @@
                                     persistent-hint
                                     small-chips
                                     deletable-chips
+                                    :delimiters="[',']"
+                                    @change="delimitResponsabilidades"
 
                                 >
                                 </v-combobox>
@@ -213,25 +216,29 @@
                                     persistent-hint
                                     small-chips
                                     deletable-chips
+                                    :delimiters="[',']"
+                                    @change="delimitAutoridades"
 
                                 >
                                 </v-combobox>
                             </v-col>
                             <v-col cols="12" sm="6">
-                                        <v-combobox
-                                            v-model="modelSkills"
-                                            :items="itemsSkills"
-                                            hide-selected
-                                            color="primary"
-                                            hint="Ingrese la habilidad, conocimiento y presione Enter o TAB "
-                                            label="Habilidades / conocimientos"
-                                            multiple
-                                            persistent-hint
-                                            small-chips
-                                            deletable-chips
+                                    <v-combobox
+                                        v-model="modelSkills"
+                                        :items="itemsSkills"
+                                        hide-selected
+                                        color="primary"
+                                        hint="Ingrese la habilidad, conocimiento y presione Enter o TAB "
+                                        label="Habilidades / conocimientos"
+                                        multiple
+                                        persistent-hint
+                                        small-chips
+                                        deletable-chips
+                                        :delimiters="[',']"
+                                        @change="delimitSkills"
 
-                                        >
-                                        </v-combobox>
+                                    >
+                                    </v-combobox>
                                     </v-col>
                                     <v-col cols="12" sm="6">
                                         <v-file-input
@@ -967,6 +974,22 @@ export default {
                     .catch(err => console.log(err))
                     .finally(() => this.loading = false)
             },
+            delimitFunciones (v) {
+                const reducer = (a, e) => [...a, ...e.split(/[,]+/)]
+                this.modelFunciones = [...new Set(v.reduce(reducer, []))]
+                },
+            delimitResponsabilidades (v) {
+                const reducer = (a, e) => [...a, ...e.split(/[,]+/)]
+                this.modelResponsabilidades = [...new Set(v.reduce(reducer, []))]
+            },
+             delimitAutoridades (v) {
+                const reducer = (a, e) => [...a, ...e.split(/[,]+/)]
+                this.modelAutoridades = [...new Set(v.reduce(reducer, []))]
+                },
+             delimitSkills (v) {
+                const reducer = (a, e) => [...a, ...e.split(/[,]+/)]
+                this.modelSkills = [...new Set(v.reduce(reducer, []))]
+                }
     }
 };
 </script>

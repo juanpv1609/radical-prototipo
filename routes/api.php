@@ -111,6 +111,8 @@ Route::get('get-file-persona/{archivo}', function ($archivo) {
 // send mails
     Route::get('send-mails-client/{contrato}', [SendMailController::class, 'sendMailsClient']);
     Route::get('send-mail-user/{tarea}', [SendMailController::class, 'sendMailUser']);
+    Route::get('send-mail-week', [SendMailController::class, 'sendMailAlertWeek']);
+
 
 
 // reportes

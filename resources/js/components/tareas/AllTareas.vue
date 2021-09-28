@@ -540,7 +540,7 @@ import moment from "moment";
                 .get('/api/tareas')
                 .then(response => {
                     this.tareas = response.data;
-                    console.log(this.tareas);
+                    //console.log(this.tareas);
                     this.loading = false;
                     for (const item of this.tareas) {
                         if ((item.fecha_alerta==moment().format('YYYY-MM-DD'))
@@ -557,6 +557,9 @@ import moment from "moment";
                     this.axios.get("/api/estado-tareas/").then(response => {
                     this.estado_tarea = response.data;
                 });
+                /* this.axios.get("/api/send-mail-week/").then(response => {
+                    console.log(response.data);
+                }); */
         }
 
        }

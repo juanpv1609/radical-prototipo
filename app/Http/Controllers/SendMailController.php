@@ -9,6 +9,7 @@ use App\Mail\TareasEmail;
 use App\Mail\TicketEmail;
 use App\Mail\ContratoEmail;
 use Illuminate\Http\Request;
+use App\Mail\TareasSemanalesEmail;
 use Illuminate\Support\Facades\Mail;
 
 class SendMailController extends Controller
@@ -91,34 +92,35 @@ class SendMailController extends Controller
 
         //$this->info('Successfully sent daily quote to everyone.');
     }
-    public function create()
+    public function sendMailAlertWeek()
     {
-        //
+         $from = Carbon::now()->format('Y-m-d');
+        $to = Carbon::now()->addDays(6)->format('Y-m-d');
+        $destinatarios = ['paul.canchignia@gruporadical.com','paul.landazuri@gruporadical.com','daniel.viteri@gruporadical.com','juan.perugachi@gruporadical.com'];
+
+             $alerta_fechas = Tareas::with('contrato.cliente', 'frecuencias', 'estado_tarea', 'tipo', 'usuario')
+                            ->where('alerta_enviada', 0)
+                            ->where('estado', 1)
+                            ->whereBetween('fecha', [$from,$to])
+                            ->orderBy('fecha')
+                            ->get();
+            //return($alerta_fechas);
+            $details = [];
+            $alertas=[];
+                foreach ($alerta_fechas as $item) {
+                    array_push($alertas,$item);
+                }
+                $details = ['title' => 'Notificación de entregables del '.$from.' al '.$to,
+                        'alerta' => 1,
+                        'body' => 'Estimad@s el software RGSDM (Radical Gestión SDM) ha generado las siguientes alertas de entregables de la semana:',
+                        'alertas'=>$alertas];
+                //return $details;
+
+                Mail::to($destinatarios)
+                //->cc($destinatarios)
+                ->send(new TareasSemanalesEmail($details));
+
+        //$this->info('Successfully sent daily quote to everyone.');
     }
 
-    public function store(Request $request)
-    {
-        //
-    }
-
-    public function show($id)
-    {
-        //
-    }
-
-    public function edit($id)
-    {
-        //
-    }
-
-
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    public function destroy($id)
-    {
-        //
-    }
 }
