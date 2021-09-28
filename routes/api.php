@@ -100,11 +100,11 @@ Route::get('get-file-persona/{archivo}', function ($archivo) {
 
 
         //verificamos si el archivo existe y lo retornamos
-    if (Storage::disk('local')->exists($archivo)) {
+    //if (Storage::disk('local')->exists($archivo)) {
         return response()->download(public_path('upload/personal/' . $archivo));
-    }
+    //}
     //si no se encuentra lanzamos un error 404.
-    return response()->json('error', 404);
+    //return response()->json('error', 404);
 });
 
 
