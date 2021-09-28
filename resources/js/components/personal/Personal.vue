@@ -55,9 +55,29 @@
                             <td>{{ row.item.ci }}</td>
                             <td>{{ row.item.nombre }} {{ row.item.apellido }}</td>
 
-                            <td>{{ row.item.email }}</td>
-                            <td>{{ row.item.telefono }}</td>
-                            <td>{{ row.item.fecha_nacimiento }}</td>
+                            <td>
+                                <v-tooltip bottom>
+                                    <template v-slot:activator="{ on, attrs }">
+                                        <v-btn  icon small v-bind="attrs"
+                                            v-on="on" >
+                                            <v-icon >mdi-email</v-icon>
+                                        </v-btn>
+                                    </template>
+                                    <span>{{ row.item.email }}</span>
+                                </v-tooltip>
+                                <v-tooltip bottom>
+                                    <template v-slot:activator="{ on, attrs }">
+                                        <v-btn  icon small v-bind="attrs"
+                                            v-on="on" >
+                                            <v-icon >mdi-phone</v-icon>
+                                        </v-btn>
+                                    </template>
+                                    <span>{{ row.item.telefono }}</span>
+                                </v-tooltip>
+
+                            </td>
+                            <!-- <td>{{ row.item.telefono }}</td> -->
+                            <!-- <td>{{ row.item.fecha_nacimiento }}</td> -->
 
                             <td>
                                 <v-btn
@@ -184,7 +204,7 @@
                         <v-card-title>
                             <span class="headline">Méritos y Deméritos</span>
                             <v-spacer></v-spacer>
-                            <span class="headline">[{{persona_merito}}]</span>
+                            <span >[{{persona_merito}}]</span>
                         </v-card-title>
                         <v-card-text>
                                 <v-row dense>
@@ -278,10 +298,9 @@
                                             Guardar
                                         </v-btn>
                                 </v-row>
-                                 <v-divider></v-divider>
                                 <v-row dense>
                                     <v-col cols="12">
-                                        <v-simple-table  v-if="meritos.length>0" >
+                                        <v-simple-table  v-if="meritos.length>0" dark>
                             <template v-slot:default>
                             <thead>
                                 <tr>
@@ -351,9 +370,9 @@ export default {
                 { text: "Foto", value: "foto" },
                 { text: "CI", value: "ci" },
                 { text: "Nombre", value: "nombre" },
-                { text: "Email", value: "email" },
-                { text: "Telefono", value: "telefono" },
-                { text: "Fecha nacimiento", value: "fecha_nacimiento" },
+                { text: "Contacto", value: "email" },
+                // { text: "Telefono", value: "telefono" },
+                // { text: "Fecha nacimiento", value: "fecha_nacimiento" },
                 { text: "Formación", value: "estudios" },
                 { text: "Acciones", value: "controls", sortable: false }
             ],

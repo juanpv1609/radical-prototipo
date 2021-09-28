@@ -47,11 +47,11 @@ class PersonaController extends Controller
             'foto'              => $request->input('fotoString'),
             //---------------------------
             'perfil_puesto_id'              => $request->input('perfil_puesto_id'),
-            'funcion_especifica'            => implode(",",$request->input('funcion_especifica')),
-            'responsabilidad_especifica'    => implode(",",$request->input('responsabilidad_especifica')),
-            'autoridad_especifica'          => implode(",",$request->input('autoridad_especifica')),
-            'documentos'                    => implode(",",$request->input('documentos')),
-            'skills'                        => implode(",",$request->input('skills')),
+            'funcion_especifica'            => !empty($request->input('funcion_especifica')) ? implode(",",$request->input('funcion_especifica')) : null,
+            'responsabilidad_especifica'    => !empty($request->input('responsabilidad_especifica')) ? implode(",",$request->input('responsabilidad_especifica')) : null,
+            'autoridad_especifica'          => !empty($request->input('autoridad_especifica')) ? implode(",",$request->input('autoridad_especifica')) : null,
+            'documentos'                    => !empty($request->input('documentos')) ? implode(",",$request->input('documentos')) : null,
+            'skills'                        => !empty($request->input('skills')) ? implode(",",$request->input('skills')) : null,
         ]);
         $persona->save();
         foreach ($arrayEstudios as $item) {
@@ -105,12 +105,12 @@ class PersonaController extends Controller
         $persona->foto              = $request->input('fotoString');
         //-----------------------------------
         $persona->perfil_puesto_id              = $request->input('perfil_puesto_id');
-        $persona->funcion_especifica            = implode(",",$request->input('funcion_especifica'));
-        $persona->responsabilidad_especifica    = implode(",",$request->input('responsabilidad_especifica'));
-        $persona->autoridad_especifica    = implode(",", $request->input('autoridad_especifica'));
+        $persona->funcion_especifica            = !empty($request->input('funcion_especifica')) ? implode(",",$request->input('funcion_especifica')) : null;
+        $persona->responsabilidad_especifica    = !empty($request->input('responsabilidad_especifica')) ? implode(",",$request->input('responsabilidad_especifica')) : null;
+        $persona->autoridad_especifica          = !empty($request->input('autoridad_especifica')) ? implode(",", $request->input('autoridad_especifica')) : null;
 
-        $persona->documentos                    = implode(",",$request->input('documentos'));
-        $persona->skills                    = implode(",",$request->input('skills'));
+        $persona->documentos                    = !empty($request->input('documentos')) ? implode(",",$request->input('documentos')) : null;
+        $persona->skills                        = !empty($request->input('skills')) ? implode(",",$request->input('skills')) : null;
 
 
 

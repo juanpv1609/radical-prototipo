@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h3 class="d-flex justify-space-between mb-6 pt-4">
+        <h3 class="d-flex justify-space-between  pt-4">
             Nuevo Registro
                 <v-btn
                     class="mx-2"
@@ -26,7 +26,8 @@
                                 v-model="persona.perfil_puesto_id"
                                 label="Seleccione un perfil laboral"
 
-                            ></v-autocomplete>
+                            >
+                                </v-autocomplete>
                         </v-col>
                     </v-subheader>
                     <v-card-text>
@@ -169,7 +170,16 @@
                                             </v-menu>
                                             </template>
                                     </v-col>
-                                    <v-col cols="12" sm="6">
+
+
+                                </v-row>
+
+
+                            </v-col>
+
+                        </v-row>
+                         <v-row dense>
+                             <v-col cols="12" sm="6">
                                         <v-combobox
                                             v-model="modelSkills"
                                             :items="itemsSkills"
@@ -181,8 +191,6 @@
                                             persistent-hint
                                             small-chips
                                             deletable-chips
-
-
                                         >
                                         </v-combobox>
                                     </v-col>
@@ -196,24 +204,25 @@
                                             multiple
                                             :disabled="status_archivos"
 
-                                            ></v-file-input>
-                                    <v-btn  color="orange darken-4" block
-                                        @click="subirArchivos"
-                                        :loading="loadingUpload"
-                                        :disabled="status_archivos">
-                                    <span v-if="status_archivos">CORRECTO</span>
-                                    <span v-else>Subir {{documentos.length}} Archivos</span>
+                                            >
+                                            <template v-slot:append-outer>
+                                                <v-slide-x-reverse-transition
+                                                    mode="out-in"
+                                                >
+                                                <v-btn  color="orange darken-4"
+                                                    @click="subirArchivos"
+                                                    :loading="loadingUpload"
+                                                    :disabled="(status_archivos || documentos.length==0)">
+                                                <span v-if="status_archivos">CORRECTO</span>
+                                                <span v-else>Subir {{documentos.length}} Archivos</span>
 
-                                    </v-btn>
+                                                </v-btn>
+
+                                                </v-slide-x-reverse-transition>
+                                                </template>
+                                    </v-file-input>
+
                                     </v-col>
-
-                                </v-row>
-
-
-                            </v-col>
-
-                        </v-row>
-                         <v-row dense>
                             <v-col cols="12" sm="4">
                                 <v-combobox
                                     v-model="modelFunciones"
@@ -271,7 +280,7 @@
                                             color="green"
 
                                         >
-                                        <strong>ESTUDIOS</strong>
+                                        <strong>FORMACIÓN ACADÉMICA</strong>
                                         </v-badge>
                                     </v-subheader>
 
@@ -344,7 +353,7 @@
                 <br>
                 <v-card elevation="2" outlined shaped >
                     <v-subheader class="text-primary">
-                        <strong>FORMACIÓN ACADÉMICA</strong>
+                        <strong>AÑADIR FORMACIÓN ACADÉMICA</strong>
                     </v-subheader>
                     <v-card-text>
                                 <v-row >
@@ -937,6 +946,7 @@ export default {
                     .catch(err => console.log(err))
                     .finally(() => this.loading = false)
             },
+
     }
 };
 </script>

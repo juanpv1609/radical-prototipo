@@ -20,6 +20,7 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         Commands\SendAlert::class,
+        'App\Console\Commands\DatabaseBackUp'
     ];
     protected function scheduleTimezone()
     {
@@ -45,6 +46,13 @@ class Kernel extends ConsoleKernel
         ->dailyAt('07:00');
         $schedule->command('send:alertendcontract7')
         ->dailyAt('07:00');
+        $schedule->command('database:backup')
+        ->dailyAt('07:00');
+
+        /* $schedule->command('theTask')
+         ->weekly()
+         ->mondays()
+         ->at('12:30'); */
 
 
         //->twiceDaily(7, 13);
