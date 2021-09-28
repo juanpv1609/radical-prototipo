@@ -179,51 +179,7 @@
 
                         </v-row>
                          <v-row dense>
-                             <v-col cols="12" sm="6">
-                                        <v-combobox
-                                            v-model="modelSkills"
-                                            :items="itemsSkills"
-                                            hide-selected
-                                            color="primary"
-                                            hint="Ingrese la habilidad, conocimiento y presione Enter o TAB "
-                                            label="Habilidades / conocimientos"
-                                            multiple
-                                            persistent-hint
-                                            small-chips
-                                            deletable-chips
-                                        >
-                                        </v-combobox>
-                                    </v-col>
-                                    <v-col cols="12" sm="6">
-                                        <v-file-input
-                                            v-model="documentos"
-                                            label="Documentos (CV, contrato, ascensos, etc)"
-                                            hint="Nomenclatura: Archivo_NombreApellido.ext"
-                                            chips
-                                            counter
-                                            multiple
-                                            :disabled="status_archivos"
-
-                                            >
-                                            <template v-slot:append-outer>
-                                                <v-slide-x-reverse-transition
-                                                    mode="out-in"
-                                                >
-                                                <v-btn  color="orange darken-4"
-                                                    @click="subirArchivos"
-                                                    :loading="loadingUpload"
-                                                    :disabled="(status_archivos || documentos.length==0)">
-                                                <span v-if="status_archivos">CORRECTO</span>
-                                                <span v-else>Subir {{documentos.length}} Archivos</span>
-
-                                                </v-btn>
-
-                                                </v-slide-x-reverse-transition>
-                                                </template>
-                                    </v-file-input>
-
-                                    </v-col>
-                            <v-col cols="12" sm="4">
+                             <v-col cols="12" sm="4">
                                 <v-combobox
                                     v-model="modelFunciones"
                                     :items="itemsFunciones"
@@ -268,6 +224,51 @@
                                 >
                                 </v-combobox>
                             </v-col>
+                             <v-col cols="12" sm="6">
+                                        <v-combobox
+                                            v-model="modelSkills"
+                                            :items="itemsSkills"
+                                            hide-selected
+                                            color="primary"
+                                            hint="Ingrese la habilidad, conocimiento y presione Enter o TAB "
+                                            label="Habilidades / conocimientos"
+                                            multiple
+                                            persistent-hint
+                                            small-chips
+                                            deletable-chips
+                                        >
+                                        </v-combobox>
+                                    </v-col>
+                                    <v-col cols="12" sm="6">
+                                        <v-file-input
+                                            v-model="documentos"
+                                            label="Documentos (CV, contrato, ascensos, etc)"
+                                            hint="Nomenclatura: Archivo_NombreApellido.ext"
+                                            chips
+                                            counter
+                                            multiple
+                                            :disabled="status_archivos"
+
+                                            >
+                                            <template v-slot:append-outer>
+                                                <v-slide-x-reverse-transition
+                                                    mode="out-in"
+                                                >
+                                                <v-btn  color="orange darken-4"
+                                                    @click="subirArchivos"
+                                                    :loading="loadingUpload"
+                                                    :disabled="(status_archivos || documentos.length==0)">
+                                                <span v-if="status_archivos">CORRECTO</span>
+                                                <span v-else>Subir {{documentos.length}} Archivos</span>
+
+                                                </v-btn>
+
+                                                </v-slide-x-reverse-transition>
+                                                </template>
+                                    </v-file-input>
+
+                                    </v-col>
+
                         </v-row>
                         <v-row>
                             <v-col cols="12">
@@ -356,7 +357,7 @@
                         <strong>AÑADIR FORMACIÓN ACADÉMICA</strong>
                     </v-subheader>
                     <v-card-text>
-                                <v-row >
+                                <v-row dense>
                                     <v-col cols="12" md="12">
                                         <v-textarea
                                             clearable
@@ -553,7 +554,7 @@
                                         ><v-icon dark>
                                                     mdi-plus
                                                 </v-icon>
-                                            AÑADIR EDUCACION
+                                            AÑADIR FORMACIÓN ACADÉMICA
                                         </v-btn>
                                     </v-col>
                                 </v-row>
@@ -847,7 +848,7 @@ export default {
             formData.append('file', file);
             console.log(formData);
             await this.axios
-            .post(`/api/subir-archivo`, formData,config)
+            .post(`/api/subir-archivo-persona`, formData,config)
             .then((res) => {
                 //this.$router.push({ name: 'tareas' });
                 //console.log(res)

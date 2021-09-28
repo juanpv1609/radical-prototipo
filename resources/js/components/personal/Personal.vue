@@ -88,9 +88,10 @@
                                 </v-btn>
                             </td>
                             <td>
+
                                 <v-tooltip bottom>
                                     <template v-slot:activator="{ on, attrs }">
-                                        <v-btn  icon v-bind="attrs" title="Descargar documentos"
+                                        <v-btn  small icon v-bind="attrs" title="Descargar documentos"
                                             v-on="on" color="primary" @click="downloadFile(row.item.documentos)" target="_blank"
                                             :disabled="row.item.documentos==null || row.item.documentos==''">
                                             <v-icon dark>mdi-download</v-icon>
@@ -100,14 +101,14 @@
                                     </v-tooltip>
                                     <v-btn
                                     :disabled="row.item.role == 2"
-                                    icon
+                                    icon small
                                     color="success" title="Méritos"
                                     @click="openDialogMeritos(row.item)"
                                 >
                                     <v-icon dark>mdi-certificate</v-icon>
                                 </v-btn>
                                 <v-btn
-                                    icon
+                                    icon small
                                     color="orange" title="Editar"
                                     :to="{
                                                 name: 'personal-edit',
@@ -118,7 +119,7 @@
                                 </v-btn>
                                 <v-btn
                                     :disabled="row.item.role == 2"
-                                    icon
+                                    icon small
                                     color="error" title="Eliminar"
                                     @click="deletePerson(row.item)"
                                 >
@@ -486,7 +487,7 @@ export default {
                 let arrayArchivos = archivo.split(',');
                 for (const file of arrayArchivos) {
                     this.axios
-                        .get(`/api/get-file/${file}`)
+                        .get(`/api/get-file-persona/${file}`)
                         .then(response => {
                             const url=response.config.baseURL+response.config.url;
                             window.open(url,'_blank');

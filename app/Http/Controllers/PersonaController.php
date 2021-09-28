@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Persona;
 use Illuminate\Http\Request;
 use App\Models\PersonaEstudio;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\File;
 
 class PersonaController extends Controller
 {
@@ -157,5 +159,16 @@ class PersonaController extends Controller
         $persona->is_deleted=1;
         $persona->save();
         return response()->json('persona deleted!');
+    }
+    public function subirArchivo(Request $request)
+    {
+        $file = $request->file('file');
+        $fileName = $request->file->getClientOriginalName();
+        //$request->file->move(storage_path('app/public/'), $fileName);
+       // $file->storeAs('public',$fileName);
+        Storage::disk('local')->put('personal/'.$fileName, File($file));
+
+
+        return response()->json(['archivo'=>$fileName]);
     }
 }

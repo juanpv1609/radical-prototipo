@@ -96,6 +96,16 @@ Route::middleware('api')->group(function () {
         //si no se encuentra lanzamos un error 404.
         return response()->json('error',404);
 });
+Route::get('get-file-persona/{archivo}', function ($archivo) {
+
+
+        //verificamos si el archivo existe y lo retornamos
+    if (Storage::disk('local')->exists($archivo)) {
+        return response()->download(public_path('upload/personal/' . $archivo));
+    }
+    //si no se encuentra lanzamos un error 404.
+    return response()->json('error', 404);
+});
 
 
 // send mails
@@ -116,6 +126,8 @@ Route::resource('casos-de-uso', CasosDeUsoController::class);
 // PERSONAL
 Route::get('estado-estudio', [ConfigController::class,'estadoEstudio']);
 Route::resource('persona', PersonaController::class);
+Route::post('subir-archivo-persona', [PersonaController::class,'subirArchivo']);
+
 Route::get('persona-estudios/{id}', [PersonaController::class,'estudios']);
 Route::resource('nivel-estudio', NivelEstudioController::class);
 Route::get('get-nivel-estudio', [NivelEstudioController::class,'listarNiveles']);

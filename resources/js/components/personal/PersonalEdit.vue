@@ -172,51 +172,6 @@
 
                         </v-row>
                         <v-row dense>
-                            <v-col cols="12" sm="6">
-                                        <v-combobox
-                                            v-model="modelSkills"
-                                            :items="itemsSkills"
-                                            hide-selected
-                                            color="primary"
-                                            hint="Ingrese la habilidad, conocimiento y presione Enter o TAB "
-                                            label="Habilidades / conocimientos"
-                                            multiple
-                                            persistent-hint
-                                            small-chips
-                                            deletable-chips
-
-                                        >
-                                        </v-combobox>
-                                    </v-col>
-                                    <v-col cols="12" sm="6">
-                                        <v-file-input
-                                            v-model="documentos"
-                                            label="Documentos (CV, contrato, ascensos, etc)"
-                                            hint="Nomenclatura: Archivo_NombreApellido.ext"
-                                            chips
-                                            counter
-                                            multiple
-                                            :disabled="status_archivos"
-
-                                            >
-                                            <template v-slot:append-outer>
-                                                <v-slide-x-reverse-transition
-                                                    mode="out-in"
-                                                >
-                                                <v-btn  color="orange darken-4"
-                                                    @click="subirArchivos"
-                                                    :loading="loadingUpload"
-                                                    :disabled="(status_archivos || documentos.length==0)">
-                                                <span v-if="status_archivos">CORRECTO</span>
-                                                <span v-else>Subir {{documentos.length}} Archivos</span>
-
-                                                </v-btn>
-
-                                                </v-slide-x-reverse-transition>
-                                                </template>
-                                                </v-file-input>
-
-                                    </v-col>
                             <v-col cols="12" sm="4">
                                 <v-combobox
                                     v-model="modelFunciones"
@@ -262,6 +217,52 @@
                                 >
                                 </v-combobox>
                             </v-col>
+                            <v-col cols="12" sm="6">
+                                        <v-combobox
+                                            v-model="modelSkills"
+                                            :items="itemsSkills"
+                                            hide-selected
+                                            color="primary"
+                                            hint="Ingrese la habilidad, conocimiento y presione Enter o TAB "
+                                            label="Habilidades / conocimientos"
+                                            multiple
+                                            persistent-hint
+                                            small-chips
+                                            deletable-chips
+
+                                        >
+                                        </v-combobox>
+                                    </v-col>
+                                    <v-col cols="12" sm="6">
+                                        <v-file-input
+                                            v-model="documentos"
+                                            label="Documentos (CV, contrato, ascensos, etc)"
+                                            hint="Nomenclatura: Archivo_NombreApellido.ext"
+                                            chips
+                                            counter
+                                            multiple
+                                            :disabled="status_archivos"
+
+                                            >
+                                            <template v-slot:append-outer>
+                                                <v-slide-x-reverse-transition
+                                                    mode="out-in"
+                                                >
+                                                <v-btn  color="orange darken-4"
+                                                    @click="subirArchivos"
+                                                    :loading="loadingUpload"
+                                                    :disabled="(status_archivos || documentos.length==0)">
+                                                <span v-if="status_archivos">CORRECTO</span>
+                                                <span v-else>Subir {{documentos.length}} Archivos</span>
+
+                                                </v-btn>
+
+                                                </v-slide-x-reverse-transition>
+                                                </template>
+                                                </v-file-input>
+
+                                    </v-col>
+
                         </v-row>
                         <v-divider></v-divider>
                         <v-row dense>
@@ -278,6 +279,7 @@
                                         <strong>FORMACIÓN ACADÉMICA</strong>
                                         </v-badge>
                                     </v-subheader>
+
                                 <v-simple-table  dense  fixed-header height="200px">
                                     <template v-slot:default>
                                     <thead>
@@ -351,7 +353,7 @@
                                 <strong>AÑADIR FORMACIÓN ACADÉMICA</strong>
                             </v-subheader>
                     <v-card-text>
-                                <v-row >
+                                <v-row dense>
                                     <v-col cols="12" md="12">
                                         <v-textarea
                                             clearable
@@ -550,7 +552,7 @@
                                         ><v-icon dark>
                                                     mdi-plus
                                                 </v-icon>
-                                            AÑADIR EDUCACION
+                                            AÑADIR FORMACIÓN ACADÉMICA
                                         </v-btn>
                                     </v-col>
 
@@ -858,11 +860,11 @@ export default {
             this.persona.nacionalidad_id= response.data[0].persona.nacionalidad_id;
             this.persona.telefono= response.data[0].persona.telefono;
             //----------------
-            this.persona.perfil_puesto_id= (response.data[0].persona.perfil_puesto_id!==null) ? response.data[0].persona.perfil_puesto_id : null;
-            this.modelFunciones = (response.data[0].persona.funcion_especifica!==null) ? (response.data[0].persona.funcion_especifica).split(',') : [];
-            this.modelResponsabilidades = (response.data[0].persona.responsabilidad_especifica!==null) ? (response.data[0].persona.responsabilidad_especifica).split(',') : [];
-            this.modelAutoridades = (response.data[0].persona.autoridad_especifica!==null) ? (response.data[0].persona.autoridad_especifica).split(',') : [];
-            this.modelSkills = (response.data[0].persona.skills!==null) ? (response.data[0].persona.skills).split(',') : [];
+            this.persona.perfil_puesto_id= (response.data[0].persona.perfil_puesto_id.length>0) ? response.data[0].persona.perfil_puesto_id : null;
+            this.modelFunciones = (response.data[0].persona.funcion_especifica.length>0) ? (response.data[0].persona.funcion_especifica).split(',') : [];
+            this.modelResponsabilidades = (response.data[0].persona.responsabilidad_especifica.length>0) ? (response.data[0].persona.responsabilidad_especifica).split(',') : [];
+            this.modelAutoridades = (response.data[0].persona.autoridad_especifica.length>0) ? (response.data[0].persona.autoridad_especifica).split(',') : [];
+            this.modelSkills = (response.data[0].persona.skills.length>0) ? (response.data[0].persona.skills).split(',') : [];
             this.documentos=[]
             //--------------
             this.date= response.data[0].persona.fecha_nacimiento;
@@ -932,7 +934,7 @@ export default {
                     formData.append('file', file);
                     console.log(formData);
                     await this.axios
-                    .post(`/api/subir-archivo`, formData,config)
+                    .post(`/api/subir-archivo-persona`, formData,config)
                     .then((res) => {
                         //this.$router.push({ name: 'tareas' });
                         //console.log(res)
