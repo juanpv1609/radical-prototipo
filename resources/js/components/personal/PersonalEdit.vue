@@ -860,11 +860,11 @@ export default {
             this.persona.nacionalidad_id= response.data[0].persona.nacionalidad_id;
             this.persona.telefono= response.data[0].persona.telefono;
             //----------------
-            this.persona.perfil_puesto_id= (response.data[0].persona.perfil_puesto_id.length>0) ? response.data[0].persona.perfil_puesto_id : null;
-            this.modelFunciones = (response.data[0].persona.funcion_especifica.length>0) ? (response.data[0].persona.funcion_especifica).split(',') : [];
-            this.modelResponsabilidades = (response.data[0].persona.responsabilidad_especifica.length>0) ? (response.data[0].persona.responsabilidad_especifica).split(',') : [];
-            this.modelAutoridades = (response.data[0].persona.autoridad_especifica.length>0) ? (response.data[0].persona.autoridad_especifica).split(',') : [];
-            this.modelSkills = (response.data[0].persona.skills.length>0) ? (response.data[0].persona.skills).split(',') : [];
+            this.persona.perfil_puesto_id= (response.data[0].persona.perfil_puesto_id!==null) ? response.data[0].persona.perfil_puesto_id : null;
+            this.modelFunciones = (response.data[0].persona.funcion_especifica!==null) ? (response.data[0].persona.funcion_especifica).split(',') : [];
+            this.modelResponsabilidades = (response.data[0].persona.responsabilidad_especifica!==null) ? (response.data[0].persona.responsabilidad_especifica).split(',') : [];
+            this.modelAutoridades = (response.data[0].persona.autoridad_especifica!==null) ? (response.data[0].persona.autoridad_especifica).split(',') : [];
+            this.modelSkills = (response.data[0].persona.skills!==null) ? (response.data[0].persona.skills).split(',') : [];
             this.documentos=[]
             //--------------
             this.date= response.data[0].persona.fecha_nacimiento;
