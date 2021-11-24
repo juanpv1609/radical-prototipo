@@ -48,7 +48,7 @@ class SendAlertEndContract7 extends Command
     {
         $hoy = Carbon::now()->format('Y-m-d');
 
-        $destinatarios = ['paul.canchignia@gruporadical.com','doris.gonzalez@gruporadical.com','xavier.montoya@gruporadical.com'];
+        $destinatarios = ['paul.canchignia@gruporadical.com','fabian.ortega@gruporadical.com','xavier.montoya@gruporadical.com'];
         $cc=['teamsoc@gruporadical.com','ana.rivera@gruporadical.com'];
 
              $alerta_fechas = Contrato::with('cliente')
