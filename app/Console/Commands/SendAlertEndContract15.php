@@ -49,6 +49,7 @@ class SendAlertEndContract15 extends Command
         $hoy = Carbon::now()->format('Y-m-d');
 
         $destinatarios = ['paul.canchignia@gruporadical.com','doris.gonzalez@gruporadical.com','xavier.montoya@gruporadical.com'];
+        $cc=['teamsoc@gruporadical.com','ana.rivera@gruporadical.com'];
 
              $alerta_fechas = Contrato::with('cliente')
                             //->where('alerta_fin_contrato30',0) // se envio la alerta de 30 dias
@@ -81,7 +82,7 @@ class SendAlertEndContract15 extends Command
 
 
                     Mail::to($destinatarios)
-                    //->cc($destinatarios)
+                    ->cc($cc)
                     ->send(new FinContratoEmail($details));
 
 

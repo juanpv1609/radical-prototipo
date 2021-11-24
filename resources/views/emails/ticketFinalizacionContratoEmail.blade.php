@@ -5,7 +5,18 @@
 <head>
 
     <title>Grupo radical</title>
-
+<style>
+    @font-face {
+        font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+        font-weight: normal;
+        font-style: normal;
+        font-variant: normal;
+        src: url("font url");
+      }
+      body {
+        font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+      }
+</style>
 </head>
 
 <body>

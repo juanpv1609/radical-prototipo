@@ -63,7 +63,6 @@ Route::middleware('api')->group(function () {
     Route::resource('areas', AreaController::class);
     Route::resource('paises', PaisController::class);
     Route::resource('frecuencias', FrecuenciaController::class);
-    Route::resource('areas', AreaController::class);
     Route::resource('tareas', TareaController::class);
     Route::get('tareas/{inicial}/{final}', [TareaController::class, 'tareasPorFecha']);
     Route::resource('usuarios', UserController::class);

@@ -7,12 +7,45 @@
     <title>Grupo radical</title>
 <style>
     @font-face {
-            font-family: "source_sans_proregular";
-            src: local("Source Sans Pro"), url("fonts/sourcesans/sourcesanspro-regular-webfont.ttf") format("truetype");
-            font-weight: normal;
-            font-style: normal;
-
-        }
+        font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+        font-weight: normal;
+        font-style: normal;
+        font-variant: normal;
+        src: url("font url");
+      }
+      body {
+        font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+      }
+      table.blueTable {
+  font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+  border: 3px solid #1C6EA4;
+  background-color: #D0E4F5;
+  width: 100%;
+  text-align: left;
+}
+table.blueTable td, table.blueTable th {
+  border: 1px solid #AAAAAA;
+  padding: 3px 2px;
+}
+table.blueTable tbody td {
+  font-size: 12px;
+}
+table.blueTable td:nth-child(even) {
+  background: #FFFFFF;
+}
+table.blueTable tfoot td {
+  font-size: 14px;
+}
+table.blueTable tfoot .links {
+  text-align: right;
+}
+table.blueTable tfoot .links a{
+  display: inline-block;
+  background: #1C6EA4;
+  color: #FFFFFF;
+  padding: 2px 8px;
+  border-radius: 5px;
+}
 </style>
 </head>
 
@@ -34,7 +67,7 @@
 
 
     <p>{{ $details['body'] }}</p>
-    <table width="100%" border="1">
+    <table class="blueTable">
         <tbody>
             <tr>
                 <td>Cliente:</td>
