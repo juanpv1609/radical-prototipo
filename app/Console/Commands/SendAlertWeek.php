@@ -3,8 +3,10 @@
 namespace App\Console\Commands;
 
 use Carbon\Carbon;
+use App\Models\Tareas;
 use Illuminate\Console\Command;
 use App\Mail\TareasSemanalesEmail;
+use Illuminate\Support\Facades\Mail;
 
 class SendAlertWeek extends Command
 {
@@ -39,9 +41,10 @@ class SendAlertWeek extends Command
      */
     public function handle()
     {
-        $from = Carbon::now()->format('Y-m-d');
-        $to = Carbon::now()->addDays(6)->format('Y-m-d');
-        $destinatarios = ['paul.canchignia@gruporadical.com','paul.landazuri@gruporadical.com','daniel.viteri@gruporadical.com','juan.perugachi@gruporadical.com'];
+        if(Carbon::now()->dayOfWeek == Carbon::MONDAY){
+            $from = Carbon::now()->format('Y-m-d');
+            $to = Carbon::now()->addDays(6)->format('Y-m-d');
+             $destinatarios = ['paul.canchignia@gruporadical.com','paul.landazuri@gruporadical.com','daniel.viteri@gruporadical.com','juan.perugachi@gruporadical.com'];
 
              $alerta_fechas = Tareas::with('contrato', 'frecuencias', 'estado_tarea', 'tipo', 'usuario')
                             ->where('alerta_enviada', 0)
@@ -66,7 +69,12 @@ class SendAlertWeek extends Command
                 ->send(new TareasSemanalesEmail($details));
 
 
-        $this->info('Successfully sent daily quote to everyone.');
+        $this->info('Emails enviados.');
+
+        }else
+        $this->info('Emails NO enviados.');
+
+
 
     }
 }

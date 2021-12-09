@@ -3,7 +3,9 @@
 namespace App\Console\Commands;
 
 use Carbon\Carbon;
+use App\Mail\BackupEmail;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Mail;
 
 class DatabaseBackUp extends Command
 {
@@ -43,6 +45,15 @@ class DatabaseBackUp extends Command
         $returnVar = null;
         $output = null;
         exec($command, $output, $returnVar);
+        $details=[
+            'title' => 'Ejecución automática de backup diario',
+            'body' => 'Estimad@ el software <strong>RGSDM</strong> ha generado el backup diario automático correspondiente al '.Carbon::now()->format('Y-m-d'),
+            'file' =>  $filename
+        ];
+        Mail::to('juan.perugachi@gruporadical.com')
+                    //->cc(['paul.canchignia@gruporadical.com','xavier.montoya@gruporadical.com'])
+                    ->send(new BackupEmail($details));
+
 
 
     }
