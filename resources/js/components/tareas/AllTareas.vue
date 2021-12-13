@@ -557,9 +557,9 @@ import moment from "moment";
                     this.axios.get("/api/estado-tareas/").then(response => {
                     this.estado_tarea = response.data;
                 });
-                 this.axios.get("/api/send-mail-week/").then(response => {
+                 /* this.axios.get("/api/send-mail-week/").then(response => {
                     console.log(response.data);
-                });
+                }); */
         }
 
        }
