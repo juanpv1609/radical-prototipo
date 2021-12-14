@@ -96,7 +96,9 @@ class SendMailController extends Controller
     {
          $from = Carbon::now()->format('Y-m-d');
         $to = Carbon::now()->addDays(6)->format('Y-m-d');
-        $destinatarios = ['paul.canchignia@gruporadical.com','paul.landazuri@gruporadical.com','daniel.viteri@gruporadical.com','juan.perugachi@gruporadical.com'];
+        $destinatarios = ['juan.perugachi@gruporadical.com'];
+        //$destinatarios = ['paul.canchignia@gruporadical.com','paul.landazuri@gruporadical.com','daniel.viteri@gruporadical.com','juan.perugachi@gruporadical.com'];
+
 
              $alerta_fechas = Tareas::with('contrato.cliente', 'frecuencias', 'estado_tarea', 'tipo', 'usuario')
                             ->where('alerta_enviada', 0)
