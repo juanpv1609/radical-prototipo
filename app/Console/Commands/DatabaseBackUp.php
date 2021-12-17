@@ -40,21 +40,27 @@ class DatabaseBackUp extends Command
      */
     public function handle()
     {
-        $filename = "backup-" . Carbon::now()->format('Y-m-d') . ".sql";
-        $command = "".env('DUMP_PATH')." --user=" . env('DB_USERNAME') . " --password=" . env('DB_PASSWORD') . " --host=" . env('DB_HOST') . " " . env('DB_DATABASE') . "  > " . storage_path() . "/app/backup/" . $filename;
-        $returnVar = null;
-        $output = null;
-        exec($command, $output, $returnVar);
-        $details=[
+        if (Carbon::now()->dayOfWeek == Carbon::MONDAY) {
+            $filename = "backup-" . Carbon::now()->format('Y-m-d') . ".sql";
+            $command = "".env('DUMP_PATH')." --user=" . env('DB_USERNAME') . " --password=" . env('DB_PASSWORD') . " --host=" . env('DB_HOST') . " " . env('DB_DATABASE') . "  > " . storage_path() . "/app/backup/" . $filename;
+            $returnVar = null;
+            $output = null;
+            exec($command, $output, $returnVar);
+            $details=[
             'title' => 'Ejecución automática de backup diario',
             'body' => 'Estimad@ el software <strong>RGSDM</strong> ha generado el backup diario automático correspondiente al '.Carbon::now()->format('Y-m-d'),
             'file' =>  $filename
         ];
-        Mail::to('juan.perugachi@gruporadical.com')
+            Mail::to('juan.perugachi@gruporadical.com')
                     //->cc(['paul.canchignia@gruporadical.com','xavier.montoya@gruporadical.com'])
                     ->send(new BackupEmail($details));
+                    $this->info('Emails enviados.');
+
+        }else{
+            $this->info('Emails NO enviados.');
 
 
+        }
 
     }
 }
