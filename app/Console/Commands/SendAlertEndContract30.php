@@ -60,7 +60,7 @@ class SendAlertEndContract30 extends Command
                 foreach ($alerta_fechas as $item) {
                     $details = [
 
-                        'title' => 'Notificación de finalización de operaciones (1ra Alerta)',
+                        'title' => 'Notificación de finalización de operaciones (2da Alerta)',
                         'alerta' => 1,
                         //'responsable' => $item->usuario->name,
                         'body' => 'Estimad@ el software RGSDM (Radical Gestión SDM) ha generado la siguiente alerta: ',
@@ -86,9 +86,9 @@ class SendAlertEndContract30 extends Command
 
 
                     // SOLICITUD APERTURA DE TICKET
-                    Mail::to('soporte@gruporadical.com')
+                    //Mail::to('soporte@gruporadical.com')
                     //->cc('paul.canchignia@gruporadical.com')
-                    ->send(new TicketFinalizacionContratoEmail($details));
+                    //->send(new TicketFinalizacionContratoEmail($details));
                     $item->alerta_fin_contrato30 = 1;
                     //$item->cuenta_alertas=$item->cuenta_alertas+1;
                     $item->save();

@@ -45,7 +45,7 @@ class SendAlert extends Command
     {
         $hoy = date("Y-m-d");
         $destinatarios = ['paul.canchignia@gruporadical.com'];
-        
+
              $alerta_fechas = Tareas::with('contrato', 'frecuencias','estado_tarea','tipo','usuario')
                             ->where('alerta_enviada',0)
                             ->where('estado',1)
@@ -92,9 +92,9 @@ class SendAlert extends Command
 
 
                     // SOLICITUD APERTURA DE TICKET
-                    Mail::to('soporte@gruporadical.com')
+                    //Mail::to('soporte@gruporadical.com')
                     //->cc('paul.canchignia@gruporadical.com')
-                    ->send(new TicketEmail($details));
+                    //->send(new TicketEmail($details));
                     $item->alerta_enviada = 1;
                     $item->cuenta_alertas=$item->cuenta_alertas+1;
                     $item->save();

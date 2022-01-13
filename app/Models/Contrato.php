@@ -6,8 +6,10 @@ use App\Models\Area;
 use App\Models\Pais;
 use App\Models\Tareas;
 use App\Models\Cliente;
+use App\Models\Servicio;
 use App\Models\Frecuencia;
 use App\Models\EstadoContrato;
+use App\Models\ContratoServicio;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -26,6 +28,7 @@ class Contrato extends Model
                             'frecuencia',
                             'correos',
                             'observacion','adjunto',
+                            'alerta_fin_contrato60',
                             'alerta_fin_contrato30',
                             'alerta_fin_contrato15',
                             'alerta_fin_contrato7'
@@ -46,9 +49,15 @@ class Contrato extends Model
     {
         return $this->hasMany(Tareas::class, 'contrato_id', 'id');
     }
+     public function servicios()
+    {
+        //return $this->belongsToMany(Servicios::class);
+        return $this->belongsToMany(Servicio::class);
+
+    }
     public function estado_contrato()
     {
-        return $this->hasMany(EstadoContrato::class, 'id', 'estado');
+        return $this->belongsTo(EstadoContrato::class, 'estado', 'id');
     }
 
 }

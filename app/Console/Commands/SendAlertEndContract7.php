@@ -87,9 +87,9 @@ class SendAlertEndContract7 extends Command
 
 
                     // SOLICITUD APERTURA DE TICKET
-                    Mail::to('soporte@gruporadical.com')
+                    //Mail::to('soporte@gruporadical.com')
                     //->cc('paul.canchignia@gruporadical.com')
-                    ->send(new TicketFinalizacionContratoEmail($details));
+                    //->send(new TicketFinalizacionContratoEmail($details));
                     $item->alerta_fin_contrato7 = 1;
                     //$item->cuenta_alertas=$item->cuenta_alertas+1;
                     $item->save();
