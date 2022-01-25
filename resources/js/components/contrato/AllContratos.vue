@@ -37,12 +37,19 @@
               </v-icon>
           </v-btn>
         </v-card-title>
-       
+
         <v-card-text>
             <v-data-table
                 :headers="headers"
                 :items="contratos"
                 :search="search"
+                :footer-props="{
+                        showFirstLastPage: true,
+                        firstIcon: 'mdi-arrow-collapse-left',
+                        lastIcon: 'mdi-arrow-collapse-right',
+                        prevIcon: 'mdi-minus',
+                        nextIcon: 'mdi-plus'
+                        }"
             >
             <template v-slot:item="row">
                 <tr>
@@ -51,35 +58,61 @@
                     <td>{{row.item.fecha_inicio}}</td>
                     <td>{{row.item.fecha_fin }}</td>
                     <td>{{row.item.area.nombre}}</td>
-                    <!-- <td>{{row.item.solucion}}</td> -->
+                    <td>
+                        <v-chip
+                        small
+                        label
+                        :color="row.item.estado_contrato.color">
+                            {{row.item.estado_contrato.descripcion}}
+                        </v-chip>
+                    </td>
+                    <td>
+                        <v-btn
+                        icon
+                        small
+
+                        elevation="2"
+                        color="orange darken-4"
+                        @click="findTareas(row.item)"
+                        title="Clic para ver los entregables"
+                        >
+                            {{row.item.tarea.length}}
+                        </v-btn>
+
+                    </td>
                     <td>
                         <v-tooltip bottom>
                             <template v-slot:activator="{ on, attrs }">
                                 <v-btn  icon v-bind="attrs"
-                                     v-on="on" color="primary" @click="downloadFile(row.item.adjunto)" target="_blank"
+                                     v-on="on" color="dark" @click="downloadFile(row.item.adjunto)" target="_blank"
                                      :disabled="row.item.adjunto==null || row.item.adjunto==''">
                                     <v-icon dark>mdi-download</v-icon>
                                 </v-btn>
                             </template>
-                            <span>{{ row.item.adjunto }}</span>
+                            <span>Descargar {{ row.item.adjunto }}</span>
                             </v-tooltip>
 
-                    </td>
-                    <td>
-                        <v-btn  icon color="black" @click="findTareas(row.item)">
-                            <v-icon dark>mdi-list-status</v-icon>
-                            </v-btn>
-                            <v-btn  icon color="success" :to="{
-                                                name: 'contratos-tasks',
-                                                params: { id: row.item.id }
-                                            }">
-                            <v-icon dark>mdi-plus-circle</v-icon>
-                            </v-btn>
-                    </td>
-                    <td>
-                        <v-btn  icon color="primary" @click="editContrato(row.item)">
-                            <v-icon dark>mdi-pencil</v-icon>
-                            </v-btn>
+                            <v-tooltip bottom>
+                                <template v-slot:activator="{ on, attrs }">
+                                    <v-btn  v-bind="attrs"
+                                     v-on="on" icon color="dark" :to="{
+                                                        name: 'contratos-tasks',
+                                                        params: { id: row.item.id }
+                                                    }">
+                                    <v-icon dark>mdi-plus-circle</v-icon>
+                                    </v-btn>
+                                </template>
+                                <span>Agregar entregables</span>
+                            </v-tooltip>
+                            <v-tooltip bottom>
+                                <template v-slot:activator="{ on, attrs }">
+                                    <v-btn v-bind="attrs"
+                                     v-on="on" icon color="dark" @click="editContrato(row.item)">
+                                        <v-icon dark>mdi-pencil</v-icon>
+                                        </v-btn>
+                                </template>
+                                <span>Editar contrato</span>
+                            </v-tooltip>
                             <!-- <v-btn  icon color="warning" @click="sendMails(row.item)">
                             <v-icon dark>mdi-email</v-icon>
                         </v-btn> -->
@@ -93,25 +126,49 @@
         <v-row justify="center">
             <v-dialog v-model="dialog" persistent max-width="800px">
                 <v-card>
-                    <v-card-title>
-                        <span class="headline">{{ titleForm }}</span>
-                    </v-card-title>
+                    <v-toolbar
+                                color="accent-4"
+                                dark
+                                flat
+                                >
+                                <v-toolbar-title>{{ titleForm }}</v-toolbar-title>
+                                <v-spacer></v-spacer>
+                                <v-btn icon @click="dialog=false;contrato={}">
+                                    <v-icon>mdi-close</v-icon>
+                                </v-btn>
+                                <template v-slot:extension>
+                                    <v-tabs
+                                        v-model="tabs"
+                                        fixed-tabs
+                                        >
+                                        <v-tabs-slider color="orange" ></v-tabs-slider>
+                                            <v-tab href="#tab-1" >Datos Principales</v-tab>
+                                            <v-tab  href="#tab-2" >Servicios</v-tab>
+                                            <!-- <v-tab href="#tab-3">Entregables</v-tab> -->
+                                            <v-tab href="#tab-4">Adjuntos</v-tab>
+                                        </v-tabs>
+                                </template>
+                            </v-toolbar>
                     <v-card-text>
-                        <v-container>
-                            <v-row>
+                        <v-tabs-items v-model="tabs">
+                            <v-tab-item
+                                :value="'tab-1'"
+
+                            >
+                            <br>
+                            <v-row >
+                                <br>
                                 <v-col cols="4">
-                                    <v-select :items="clientes"
+
+                                    <v-autocomplete
+                                    :items="clientes"
+                                    item-text="nombre_comercial"
+                                    item-value="id"
                                     v-model="contrato.cliente"
-                                        label="Seleccione un cliente" >
-                                        <template slot="selection" slot-scope="data">
-                                            <!-- HTML that describe how select should render selected items -->
-                                            {{ data.item.nombre_comercial }}
-                                        </template>
-                                        <template slot="item" slot-scope="data">
-                                            <!-- HTML that describe how select should render items when the select is open -->
-                                            {{ data.item.nombre_comercial }}
-                                        </template>
-                                    </v-select>
+                                    label="Seleccione un cliente"
+                                    return-object
+
+                                ></v-autocomplete>
                                 </v-col>
                                 <v-col cols="4">
                                     <v-menu
@@ -198,7 +255,7 @@
                                     </v-menu>
                                 </v-col>
                             </v-row>
-                                <v-row>
+                                <v-row dense>
 
                                 <v-col cols="4">
                                     <v-select :items="paises"
@@ -217,7 +274,7 @@
                                 <v-col cols="4">
                                     <v-select :items="areas"
                                     v-model="contrato.area"
-                                        label="Seleccione un area" >
+                                        label="Seleccione un área" >
                                         <template slot="selection" slot-scope="data">
                                             <!-- HTML that describe how select should render selected items -->
                                             {{ data.item.nombre }}
@@ -231,58 +288,48 @@
                                 <v-col cols="4">
                                     <v-text-field
                                         v-model="contrato.solucion"
-                                        label="Solucion"
+                                        label="Solución o Herramienta"
 
                                     ></v-text-field>
                                 </v-col>
                             </v-row>
-                            <v-row>
+                            <v-row dense>
                                 <v-col cols="4">
                                     <v-text-field
                                         v-model="contrato.marca"
-                                        label="Marca"
+                                        label="Marca o Fabricante"
 
                                     ></v-text-field>
                                 </v-col>
                                 <v-col cols="8">
-                                    <input-tag v-model="correos"
-                                     placeholder="Ingrese una direccion de correo"
-                                     class="form-control form-control-lg" validate="email" ></input-tag>
-                                </v-col>
-
-
-
-                            </v-row>
-                            <v-row>
-                                <v-col cols="8">
-                                    <v-file-input
-                                    show-size
-                                    small-chips
-                                    multiple
-                                    v-model="files"
-                                    label="Seleccione archivo/s"
-                                    :disabled="status_archivos"
+                                     <v-combobox
+                                        v-model="correos"
+                                        :items="contrato.correos"
+                                        hide-selected
+                                        hint="Ingrese una o varias direcciones de correo de contacto Enter o TAB "
+                                        label="Direcciones de correo"
+                                        multiple
+                                        persistent-hint
+                                        small-chips
+                                        deletable-chips
+                                        :delimiters="[';']"
+                                        @change="delimitCorreos"
                                     >
-                                </v-file-input>
-                                </v-col>
-                                <v-col cols="4" class="pt-4">
-                                    <v-btn  color="success" block
-                                        @click="subirArchivos"
-                                        :loading="loadingUpload"
-                                        :disabled="status_archivos">
-                                    <span v-if="status_archivos">CORRECTO</span>
-                                    <span v-else>Subir {{files.length}} Archivos</span>
+                                    </v-combobox>
 
-                                    </v-btn>
                                 </v-col>
+
+
+
                             </v-row>
-                            <v-row>
+
+                            <v-row dense>
                                 <v-col cols="6">
                                     <v-textarea
                                         clearable
                                         rows="2"
                                         clear-icon="mdi-close-circle"
-                                        label="Contrato"
+                                        label="Identificador del Contrato"
                                         v-model="contrato.descripcion"
                                         ></v-textarea>
                                 </v-col>
@@ -292,12 +339,82 @@
                                         rows="2"
                                         clear-icon="mdi-close-circle"
                                         v-model="contrato.observacion"
-                                        label="Descripcion del contrato"
+                                        label="Descripción del contrato"
                                         ></v-textarea>
                                      </v-col>
                             </v-row>
-                        </v-container>
-                        <small>*indicates required field</small>
+                            </v-tab-item>
+                            <v-tab-item
+                                :value="'tab-2'"
+                            >
+                            <v-card >
+                                <v-card-title
+                                >Seleccione el/los servicios que se incluyen en el contrato
+                                </v-card-title>
+                                <v-card-text>
+                                    <v-data-table
+                                        v-model="selectedServicios"
+                                        :headers="headersServicios"
+                                        :items="servicios"
+                                        item-key="id"
+                                        show-select
+                                        :items-per-page="5"
+                                        :footer-props="{
+                                        showFirstLastPage: true,
+                                        firstIcon: 'mdi-arrow-collapse-left',
+                                        lastIcon: 'mdi-arrow-collapse-right',
+                                        prevIcon: 'mdi-minus',
+                                        nextIcon: 'mdi-plus'
+                                        }"
+                                    >
+
+                                    </v-data-table>
+                                </v-card-text>
+                            </v-card>
+                            </v-tab-item>
+                            <v-tab-item
+                                :value="'tab-3'"
+                            >
+                            </v-tab-item>
+                            <v-tab-item
+                                :value="'tab-4'"
+                            >
+                             <v-card >
+                                <v-card-title
+                                >Suba archivos relacionados al contrato
+                                </v-card-title>
+                                <v-card-text>
+                                    <v-row >
+                                        <v-col cols="12">
+                                            <v-file-input
+                                            show-size
+                                            small-chips
+                                            multiple
+                                            counter
+                                            v-model="files"
+                                            label="Seleccione archivo/s (Contrato, kickoff, cronograma, etc)"
+                                            :disabled="status_archivos"
+                                            hint="Seleccione los archivos y luego haga clic en SUBIR ARCHIVOS"
+                                            persistent-hint
+                                            >
+                                        </v-file-input>
+                                        </v-col>
+                                        <v-col cols="12" >
+                                            <v-btn  color="success" block
+                                                @click="subirArchivos"
+                                                :loading="loadingUpload"
+                                                :disabled="status_archivos">
+                                            <span v-if="status_archivos">CORRECTO</span>
+                                            <span v-else>Subir {{files.length}} Archivos</span>
+
+                                            </v-btn>
+                                        </v-col>
+                                    </v-row>
+                                </v-card-text>
+                             </v-card>
+                            </v-tab-item>
+                        </v-tabs-items>
+
                     </v-card-text>
                     <v-card-actions>
                         <v-spacer></v-spacer>
@@ -360,6 +477,13 @@
 
                         <v-data-table :headers="headersTareas"
                                         :items="tareas"
+                                        :footer-props="{
+                        showFirstLastPage: true,
+                        firstIcon: 'mdi-arrow-collapse-left',
+                        lastIcon: 'mdi-arrow-collapse-right',
+                        prevIcon: 'mdi-minus',
+                        nextIcon: 'mdi-plus'
+                        }"
                                         >
 
 
@@ -453,6 +577,7 @@ import $ from "jquery";
 export default {
     data() {
         return {
+            tabs: null,
             titleTareas:"",
             loadingUpload: false,
             contratos: [],
@@ -477,10 +602,9 @@ export default {
                 { text: "Cliente", value: "cliente.nombre_comercial" },
                 { text: "Fecha inicio", value: "fecha_inicio" },
                 { text: "Fecha fin", value: "fecha_fin" },
-                { text: "Area", value: "area" },
-                // { text: "Solucion", value: "solucion" },
-                { text: "Adjunto", value: "adjunto" },
-                { text: "Tareas", value: "" },
+                { text: "Servicio", value: "area" },
+                 { text: "Estado", value: "estado" ,sortable: false},
+                { text: "Entregables", value: "tarea" ,sortable: true},
                 { text: "Acciones", value: "controls", sortable: false }
             ],
             searchTareas: "",
@@ -491,6 +615,10 @@ export default {
                  { text: "Fecha", value: "fecha" },
                  { text: "Estado", value: "estado_tarea" },
             ],
+            headersServicios: [
+                { text: "Nombre", value: "nombre" },
+                { text: "Descripción", value: "descripcion" },
+            ],
             date: new Date().toISOString().substr(0, 10),
             menu: false,
             date2: new Date().toISOString().substr(0, 10),
@@ -498,13 +626,15 @@ export default {
             files:[],
             ruta_archivo:[],
             status_archivos:false,
+            servicios: [],
+            selectedServicios:[],
         };
     },
     created() {
         this.axios.get("/api/contratos/").then(response => {
             this.contratos = response.data;
             this.loading = false;
-            //console.log(response.data);
+            console.log(response.data);
         });
         this.axios.get("/api/clientes/").then(response => {
             this.clientes = response.data;
@@ -534,13 +664,41 @@ export default {
                 this.frecuencias = response.data;
                 //console.log(response.data);
             });
+            this.axios.get("/api/servicios/").then(response => {
+            this.servicios = response.data;
+            console.log(response.data);
+
+        });
+    },
+    computed: {
+      likesAllServicios () {
+        return this.selectedServicios.length === this.servicios.length
+      },
+      likesSomeServicios () {
+        return this.selectedServicios.length > 0 && !this.likesAllServicios
+      },
+      icon () {
+        if (this.likesAllServicios) return 'mdi-close-box'
+        if (this.likesSomeServicios) return 'mdi-minus-box'
+        return 'mdi-checkbox-blank-outline'
+      },
     },
     methods: {
+        toggle () {
+        this.$nextTick(() => {
+          if (this.likesAllServicios) {
+            this.selectedServicios = []
+          } else {
+            this.selectedServicios = this.servicios.slice()
+          }
+        })
+      },
         addContrato() {
 
                 this.titleForm = "Nuevo Contrato";
                 this.contrato = {};
                 this.correos = [];
+                this.selectedServicios = [];
                 this.update = false;
                 this.dialog = true;
             },
@@ -558,7 +716,9 @@ export default {
                 this.contrato.solucion = el.solucion;
                 this.contrato.marca = el.marca;
                 this.contrato.observacion = el.observacion;
-                this.correos=el.correos.split(",");
+                this.correos=(el.correos) ? el.correos.split(";") : null;
+                //this.contrato.correos=this.correos;
+                this.selectedServicios=el.servicios
                 console.log(this.correos);
                 this.dialog = true;
             },
@@ -569,11 +729,12 @@ export default {
                 this.contrato.pais=this.contrato.pais.id;
                 this.contrato.correos=this.correos;
                 this.contrato.adjuntos=this.ruta_archivo;
+                this.contrato.servicios=this.selectedServicios;
 
                console.log(this.contrato);
              this.axios
                     .post('/api/contratos', this.contrato)
-                    .then(response => {
+                    .then(() => {
                         this.dialog = false;
                         this.loading = false;
                         this.refresh();
@@ -583,15 +744,13 @@ export default {
         },
         updateContrato() {
             this.loading = true;
-            this.contrato.cliente=this.contrato.cliente.id;
-            this.contrato.area=this.contrato.area.id;
-            this.contrato.pais=this.contrato.pais.id;
-            this.contrato.correos=this.correos;
-            this.contrato.adjuntos=this.ruta_archivo;
 
+            this.contrato.adjuntos=this.ruta_archivo;
+            this.contrato.servicios=this.selectedServicios;
+            console.log(this.contrato);
             this.axios
                     .patch(`/api/contratos/${this.contrato.id}`, this.contrato)
-                    .then(response => {
+                    .then(() => {
                         this.dialog = false;
                         this.loading = false;
                         this.refresh();
@@ -605,7 +764,7 @@ export default {
                 //this.contratos = res.data;
                 console.log(res.data);
                 this.tareas = res.data;
-                this.titleTareas = el.cliente.razon_social;
+                this.titleTareas = el.cliente.nombre_comercial;
                 $("#exampleModal2").modal("show");
                 //this.dialogTareas=true;
             });
@@ -737,7 +896,11 @@ export default {
                 this.ruta_archivo = [];
                 this.files = [];
                 this.status_archivos = false;
-        }
+        },
+        delimitCorreos (v) {
+                const reducer = (a, e) => [...a, ...e.split(/[,]+/)]
+                this.correos = [...new Set(v.reduce(reducer, []))]
+                },
     }
 };
 </script>

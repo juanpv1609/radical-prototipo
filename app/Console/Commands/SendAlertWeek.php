@@ -66,9 +66,9 @@ class SendAlertWeek extends Command
                         'alertas'=>$alertas];
                 //return $details;
 
-                //Mail::to($destinatarios)
+                Mail::to($destinatarios)
                 //->cc($destinatarios)
-                //->send(new TareasSemanalesEmail($details));
+                ->send(new TareasSemanalesEmail($details));
 
 
         $this->info('Emails enviados.');

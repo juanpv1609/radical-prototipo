@@ -42,7 +42,8 @@ class SendSecondAlert extends Command
     public function handle()
     {
         $hoy = date("Y-m-d");
-        $destinatarios = ['paul.canchignia@gruporadical.com'];
+        $destinatariosCC = [];
+
 
              $alerta_fechas = Tareas::with('contrato', 'frecuencias','estado_tarea','tipo','usuario')
                             ->where('alerta_enviada',1) //se envio la primera
@@ -51,6 +52,8 @@ class SendSecondAlert extends Command
                             ->where('fecha',$hoy)
                             ->get();
                 foreach ($alerta_fechas as $item) {
+                    $correos = explode(",", $item->correos_alerta);
+
                     $details = [
 
                         'title' => 'Notificación de entregable (2da Alerta)',
@@ -67,7 +70,12 @@ class SendSecondAlert extends Command
                         'tipo_tarea' => $item->tipo->nombre,
 
                     ];
-                    if ($item->contrato->area_id == 3) { //SOC
+                    foreach ($correos as $correo) {
+                        # code...
+                        array_push($destinatariosCC, $correo);
+                    }
+
+                    /* if ($item->contrato->area_id == 3) { //SOC
                         array_push($destinatarios, 'soc.radical@gruporadical.com');
                     } else if ($item->contrato->area_id == 8) { //Infraestructura
                         array_push($destinatarios, 'infraestructura@gruporadical.com');
@@ -80,9 +88,9 @@ class SendSecondAlert extends Command
                     }
                     if ($item->tipo_tarea==2 && $item->contrato_id==18) { // contrato COGA TEMPORAL
                         array_push($destinatarios,'cinthia.pissani@gruporadical.com');
-                    }
+                    } */
                     Mail::to($item->usuario->email)
-                    ->cc($destinatarios)
+                    ->cc($destinatariosCC)
                     ->send(new TareasEmail($details));
                     $item->segunda_alerta_enviada = 1;
                     $item->cuenta_alertas=$item->cuenta_alertas+1;

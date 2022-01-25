@@ -1,6 +1,20 @@
 <template>
 
 <v-card elevation="2" >
+    <v-tabs
+      dark
+      show-arrows
+    >
+      <v-tabs-slider color="orange darken-4"></v-tabs-slider>
+
+      <v-tab
+        v-for="item in clientes"
+        :key="item.id"
+        @click="getEntregables(item.id)"
+      >
+        {{ item.nombre_comercial }}
+      </v-tab>
+    </v-tabs>
         <v-card-title  class="d-flex justify-space-between ">
 
             Tareas registradas
@@ -157,21 +171,45 @@
       selectedElement: null,
       selectedOpen: false,
       events: [],
+      clientes: [],
     }),
     mounted () {
       this.$refs.calendar.checkChange()
     },
     created(){
-         this.axios
+         /* this.axios
                 .get('/api/tareas')
                 .then(response => {
                     this.tareas = response.data;
                     this.updateRange();
                     console.log(this.tareas);
                     this.loading = false;
-                });
+                }); */
+                this.initialData();
     },
     methods: {
+        initialData(){
+            this.axios
+                .get('/api/clientes')
+                .then(response => {
+                    this.clientes = response.data;
+                    //console.log(this.clientes);
+                    this.getEntregables(this.clientes[0].id);
+                });
+        },
+        getEntregables(cliente){
+            //console.log(cliente);
+            this.loading=true;
+             this.axios
+                .get(`/api/tareas-cliente/${cliente}`)
+                .then(response => {
+                    this.tareas = response.data;
+                    this.updateRange();
+                    console.log(this.tareas);
+                    this.loading = false;
+                });
+
+        },
       viewDay ({ date }) {
         this.focus = date
         this.type = 'day'

@@ -2,16 +2,25 @@
 <div>
     <v-card elevation="2" :loading="loading">
         <v-card-title class="d-flex justify-space-between"
-            >Creación de Tareas
+            >Creación de Entregables | {{contrato.cliente.nombre_comercial}} <small> ({{ contrato.fecha_inicio }} - {{ contrato.fecha_fin }})</small>
             <v-spacer></v-spacer>
 
+            <v-btn
+                        color="primary"
+                        large
+
+                        :loading="loading"
+                        :disabled="(loading || !tareas.length>0)"
+                        @click="addTarea"
+                        >
+                        Enviar {{(parseInt(diferencia)>0) ? parseInt(diferencia) : '' }} entregables
+                        </v-btn>
         </v-card-title>
+        <v-divider></v-divider>
 
         <v-card-text>
-            <v-row>
-                <v-col cols="8">
-                    <v-row>
-                        <v-col cols="6">
+                    <v-row dense>
+                        <v-col cols="3">
 
                             <v-autocomplete
                                     :items="usuarios"
@@ -20,7 +29,9 @@
                                     v-model="usuario"
                                     label="Seleccione un responsable"
                                     return-object
+                                    outlined
                                     dense
+                                    @change="setResponsable()"
                                 ></v-autocomplete>
                         </v-col>
                         <v-col cols="6">
@@ -30,14 +41,14 @@
                                     item-text="nombre"
                                     item-value="id"
                                     v-model="tipo_tarea"
-                                    label="Seleccione un tipo de tarea"
+                                    label="Seleccione el tipo de servicio"
                                     return-object
+                                    outlined
                                     dense
+
                                 ></v-autocomplete>
                         </v-col>
-                    </v-row>
-                     <v-row>
-                        <v-col cols="6">
+                        <v-col cols="2">
 
                             <v-autocomplete
                                     :items="frecuencias"
@@ -46,10 +57,12 @@
                                     v-model="frecuencia"
                                     label="Frecuencia"
                                     return-object
+                                    outlined
                                     dense
+
                                 ></v-autocomplete>
                         </v-col>
-                        <v-col cols="6">
+                        <v-col cols="1">
 
                             <v-autocomplete
                                     :items="dias"
@@ -58,71 +71,57 @@
                                     v-model="dia"
                                     label="Cada dia"
                                     return-object
+                                    outlined
                                     dense
+
                                 ></v-autocomplete>
                         </v-col>
 
 
-                    </v-row>
-                    <v-row>
-                            <v-col cols="12">
-                                <v-btn
-                                    color="primary"
-                                    @click="generarFechas"
+
+                        <v-col cols="9">
+                                <v-combobox
+                                        v-model="correos_alerta"
+                                        :items="tareas.correos_alerta"
+                                        hide-selected
+                                        hint="Ingrese una o varias direcciones de correo y presione Enter o TAB "
+                                        label="Direcciones de correo a recibir alertas"
+
+                                        multiple
+                                        persistent-hint
+                                        small-chips
+                                        deletable-chips
+                                        :delimiters="[';']"
+                                        @change="delimitCorreos"
+                                        dense
+                                        outlined
                                     >
-                                    Generar Tareas
+                                    </v-combobox>
+                            </v-col>
+                            <v-col cols="3">
+                                <v-btn
+                                    color="orange darken-4"
+                                    @click="generarFechas"
+                                    large
+                                    block
+
+                                    :disabled="correos_alerta==0"
+                                    >
+                                    Generar Entregables
                                     </v-btn>
                             </v-col>
-                        </v-row>
+                    </v-row>
 
-                </v-col>
-                <v-col cols="4">
-                    <table class="table table-sm table-borderless">
-                            <thead class="table-dark">
-                                <tr>
-                                    <th colspan="2">Detalles del contrato</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                </tr>
-                                <tr>
-                                    <td>Cliente</td>
-                                    <td>{{contrato.cliente.nombre_comercial}}</td>
-                                </tr>
-                                <tr>
-                                    <td>Fecha inicial</td>
-                                    <td><span class="text-success">{{contrato.fecha_inicio}}</span></td>
-                                </tr>
-                                <tr>
-                                    <td>Fecha final</td>
-                                    <td><span class="text-danger">{{contrato.fecha_fin}}</span></td>
-                                </tr>
-                            </tbody>
-
-                        </table>
-                        <v-btn
-                        color="success"
-                        block
-                        :loading="loading"
-                        :disabled="(loading || !tareas.length>0)"
-                        @click="addTarea"
-                        >
-                        Enviar {{(parseInt(diferencia)>0) ? parseInt(diferencia) : '' }} tareas
-                        </v-btn>
-
-                </v-col>
-            </v-row>
             <v-row>
                         <v-col cols="12" v-if="tareas.length>0">
-                            <v-simple-table  fixed-header height="500px">
+                            <v-simple-table  fixed-header height="500px" class="elevation-2">
                                 <template v-slot:default>
                                     <thead >
                                         <tr>
-                                                <th style="width:18%">Responsable</th>
-                                                <th style="width:15%">Tarea</th>
-                                                <th >Entregable</th>
-                                                <th style="width:15%">Fecha</th>
+                                                <th style="width:15%">Responsable</th>
+                                                <th style="width:15%">Servicio</th>
+                                                <th >Descripción de Entregable</th>
+                                                <th style="width:15%">Fecha de Entrega</th>
                                                 <th style="width:5%">
                                                     <input
                                                             type="text"
@@ -133,7 +132,7 @@
                                                         Alerta
 
                                                 </th>
-                                                <th></th>
+                                                <th style="width:5%">Eliminar</th>
                                             </tr>
                                     </thead>
                                     <tbody>
@@ -229,13 +228,13 @@ export default {
             frecuencia:{},
             dia:{},
             dias: [
-                { text: "LUNES", value: 1 },
-                { text: "MARTES", value: 2 },
-                { text: "MIERCOLES", value: 3 },
-                { text: "JUEVES", value: 4 },
-                { text: "VIERNES", value: 5 },
-                { text: "SABADO", value: 6 },
-                { text: "DOMINGO", value: 7 }
+                // { text: "LUNES", value: 1 },
+                // { text: "MARTES", value: 2 },
+                // { text: "MIERCOLES", value: 3 },
+                // { text: "JUEVES", value: 4 },
+                // { text: "VIERNES", value: 5 },
+                // { text: "SABADO", value: 6 },
+                // { text: "DOMINGO", value: 7 }
             ],
 
             headersTareas: [
@@ -245,6 +244,7 @@ export default {
                 { text: "Alerta", value: "alerta" },
                 { text: "", value: "controls", sortable: false  },
             ],
+            correos_alerta:[],
 
         };
     },
@@ -253,6 +253,9 @@ export default {
         this.initialData();
         //console.log(moment().format('MMMM Do YYYY, h:mm:ss a'));
     },
+    mounted(){
+
+    },
     methods: {
         cambiaAlertas(){
             this.tareas.forEach(element => {
@@ -260,6 +263,11 @@ export default {
             });
         },
         initialData(){
+            for (let index = 1; index <= 28 ; index++) {
+                this.dias.push({text:index,value:index})
+
+            }
+            this.correos_alerta = [];
             this.axios
             .get("/api/frecuencias/")
             .then(response => {
@@ -271,11 +279,15 @@ export default {
             .then(response => {
                 this.usuarios = response.data;
             });
+            /**
+             * !modificar consulta a los servicios que tiene este contrato
+             */
             this.axios
-            .get("/api/tipo-tareas/")
+            .get("/api/servicios/")
             .then(response => {
                 this.tipo_tareas = response.data;
             });
+
             this.axios
             .get(`/api/contratos/${this.$route.params.id}`)
             .then((res) => {
@@ -289,9 +301,10 @@ export default {
 
             console.log(JSON.stringify(this.tareas));
             this.request.tareas=this.tareas;
-            this.$swal.fire({
+            console.log(this.request);
+             this.$swal.fire({
                         title: 'Espere',
-                        text: 'Creando tareas...',
+                        text: 'Creando Entregables...',
                         icon: 'info',
                         allowOutsideClick: false
                     });
@@ -301,7 +314,7 @@ export default {
                     .then(() => {
                         this.$swal.fire({
                                 title: 'Correcto',
-                                text: 'Tareas creadas correctamente!',
+                                text: 'Entregables creados correctamente!',
                                 icon: 'success',
                                 timer: 1500,
                                 timerProgressBar: true,
@@ -318,6 +331,7 @@ export default {
                         this.tarea = [];
                         this.request = {};
                         this.diferencia=0;
+                        this.correos_alerta = [];
                     })
         },
         /* pushTarea(tarea) {
@@ -360,10 +374,10 @@ export default {
                      this.diferencia = parseInt(fecha_fin.diff(fecha_inicio, "weeks")) + parseInt(1);
                     for (let i = 1; i < parseInt(this.diferencia); i++) {
                         dia_preferido = moment(fecha_inicio).startOf("week");
-                        while (dia_preferido.day() !== parseInt(num_dia)) {
+                        while (dia_preferido.date() !== parseInt(num_dia)) {
                             dia_preferido.add(1, "day");
                         }
-                        if (dia_preferido.day() == parseInt(num_dia)) {
+                        if (dia_preferido.date() == parseInt(num_dia)) {
                             this.datos.push({
                                 id: i,
                                 descripcion: ('INFORME '+this.frecuencia.descripcion+' '+moment(dia_preferido).format( "MMM-YYYY")).toUpperCase(),
@@ -373,7 +387,8 @@ export default {
                                 responsable: this.usuario.id,
                                 tipo_tarea: this.tipo_tarea.id,
                                 frecuencia: frecuencia,
-                                alerta: alerta
+                                alerta: alerta,
+                                correos_alerta:this.correos_alerta
                             });
                             fecha_inicio.add(1, "weeks");
                         } else {
@@ -390,10 +405,11 @@ export default {
                     this.diferencia = parseInt(fecha_fin.diff(fecha_inicio, "months")) + parseInt(1);
                     for (let i = 1; i <= parseInt(this.diferencia); i++) {
                         dia_preferido = moment(fecha_inicio).startOf("month");
-                        while (dia_preferido.day() !== parseInt(num_dia)) {
+
+                        while (dia_preferido.date() !== parseInt(num_dia)) { //compara la fecha inicial con el dia elegido
                             dia_preferido.add(1, "day");
                         }
-                        if (dia_preferido.day() == parseInt(num_dia)) {
+                        if (dia_preferido.date() == parseInt(num_dia)) {
                             var aux_fecha= moment(dia_preferido);
                             this.datos.push({
                                 id: i,
@@ -404,7 +420,8 @@ export default {
                                 responsable: this.usuario.id,
                                 tipo_tarea: this.tipo_tarea.id,
                                 frecuencia: frecuencia,
-                                alerta: alerta
+                                alerta: alerta,
+                                correos_alerta:this.correos_alerta
                             });
                             fecha_inicio.add(1, "months");
                         } else {
@@ -418,10 +435,10 @@ export default {
                     this.diferencia = (parseInt(fecha_fin.diff(fecha_inicio, "months")) + parseInt(1))/3;
                     for (let i = 1; i <= parseInt(this.diferencia); i++) {
                         dia_preferido = moment(fecha_inicio).startOf("month");
-                        while (dia_preferido.day() !== parseInt(num_dia)) {
+                        while (dia_preferido.date() !== parseInt(num_dia)) {
                             dia_preferido.add(1, "day");
                         }
-                        if (dia_preferido.day() == parseInt(num_dia)) {
+                        if (dia_preferido.date() == parseInt(num_dia)) {
                             this.datos.push({
                                id: i,
                                 descripcion: ('INFORME '+this.frecuencia.descripcion+' '+moment(dia_preferido).format( "YYYY")+' ('+i+'/'+parseInt(this.diferencia)+')').toUpperCase(),
@@ -431,7 +448,8 @@ export default {
                                 responsable: this.usuario.id,
                                 tipo_tarea: this.tipo_tarea.id,
                                 frecuencia: frecuencia,
-                                alerta: alerta
+                                alerta: alerta,
+                                correos_alerta:this.correos_alerta
                             });
                             fecha_inicio.add(3, "months");
                         } else {
@@ -446,10 +464,10 @@ export default {
                     this.diferencia = (parseInt(fecha_fin.diff(fecha_inicio, "months")) + parseInt(1))/6;
                     for (let i = 1; i <= parseInt(this.diferencia); i++) {
                         dia_preferido = moment(fecha_inicio).startOf("month");
-                        while (dia_preferido.day() !== parseInt(num_dia)) {
+                        while (dia_preferido.date() !== parseInt(num_dia)) {
                             dia_preferido.add(1, "day");
                         }
-                        if (dia_preferido.day() == parseInt(num_dia)) {
+                        if (dia_preferido.date() == parseInt(num_dia)) {
                             this.datos.push({
                                 id: i,
                                 descripcion: ('INFORME '+this.frecuencia.descripcion+' '+moment(dia_preferido).format( "YYYY")+' ('+i+'/'+parseInt(this.diferencia)+')').toUpperCase(),
@@ -459,7 +477,8 @@ export default {
                                 responsable: this.usuario.id,
                                 tipo_tarea: this.tipo_tarea.id,
                                 frecuencia: frecuencia,
-                                alerta: alerta
+                                alerta: alerta,
+                                correos_alerta:this.correos_alerta
                             });
                             fecha_inicio.add(6, "months");
                         } else {
@@ -473,10 +492,10 @@ export default {
                     this.diferencia = (parseInt(fecha_fin.diff(fecha_inicio, "months")) + parseInt(1))/12;
                     for (let i = 1; i <= parseInt(this.diferencia); i++) {
                         dia_preferido = moment(fecha_inicio).startOf("month");
-                        while (dia_preferido.day() !== parseInt(num_dia)) {
+                        while (dia_preferido.date() !== parseInt(num_dia)) {
                             dia_preferido.add(1, "day");
                         }
-                        if (dia_preferido.day() == parseInt(num_dia)) {
+                        if (dia_preferido.date() == parseInt(num_dia)) {
                             this.datos.push({
                                 id: i,
                                 descripcion: ('INFORME '+this.frecuencia.descripcion+' '+moment(dia_preferido).format( "YYYY")+' ('+i+'/'+parseInt(this.diferencia)+')').toUpperCase(),
@@ -486,7 +505,8 @@ export default {
                                 responsable: this.usuario.id,
                                 tipo_tarea: this.tipo_tarea.id,
                                 frecuencia: frecuencia,
-                                alerta: alerta
+                                alerta: alerta,
+                                correos_alerta:this.correos_alerta
                             });
                             fecha_inicio.add(6, "months");
                         } else {
@@ -502,6 +522,16 @@ export default {
             this.tareas = this.datos;
             //console.log(JSON.stringify(this.mantenimientos));
             this.$toasted.success('Tareas generadas correctamente');
+        },
+        delimitCorreos (v) {
+                const reducer = (a, e) => [...a, ...e.split(/[;]+/)]
+                this.correos_alerta = [...new Set(v.reduce(reducer, []))]
+                },
+        setResponsable(){
+            this.correos_alerta = [];
+            //this.correos_alerta.push(this.usuario.email);
+            this.correos_alerta.push('paul.canchignia@gruporadical.com');
+            this.correos_alerta.push('xavier.montoya@gruporadical.com');
         },
         algoritmo(fecha_inicio,fecha_fin,frecuencia,alerta,num_dia,periodo,periodo_plural,divisor){
             let dia_preferido;

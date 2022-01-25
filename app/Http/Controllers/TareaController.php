@@ -51,9 +51,31 @@ class TareaController extends Controller
 
         return $this->tareas;
     }
+    public function tareasPorCliente($cliente)
+    {
+        //$products = Product::all()->toArray();
+        $contrato = Contrato::where('cliente_id',$cliente)->first();
+        if (auth()->user()->role==2) {
+            $this->tareas = Tareas::with('contrato.cliente', 'frecuencias','estado_tarea','tipo','usuario')
+            ->where('contrato_id',$contrato->id)
+            ->orderBy('fecha')->get()->toArray();
+        }else{
+            $cond=[
+                'responsable' => auth()->user()->id
+            ];
+            $this->tareas = Tareas::with('contrato.cliente', 'frecuencias','estado_tarea','tipo','usuario')
+                        ->where($cond)
+                        ->where('contrato_id',$contrato->id)
+                        ->orderBy('fecha')->get()->toArray();
+        }
+
+
+        return $this->tareas;
+    }
 
     public function store(Request $request)
     {
+        $arrayCorreos = $request->input("correos_alerta");
 
         $data = $request->input("tareas");
         foreach ($data as $item) {
@@ -70,6 +92,7 @@ class TareaController extends Controller
                     'fecha' => $item['fecha'],
                     'alerta' => $item['alerta'],
                     'fecha_alerta' => $fecha_alerta,
+                    'correos_alerta' => implode(",", $item['correos_alerta']),
                     'estado' => 1,
 
                     ]);

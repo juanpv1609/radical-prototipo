@@ -1,7 +1,7 @@
 <template >
 <div>
      <v-app  >
-        <v-navigation-drawer  app v-model="drawer" absolute  :width="220"
+        <v-navigation-drawer  app v-model="drawer"   :width="220"
                         :mini-variant.sync="mini"   >
             <v-list-item >
                 <v-list-item-content >
@@ -13,6 +13,35 @@
 
             <v-list dense nav>
                 <div v-for="item in items" :key="item.title">
+                    <v-list-item v-if="!item.subLinks" link :to="item.link" color="orange darken-4">
+                        <v-list-item-icon>
+                            <v-icon>{{ item.icon }}</v-icon>
+                        </v-list-item-icon>
+
+                        <v-list-item-content>
+                            <v-list-item-title>{{ item.title }}</v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
+                    <v-list-group v-else-if="(item.subLinks) && ($store.state.user.role==2)"  :key="item.title"
+                        no-action :prepend-icon="item.icon" color="orange darken-4">
+                        <template v-slot:activator >
+                                    <v-list-item-title>{{ item.title }}</v-list-item-title>
+                         </template>
+                         <v-list-item v-for="sublink in item.subLinks"
+                                        :key="sublink.title"
+                                     link :to="sublink.link">
+
+                                <v-list-item-title>
+                                    {{ sublink.title }}</v-list-item-title>
+                                    <v-list-item-icon>
+                                    <v-icon v-text="sublink.icon"></v-icon>
+                                    </v-list-item-icon>
+                        </v-list-item>
+                    </v-list-group>
+
+                </div>
+                <v-divider></v-divider>
+                <div v-for="item in itemsPersonal" :key="item.title">
                     <v-list-item v-if="!item.subLinks" link :to="item.link" color="orange darken-4">
                         <v-list-item-icon>
                             <v-icon>{{ item.icon }}</v-icon>
@@ -236,7 +265,7 @@ export default {
 
 
                 { title: "Clientes", link: "/clientes", icon: "mdi-card-account-details" },
-                { title: "Personal", link: "/personal", icon: "mdi-face-agent" },
+
                 {
                     title: "Contratos",
                     link: "/contratos",
@@ -251,6 +280,32 @@ export default {
                         { title: "Tareas & Contrato", link: "/reporte-contratos", icon: "mdi-checkbox-marked"},
                         { title: "Tareas & Usuario", link: "/reporte-usuario", icon: "mdi-account-check"},
                         { title: "Contratos", link: "/reporte-allContratos", icon: "mdi-notebook-check"},
+
+                    ],
+                },
+                {
+                    title: "Configuracion",
+                    icon: "mdi-cogs",
+                    subLinks: [
+                        { title: "Usuarios", link: "/usuarios", icon: "mdi-account-multiple"},
+                         { title: "Areas", link: "/areas", icon: "mdi-view-quilt" },
+                         { title: "Servicios", link: "/servicios", icon: "mdi-toolbox-outline" },
+                         { title: "Marca/Fabricante", link: "/marcas", icon: "mdi-toolbox-outline" },
+                        { title: "Tipo Tareas", link: "/tipo-tareas", icon: "mdi-ballot" },
+                        { title: "Frecuencias", link: "/frecuencias", icon: "mdi-clock-fast" },
+                        { title: "Paises", link: "/paises", icon: "mdi-earth" },
+                        { title: "Casos de Uso", link: "/casos-de-uso", icon: "mdi-sitemap" },
+
+                    ],
+                },
+            ],
+            itemsPersonal:[
+                { title: "Personal", link: "/personal", icon: "mdi-face-agent" },
+                {
+                    title: "Reportes Per.",
+                    icon: "mdi-chart-bar",
+                    subLinks: [
+
                         {
                             title: "Certificacion",link: "/reporte-certificacion",icon: "mdi-certificate"
                         },
@@ -260,15 +315,10 @@ export default {
                     ],
                 },
                 {
-                    title: "Configuracion",
+                    title: "Configuración Per.",
                     icon: "mdi-cogs",
                     subLinks: [
-                        { title: "Usuarios", link: "/usuarios", icon: "mdi-account-multiple"},
-                         { title: "Areas", link: "/areas", icon: "mdi-view-quilt" },
-                        { title: "Tipo Tareas", link: "/tipo-tareas", icon: "mdi-ballot" },
-                        { title: "Frecuencias", link: "/frecuencias", icon: "mdi-clock-fast" },
-                        { title: "Paises", link: "/paises", icon: "mdi-earth" },
-                        { title: "Casos de Uso", link: "/casos-de-uso", icon: "mdi-sitemap" },
+
                         { title: "Perfil Laboral", link: "/perfil-puesto", icon: "mdi-sitemap" },
                         {
                             title: "Certificaciones",
@@ -283,6 +333,7 @@ export default {
                     ],
                 },
             ],
+
             right: null,
         }
     },

@@ -159,8 +159,8 @@
                                             v-model="casoDeUso.fuentes"
                                             :items="itemsFuentes"
                                             hide-selected
-                                            hint="Ingrese el nombre de fuente (logSource) y presione TAB o ENTER "
-                                            label="Fuentes de Eventos (logSources)"
+                                            hint="Ingrese el nombre de fuente (LogSources) y presione TAB o ENTER "
+                                            label="Fuentes de Eventos (LogSources)"
                                             multiple
                                             persistent-hint
                                             chips

@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Contrato extends Model
 {
     protected $table = 'contratos';
-    protected $fillable = ['descripcion',
+    protected $fillable = ['id','descripcion',
                             'fecha_inicio',
                             'fecha_fin',
                             'dia_elegido',

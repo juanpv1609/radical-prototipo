@@ -23,7 +23,7 @@
             <v-col
             class="text-end"
             cols="4"
-            >Version 1.0
+            >Version 2.0
             </v-col>
         </v-footer>
     </v-app>

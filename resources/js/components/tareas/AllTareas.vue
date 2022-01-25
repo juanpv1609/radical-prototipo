@@ -1,6 +1,20 @@
 <template>
 <div>
     <v-card elevation="2" :loading="loading">
+        <v-tabs
+      dark
+      show-arrows
+    >
+      <v-tabs-slider color="orange darken-4"></v-tabs-slider>
+
+      <v-tab
+        v-for="item in clientes"
+        :key="item.id"
+        @click="getEntregables(item)"
+      >
+        {{ item.nombre_comercial }}
+      </v-tab>
+    </v-tabs>
         <v-card-title
           >
            <v-badge
@@ -9,7 +23,8 @@
                 color="green"
 
             >
-            Entregables registrados
+
+            {{ nombreCliente }}
             </v-badge>
           <v-spacer></v-spacer>
           <v-col cols="auto">
@@ -101,6 +116,7 @@
                     <v-icon >mdi-calendar</v-icon>
                 </v-btn>
             </v-btn-toggle>
+
         </v-card-title>
 
         <v-card-text>
@@ -112,13 +128,10 @@
                 :search="search"
                 v-show="!firstLoad"
                 sort-by="fecha"
-                group-by="contrato.cliente.nombre_comercial"
-                show-group-by
             >
 
             <template v-slot:item="row">
                 <tr >
-                    <td v-if="headers.text=='Cliente'">{{row.item.contrato.cliente.nombre_comercial}}</td>
                     <td>{{row.item.fecha}}</td>
                     <td>{{row.item.usuario.name}}</td>
                     <!-- <td>{{row.item.tipo.nombre}}</td> -->
@@ -299,7 +312,6 @@ import moment from "moment";
                 dialog: false,
                 search: "",
                 headers: [
-                    { text: "Cliente", value: "contrato.cliente.nombre_comercial" ,align: 'start',groupable: true},
                     { text: "Fecha entrega", value: "fecha" ,groupable: false},
                     { text: "Responsable", value: "usuario.name" ,groupable: false},
                     // { text: "Tarea", value: "tipo.nombre" ,groupable: false},
@@ -321,6 +333,8 @@ import moment from "moment";
             snack: false,
         snackColor: '',
         snackText: '',
+        clientes: [],
+        nombreCliente:null
             }
 
         },
@@ -506,7 +520,8 @@ import moment from "moment";
                  console.log(el);
              await this.$swal.fire({
                 title: 'Esta seguro?',
-                html: `Se enviara un correo a la siguiente dirección:\n${el.usuario.email}`,
+                html: `Se enviara un correo a la siguiente dirección:\n${el.usuario.email}\n
+                Con copia a: ${el.correos_alerta}`,
                 icon: 'question',
                 showConfirmButton: true,
                 showCancelButton: true
@@ -535,9 +550,12 @@ import moment from "moment";
                 })
 
         },
-        initialData(){
+        getEntregables(cliente){
+            this.nombreCliente=cliente.nombre_comercial
+            //console.log(cliente);
+            this.loading=true;
              this.axios
-                .get('/api/tareas')
+                .get(`/api/tareas-cliente/${cliente.id}`)
                 .then(response => {
                     this.tareas = response.data;
                     //console.log(this.tareas);
@@ -557,6 +575,38 @@ import moment from "moment";
                     this.axios.get("/api/estado-tareas/").then(response => {
                     this.estado_tarea = response.data;
                 });
+        },
+        initialData(){
+            this.axios
+                .get('/api/clientes')
+                .then(response => {
+                    this.clientes = response.data;
+                    //console.log(this.clientes);
+                    this.getEntregables(this.clientes[0]);
+                });
+                //this.getEntregables(this.clientes[0].id)
+
+             /* this.axios
+                .get('/api/tareas')
+                .then(response => {
+                    this.tareas = response.data;
+                    //console.log(this.tareas);
+                    this.loading = false;
+                    for (const item of this.tareas) {
+                        if ((item.fecha_alerta==moment().format('YYYY-MM-DD'))
+                        && (item.alerta_enviada==0)
+                        ) {
+                            this.alertas++;
+                            this.tareas_email.push(item);
+
+                        }
+                    }
+                    this.loading=false;
+                    this.firstLoad=false;
+                });
+                    this.axios.get("/api/estado-tareas/").then(response => {
+                    this.estado_tarea = response.data;
+                }); */
 
         }
 

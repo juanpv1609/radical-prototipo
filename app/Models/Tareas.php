@@ -18,7 +18,7 @@ class Tareas extends Model
     protected $fillable = [ 'descripcion',
                             'contrato_id','frecuencia','tipo_tarea','dia_elegido'
                             ,'ticket','responsable','fecha','alerta','fecha_alerta',
-                            'adjunto','observacion','estado','alerta_enviada','segunda_alerta_enviada','cuenta_alertas'];
+                            'adjunto','observacion','estado','alerta_enviada','segunda_alerta_enviada','cuenta_alertas','correos_alerta'];
     //public $timestamps = false;
     protected $guarded = [];
     use HasFactory;

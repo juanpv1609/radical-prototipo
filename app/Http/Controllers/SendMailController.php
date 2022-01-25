@@ -39,12 +39,14 @@ class SendMailController extends Controller
     }
     public function sendMailUser($tarea_id)
     {
-        $destinatarios = ['paul.canchignia@gruporadical.com'];
+        $destinatarios = [];
 
         $tarea = Tareas::with('contrato', 'frecuencias', 'estado_tarea', 'tipo', 'usuario')
             ->find($tarea_id);
         //->whereRaw('fecha_alerta = curdate()')->get();
         //dd($tarea);
+        $correos = explode(",", $tarea->correos_alerta);
+
         $details = [
 
             'title' => 'Notificación de entregable (1ra Alerta)',
@@ -62,8 +64,12 @@ class SendMailController extends Controller
             'tipo_tarea' => $tarea->tipo->nombre,
 
         ];
+        foreach ($correos as $correo) {
+            array_push($destinatarios, $correo);
 
-        if ($tarea->contrato->area_id == 3) { //SOC
+        }
+
+        /* if ($tarea->contrato->area_id == 3) { //SOC
             array_push($destinatarios, 'soc.radical@gruporadical.com');
         } else if ($tarea->contrato->area_id == 8) { //Infraestructura
             array_push($destinatarios, 'infraestructura@gruporadical.com');
@@ -76,15 +82,15 @@ class SendMailController extends Controller
         }
         if ($tarea->tipo_tarea == 2 && $tarea->contrato_id == 18) { // contrato COGA TEMPORAL
             array_push($destinatarios, 'cinthia.pissani@gruporadical.com');
-        }
+        } */
         //dd($destinatarios);
         Mail::to($tarea->usuario->email)
             ->cc($destinatarios)
             ->send(new TareasEmail($details));
         // SOLICITUD APERTURA DE TICKET
-        Mail::to('soporte@gruporadical.com')
+        //Mail::to('soporte@gruporadical.com')
             //->cc('paul.canchignia@gruporadical.com')
-            ->send(new TicketEmail($details));
+            //->send(new TicketEmail($details));
         $tarea->alerta_enviada = 1;
         $tarea->cuenta_alertas = $tarea->cuenta_alertas + 1;
 

@@ -44,14 +44,15 @@ class SendAlert extends Command
     public function handle()
     {
         $hoy = date("Y-m-d");
-        $destinatarios = ['paul.canchignia@gruporadical.com'];
 
-             $alerta_fechas = Tareas::with('contrato', 'frecuencias','estado_tarea','tipo','usuario')
-                            ->where('alerta_enviada',0)
-                            ->where('estado',1)
-                            ->where('fecha_alerta',$hoy)
-                            ->get();
+        $alerta_fechas = Tareas::with('contrato', 'frecuencias','estado_tarea','tipo','usuario')
+        ->where('alerta_enviada',0)
+        ->where('estado',1)
+        ->where('fecha_alerta',$hoy)
+        ->get();
+        $destinatariosCC = [];
                 foreach ($alerta_fechas as $item) {
+                    $correos = explode(",", $item->correos_alerta);
                     $details = [
 
                         'title' => 'Notificación de entregable (1ra Alerta)',
@@ -70,8 +71,12 @@ class SendAlert extends Command
                         'tipo_tarea' => $item->tipo->nombre,
 
                     ];
+                    foreach ($correos as $correo) {
+                        # code...
+                        array_push($destinatariosCC, $correo);
+                    }
 
-                    if ($item->contrato->area_id == 3) { //SOC
+                    /* if ($item->contrato->area_id == 3) { //SOC
                         array_push($destinatarios, 'soc.radical@gruporadical.com');
                     } else if ($item->contrato->area_id == 8) { //Infraestructura
                         array_push($destinatarios, 'infraestructura@gruporadical.com');
@@ -85,9 +90,10 @@ class SendAlert extends Command
 
                     if ($item->tipo_tarea==2 && $item->contrato_id==18) { // contrato COGA TEMPORAL
                         array_push($destinatarios,'cinthia.pissani@gruporadical.com');
-                    }
+                    } */
+
                     Mail::to($item->usuario->email)
-                    ->cc($destinatarios)
+                    ->cc($destinatariosCC)
                     ->send(new TareasEmail($details));
 
 

@@ -10,6 +10,7 @@ use App\Http\Controllers\AreaController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PaisController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\MarcaController;
 use App\Http\Controllers\TareaController;
 use App\Http\Controllers\ConfigController;
 use App\Http\Controllers\ClienteController;
@@ -18,6 +19,8 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ContratoController;
 use App\Http\Controllers\ReportesController;
 use App\Http\Controllers\SendMailController;
+use App\Http\Controllers\ModalidadController;
+use App\Http\Controllers\ServiciosController;
 use App\Http\Controllers\TipoTareaController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\CasosDeUsoController;
@@ -65,11 +68,13 @@ Route::middleware('api')->group(function () {
     Route::resource('frecuencias', FrecuenciaController::class);
     Route::resource('tareas', TareaController::class);
     Route::get('tareas/{inicial}/{final}', [TareaController::class, 'tareasPorFecha']);
+    Route::get('tareas-cliente/{cliente}', [TareaController::class, 'tareasPorCliente']);
     Route::resource('usuarios', UserController::class);
     Route::resource('tareas-tipo', TipoTareaController::class);
     Route::get('usuarios-all', [UserController::class,'indexAll']);
     Route::post('usuario-updatePassword', [UserController::class,'usuarioUpdatePassword']);
     Route::get('frecuencias-all', [FrecuenciaController::class,'indexAll']);
+    Route::resource('servicios', ServiciosController::class);
 
 
     Route::post('tareasAll', [TareaController::class,'updateGroup']); //actualiza grupo de tareas
@@ -140,6 +145,9 @@ Route::get('reporte-persona/{persona}', [ReportesController::class, 'reportePers
 
 Route::resource('perfil-puesto', PerfilPuestoController::class);
 Route::resource('persona-merito', PersonaMeritoController::class);
+
+Route::resource('marcas', MarcaController::class);
+Route::resource('modalidades', ModalidadController::class);
 
 
 

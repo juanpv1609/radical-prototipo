@@ -37,6 +37,9 @@ import ReportePersona from "../components/reportes/ReportePersona.vue";
 
 //nuevas funciones ISO
 import PerfilPuesto from "../components/perfilPuesto/PerfilPuesto.vue";
+import Servicios from "../components/servicios/Servicios.vue";
+import Marcas from "../components/marca/Marcas.vue";
+
 const router = new VueRouter({
     mode: "history",
     routes: [
@@ -267,6 +270,22 @@ const router = new VueRouter({
             name: "perfil-puesto",
             path: "/perfil-puesto",
             component: PerfilPuesto,
+            meta: {
+                requiresAuth: true,
+            },
+        },
+        {
+            name: "servicios",
+            path: "/servicios",
+            component: Servicios,
+            meta: {
+                requiresAuth: true,
+            },
+        },
+        {
+            name: "marcas",
+            path: "/marcas",
+            component: Marcas,
             meta: {
                 requiresAuth: true,
             },
