@@ -79,10 +79,10 @@
                                 </v-tooltip>
                             </td>
                             <td>
-                                <v-btn  icon color="primary" @click="editClient(row.item)">
+                                <v-btn  icon color="primary" :disabled="$store.state.user.role==1" @click="editClient(row.item)">
                                     <v-icon dark>mdi-pencil</v-icon>
                                     </v-btn>
-                                    <v-btn  icon color="error" @click="deleteClient(row.item)">
+                                    <v-btn  icon color="error" :disabled="$store.state.user.role==1" @click="deleteClient(row.item)">
                                     <v-icon dark>mdi-delete</v-icon>
                                 </v-btn>
                             </td>

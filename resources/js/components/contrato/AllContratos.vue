@@ -99,7 +99,7 @@
                                                         name: 'contratos-tasks',
                                                         params: { id: row.item.id }
                                                     }"
-                                                    :disabled="$store.state.user.role==2">
+                                                    :disabled="$store.state.user.role==1">
                                     <v-icon dark>mdi-plus-circle</v-icon>
                                     </v-btn>
                                 </template>
@@ -108,7 +108,7 @@
                             <v-tooltip bottom>
                                 <template v-slot:activator="{ on, attrs }">
                                     <v-btn v-bind="attrs"
-                                     v-on="on" icon color="dark" @click="editContrato(row.item)">
+                                     v-on="on" icon color="dark" :disabled="$store.state.user.role==1" @click="editContrato(row.item)">
                                         <v-icon dark>mdi-pencil</v-icon>
                                         </v-btn>
                                 </template>
