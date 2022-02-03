@@ -192,11 +192,15 @@ class TareaController extends Controller
         foreach ($data as $item) {
             //$tarea = Tareas::where('id', '=', $aux->id)->first();
                 $tarea = Tareas::find($item['id']);
+                $date = Carbon::createFromFormat('Y-m-d', $item['fecha']);
+                $fecha_alerta = $date->subDays($tarea->alerta);
 
                 $tarea->descripcion = $item['descripcion'];
                 $tarea->responsable = $item['responsable'];
                 $tarea->tipo_tarea = $item['tipo_tarea'];
                 $tarea->fecha = $item['fecha'];
+                $tarea->fecha_alerta = $fecha_alerta;
+
                 $tarea->save();
 
         }
