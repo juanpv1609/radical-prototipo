@@ -10,14 +10,15 @@
       <v-tab
         v-for="item in clientes"
         :key="item.id"
-        @click="getEntregables(item.id)"
+        @click="getEntregables(item)"
       >
         {{ item.nombre_comercial }}
       </v-tab>
     </v-tabs>
-        <v-card-title  class="d-flex justify-space-between ">
+        <v-card-title >
 
-            Tareas registradas
+            {{ nombreCliente }}
+            <v-spacer></v-spacer>
             <v-btn
                     fab
                     small :to="{
@@ -172,6 +173,7 @@
       selectedOpen: false,
       events: [],
       clientes: [],
+      nombreCliente:null
     }),
     mounted () {
       this.$refs.calendar.checkChange()
@@ -194,14 +196,15 @@
                 .then(response => {
                     this.clientes = response.data;
                     //console.log(this.clientes);
-                    this.getEntregables(this.clientes[0].id);
+                    this.getEntregables(this.clientes[0]);
                 });
         },
         getEntregables(cliente){
             //console.log(cliente);
+            this.nombreCliente=cliente.nombre_comercial
             this.loading=true;
              this.axios
-                .get(`/api/tareas-cliente/${cliente}`)
+                .get(`/api/tareas-cliente/${cliente.id}`)
                 .then(response => {
                     this.tareas = response.data;
                     this.updateRange();

@@ -98,7 +98,8 @@
                                      v-on="on" icon color="dark" :to="{
                                                         name: 'contratos-tasks',
                                                         params: { id: row.item.id }
-                                                    }">
+                                                    }"
+                                                    :disabled="$store.state.user.role==2">
                                     <v-icon dark>mdi-plus-circle</v-icon>
                                     </v-btn>
                                 </template>
@@ -447,36 +448,40 @@
         </v-row>
     </template>
     <template>
-        <div
-            class="modal fade"
-            id="exampleModal2"
-            tabindex="-1"
-            role="dialog"
-            aria-labelledby="exampleModalLabel"
-            aria-hidden="true"
-        >
-            <div
-                class="modal-dialog modal-xl modal-dialog-scrollable"
-                role="document"
-            >
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">
-                            {{titleTareas}}
-                        </h5>
-                        <button
-                            type="button"
-                            class="close"
-                            data-dismiss="modal"
-                            aria-label="Close"
-                        >
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
+        <v-dialog v-model="dialogTareas" persistent fullscreen
+      hide-overlay
+      transition="dialog-bottom-transition" :loading="loading">
 
-                        <v-data-table :headers="headersTareas"
+                    <v-card>
+                        <v-toolbar
+                            dark
+                            color="primary"
+                            >
+                            <v-btn
+                                icon
+                                dark
+                                @click="dialogTareas = false"
+                            >
+                                <v-icon>mdi-close</v-icon>
+                            </v-btn>
+                            <v-toolbar-title>{{titleTareas}}</v-toolbar-title>
+                            <v-spacer></v-spacer>
+                            <v-toolbar-items>
+                                <v-btn
+                                dark
+                                text
+                                @click="updateTareas"
+                                v-if="tareas.length>0"
+                                >
+                                Actualizar
+                                </v-btn>
+                            </v-toolbar-items>
+                            </v-toolbar>
+                        <v-card-text>
+                            <br>
+                             <v-data-table :headers="headersTareas"
                                         :items="tareas"
+                                        class="elevation-2"
                                         :footer-props="{
                         showFirstLastPage: true,
                         firstIcon: 'mdi-arrow-collapse-left',
@@ -543,29 +548,28 @@
                                 </tr>
                             </template>
                        </v-data-table>
-                         </div>
-                    <div class="modal-footer">
-                        <div class="d-flex justify-content-between">
+                        </v-card-text>
+                        <v-card-actions>
+                            <v-spacer></v-spacer>
                             <v-btn
-                            color="error"
-                            text
-                            data-dismiss="modal"
-                        >
-                            Cerrar
-                        </v-btn>
-                        <v-btn
-                            color="primary"
+                                color="red"
 
-                           @click="updateTareas"
+                                @click="dialogTareas = false"
+                            >
+                                Cerrar
+                            </v-btn>
+                            <v-btn
+                                color="blue"
+
+                                @click="updateTareas"
                                 v-if="tareas.length>0"
-                        >
-                            Actualizar
-                        </v-btn>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+                            >
+                                Actualizar
+                            </v-btn>
+                        </v-card-actions>
+                    </v-card>
+        </v-dialog>
+
     </template>
 </div>
 
@@ -579,6 +583,7 @@ export default {
         return {
             tabs: null,
             titleTareas:"",
+            titleContrato:"",
             loadingUpload: false,
             contratos: [],
             correos:[],
@@ -765,8 +770,9 @@ export default {
                 console.log(res.data);
                 this.tareas = res.data;
                 this.titleTareas = el.cliente.nombre_comercial;
-                $("#exampleModal2").modal("show");
-                //this.dialogTareas=true;
+                this.titleContrato = el.observacion;
+                //$("#exampleModal2").modal("show");
+                this.dialogTareas=true;
             });
         },
         updateTareas() {
@@ -778,7 +784,8 @@ export default {
                 .then(() => {
                     this.$toasted.success("Tareas actualizadas correctamente");
 
-                    $("#exampleModal2").modal("hide");
+                    //$("#exampleModal2").modal("hide");
+                    this.dialogTareas=false;
                 })
                 .catch(err => console.log(err))
                 .finally(() => (this.loading = false));

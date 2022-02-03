@@ -51,13 +51,45 @@ class TareaController extends Controller
 
         return $this->tareas;
     }
+    public function tareasPorFechaCliente($cliente,$inicial,$final)
+    {
+        //$products = Product::all()->toArray();
+        $contrato = Contrato::where('cliente_id', $cliente)->get(); //cambiar por get
+        $contratosId = [];
+        foreach ($contrato as $item) {
+            array_push($contratosId, $item->id);
+        }
+
+        if (auth()->user()->role==2) {
+            $this->tareas = Tareas::with('contrato.cliente', 'frecuencias','estado_tarea','tipo','usuario')
+            ->whereIn('contrato_id',$contratosId)
+            ->whereBetween('fecha',[$inicial,$final])
+            ->orderBy('fecha')->get()->toArray();
+        }else{
+            $cond=[
+                'responsable' => auth()->user()->id,
+            ];
+            $this->tareas = Tareas::with('contrato.cliente', 'frecuencias','estado_tarea','tipo','usuario')
+                        ->where($cond)
+                        ->whereIn('contrato_id',$contratosId)
+                        ->whereBetween('fecha',[$inicial,$final])
+                        ->orderBy('fecha')->get()->toArray();
+        }
+
+
+        return $this->tareas;
+    }
     public function tareasPorCliente($cliente)
     {
         //$products = Product::all()->toArray();
-        $contrato = Contrato::where('cliente_id',$cliente)->first();
-        if (auth()->user()->role==2) {
+        $contrato = Contrato::where('cliente_id',$cliente)->get(); //cambiar por get
+        $contratosId = [];
+        foreach ($contrato as $item) {
+            array_push($contratosId,$item->id);
+        }
+        if (auth()->user()->role==2) { // es admin
             $this->tareas = Tareas::with('contrato.cliente', 'frecuencias','estado_tarea','tipo','usuario')
-            ->where('contrato_id',$contrato->id)
+            ->whereIn('contrato_id',$contratosId)
             ->orderBy('fecha')->get()->toArray();
         }else{
             $cond=[
@@ -65,7 +97,7 @@ class TareaController extends Controller
             ];
             $this->tareas = Tareas::with('contrato.cliente', 'frecuencias','estado_tarea','tipo','usuario')
                         ->where($cond)
-                        ->where('contrato_id',$contrato->id)
+                        ->whereIn('contrato_id',$contratosId)
                         ->orderBy('fecha')->get()->toArray();
         }
 
@@ -121,22 +153,31 @@ class TareaController extends Controller
     }
     public function update($id, Request $request)
     {
-        $arrayAdjuntos = $request->input("adjuntos");
+        //$arrayAdjuntos = $request->input("adjuntos");
 
         $tarea = Tareas::find($id);
         // BORRAR ARCHIVOS ANTERIORES
-        if ($tarea->adjunto!=='') {
-            $arrayAdjuntosOld = explode(",", $tarea->adjunto);
-            foreach ($arrayAdjuntosOld as $item) {
-                if (Storage::disk('local')->exists($item)) {
-                    Storage::delete($item);
-                }
-            }
-        }
-        $tarea->ticket = $request->input('ticket');
+        // if ($tarea->adjunto!=='') {
+        //     $arrayAdjuntosOld = explode(",", $tarea->adjunto);
+        //     foreach ($arrayAdjuntosOld as $item) {
+        //         if (Storage::disk('local')->exists($item)) {
+        //             Storage::delete($item);
+        //         }
+        //     }
+        // }
+        $date = Carbon::createFromFormat('Y-m-d',$request->input('fecha'));
+        $fecha_alerta = $date->subDays($tarea->alerta);
+        $tarea->descripcion = $request->input('descripcion');
         $tarea->estado = $request->input('estado');
+        $tarea->fecha = $request->input('fecha');
+        $tarea->fecha_alerta = $fecha_alerta;
+
         $tarea->observacion = $request->input('observacion');
-        $tarea->adjunto = implode(",", $arrayAdjuntos);
+        $tarea->responsable = $request->input('responsable');
+        $tarea->ticket = $request->input('ticket');
+        $tarea->tipo_tarea = $request->input('tipo_tarea');
+
+        //$tarea->adjunto = implode(",", $arrayAdjuntos);
 
 
         $tarea->save();

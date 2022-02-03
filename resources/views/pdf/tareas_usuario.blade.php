@@ -89,11 +89,11 @@
                                 <td>{{ \Carbon\Carbon::now()->format('d-m-Y') }}</td>
                             </tr> --}}
                             <tr>
-                                <td>Tareas pendientes</td>
+                                <td>Entregables pendientes</td>
                                 <td>{{ $tareas->tareas_pendientes  }}</td>
                             </tr>
                             <tr>
-                                <td>Tareas terminadas</td>
+                                <td>Entregables terminados</td>
                                 <td>{{ $tareas->tareas_terminadas }}</td>
                             </tr>
                         </tbody>
@@ -108,7 +108,7 @@
             </tr>
             <tr>
         </table>
-        <h4 class="text-center">REPORTE DE TAREAS</h4>
+        <h4 class="text-center">REPORTE DE ENTREGABLES</h4>
         @if (count($tareas)>0)
         <table class="table table-striped table-sm" width="100%">
             <thead>

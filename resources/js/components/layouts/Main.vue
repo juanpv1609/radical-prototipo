@@ -13,7 +13,8 @@
 
             <v-list dense nav>
                 <div v-for="item in items" :key="item.title">
-                    <v-list-item v-if="!item.subLinks" link :to="item.link" color="orange darken-4">
+                    <v-list-item v-if="!item.subLinks" link :to="item.link"
+                     color="orange darken-4">
                         <v-list-item-icon>
                             <v-icon>{{ item.icon }}</v-icon>
                         </v-list-item-icon>
@@ -22,7 +23,28 @@
                             <v-list-item-title>{{ item.title }}</v-list-item-title>
                         </v-list-item-content>
                     </v-list-item>
-                    <v-list-group v-else-if="(item.subLinks) && ($store.state.user.role==2)"  :key="item.title"
+
+                    <v-list-group v-else-if="(item.subLinks)"  :key="item.title"
+                        no-action :prepend-icon="item.icon" color="orange darken-4">
+                        <template v-slot:activator >
+                                    <v-list-item-title>{{ item.title }}</v-list-item-title>
+                         </template>
+                         <v-list-item v-for="sublink in item.subLinks"
+                                        :key="sublink.title"
+                                     link :to="sublink.link">
+
+                                <v-list-item-title>
+                                    {{ sublink.title }}</v-list-item-title>
+                                    <v-list-item-icon>
+                                    <v-icon v-text="sublink.icon"></v-icon>
+                                    </v-list-item-icon>
+                        </v-list-item>
+                    </v-list-group>
+
+                </div>
+                <div v-for="item in itemsAdmin" :key="item.title" >
+
+                    <v-list-group v-if="$store.state.user.role==2"  :key="item.title"
                         no-action :prepend-icon="item.icon" color="orange darken-4">
                         <template v-slot:activator >
                                     <v-list-item-title>{{ item.title }}</v-list-item-title>
@@ -42,7 +64,8 @@
                 </div>
                 <v-divider></v-divider>
                 <div v-for="item in itemsPersonal" :key="item.title">
-                    <v-list-item v-if="!item.subLinks" link :to="item.link" color="orange darken-4">
+                    <v-list-item v-if="!item.subLinks" link :to="item.link"
+                    :disabled="(item.isAdmin)" color="orange darken-4">
                         <v-list-item-icon>
                             <v-icon>{{ item.icon }}</v-icon>
                         </v-list-item-icon>
@@ -51,7 +74,27 @@
                             <v-list-item-title>{{ item.title }}</v-list-item-title>
                         </v-list-item-content>
                     </v-list-item>
-                    <v-list-group v-else-if="(item.subLinks) && ($store.state.user.role==2)"  :key="item.title"
+                    <v-list-group v-else-if="(item.subLinks) && (!item.isAdmin)"  :key="item.title"
+                        no-action :prepend-icon="item.icon" color="orange darken-4">
+                        <template v-slot:activator >
+                                    <v-list-item-title>{{ item.title }}</v-list-item-title>
+                         </template>
+                         <v-list-item v-for="sublink in item.subLinks"
+                                        :key="sublink.title"
+                                     link :to="sublink.link">
+
+                                <v-list-item-title>
+                                    {{ sublink.title }}</v-list-item-title>
+                                    <v-list-item-icon>
+                                    <v-icon v-text="sublink.icon"></v-icon>
+                                    </v-list-item-icon>
+                        </v-list-item>
+                    </v-list-group>
+
+                </div>
+                <div v-for="item in itemsAdminPersonal" :key="item.title" >
+
+                    <v-list-group v-if="$store.state.user.role==2"  :key="item.title"
                         no-action :prepend-icon="item.icon" color="orange darken-4">
                         <template v-slot:activator >
                                     <v-list-item-title>{{ item.title }}</v-list-item-title>
@@ -86,8 +129,8 @@
 
 
                 <v-spacer></v-spacer>
-
-
+                <v-spacer ></v-spacer>
+                <v-icon small>mdi-account-circle</v-icon><span> {{$store.state.user.name}}</span>
 
                 <v-menu left bottom >
 
@@ -97,28 +140,31 @@
                         </v-btn>
                     </template>
 
-                    <v-list dense>
+                    <v-list dense max-width="300px">
                         <v-list-item>
+                            <v-list-item-avatar>
+                                <v-icon x-large>mdi-account-circle</v-icon>
+                                </v-list-item-avatar>
                             <v-list-item-content>
-                                <v-list-item-title> <v-icon>mdi-account</v-icon>{{ $store.state.user.name  }}</v-list-item-title>
-                                 </v-list-item-content>
-                        </v-list-item>
-                                <v-divider></v-divider>
-                        <v-list-item-group
-                        >
-                        <v-list-item  @click="dialog=true; form={}">
                             <v-list-item-title>
-                                <v-icon small>mdi-lock</v-icon>
-                                Cambiar contraseña </v-list-item-title
-                            >
+                            {{ $store.state.user.name }}
+                            </v-list-item-title>
+                            <v-list-item-subtitle>
+                                {{ $store.state.user.email }} <br>
+                                {{ ($store.state.user.role==2) ? 'ADMINISTRADOR' : 'CONSULTA' }}
+
+                            </v-list-item-subtitle>
+                            </v-list-item-content>
+
                         </v-list-item>
-                        <v-list-item @click="logout">
-                            <v-list-item-title>
-                                <v-icon small>mdi-logout</v-icon>
-                                Salir </v-list-item-title
-                            >
+                        <v-list-item>
+                            <v-btn block small @click=" dialog = true;form = {};" text link color="primary">
+                                   <v-icon small>mdi-key</v-icon> Cambiar contraseña</v-btn>
                         </v-list-item>
-                        </v-list-item-group>
+                        <v-list-item>
+                                    <v-btn block small @click="logout" text color="red"><v-icon small>mdi-logout</v-icon>
+                                    Salir</v-btn>
+                        </v-list-item>
 
 
 
@@ -167,7 +213,6 @@
                             <span class="headline">Cambio de contraseña</span>
                         </v-card-title>
                         <v-card-text>
-                            <v-container>
                                 <v-alert v-if="has_error"
                                     color="red"
                                     type="error"
@@ -208,7 +253,6 @@
                                         ></v-text-field>
                                     </v-col>
                                 </v-row>
-                            </v-container>
                             <small>*indicates required field</small>
                         </v-card-text>
                         <v-card-actions>
@@ -264,27 +308,36 @@ export default {
             items: [
 
 
-                { title: "Clientes", link: "/clientes", icon: "mdi-card-account-details" },
+                { title: "Clientes",link: "/clientes", icon: "mdi-card-account-details", },
 
                 {
                     title: "Contratos",
                     link: "/contratos",
                     icon: "mdi-book"
                 },
-                { title: "Entregables", link: "/tareas", icon: "mdi-list-status" },
+                { title: "Entregables", icon: "mdi-send-check",
+                        subLinks: [
+                                { title: "General",  link: "/all-tareas", icon: "mdi-list-status"},
+                                { title: "Por Cliente", link: "/tareas", icon: "mdi-card-account-details-star"},
+
+                            ],
+                     },
                 {
                     title: "Reportes",
                     icon: "mdi-chart-bar",
                     subLinks: [
-                        { title: "Tareas", link: "/reporte-tareas", icon: "mdi-check"},
-                        { title: "Tareas & Contrato", link: "/reporte-contratos", icon: "mdi-checkbox-marked"},
-                        { title: "Tareas & Usuario", link: "/reporte-usuario", icon: "mdi-account-check"},
+                        { title: "Entregables", link: "/reporte-tareas", icon: "mdi-check"},
+                        { title: "Por Contrato", link: "/reporte-contratos", icon: "mdi-checkbox-marked"},
+                        { title: "Por Usuario", link: "/reporte-usuario", icon: "mdi-account-check"},
                         { title: "Contratos", link: "/reporte-allContratos", icon: "mdi-notebook-check"},
 
                     ],
                 },
+
+            ],
+            itemsAdmin:[
                 {
-                    title: "Configuracion",
+                    title: "Administrar",
                     icon: "mdi-cogs",
                     subLinks: [
                         { title: "Usuarios", link: "/usuarios", icon: "mdi-account-multiple"},
@@ -307,15 +360,18 @@ export default {
                     subLinks: [
 
                         {
-                            title: "Certificacion",link: "/reporte-certificacion",icon: "mdi-certificate"
+                            title: "Certificacion", link: "/reporte-certificacion",icon: "mdi-certificate"
                         },
                         {
-                            title: "Persona", link: "/reporte-persona",icon: "mdi-card-account-details"
+                            title: "Persona",  link: "/reporte-persona",icon: "mdi-card-account-details"
                         }
                     ],
                 },
+
+            ],
+            itemsAdminPersonal:[
                 {
-                    title: "Configuración Per.",
+                    title: "Administrar Per.",
                     icon: "mdi-cogs",
                     subLinks: [
 

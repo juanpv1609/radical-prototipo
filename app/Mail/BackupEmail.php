@@ -30,7 +30,7 @@ class BackupEmail extends Mailable
     public function build()
     {
         return $this->from('soporte@gruporadical.com')
-                    ->subject('RGSDM> Backup Diario Programado')
+                    ->subject('RGSDM> Backup Semanal Programado')
                     ->view('emails.backupEmail')
                     ->attach(storage_path() . "/app/backup/" .$this->details['file']);
 

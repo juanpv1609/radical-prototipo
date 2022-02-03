@@ -1,20 +1,7 @@
 <template>
 <div>
     <v-card elevation="2" :loading="loading">
-        <v-tabs
-      dark
-      show-arrows
-    >
-      <v-tabs-slider color="orange darken-4"></v-tabs-slider>
 
-      <v-tab
-        v-for="item in clientes"
-        :key="item.id"
-        @click="getEntregables(item)"
-      >
-        {{ item.nombre_comercial }}
-      </v-tab>
-    </v-tabs>
         <v-card-title
           >
            <v-badge
@@ -24,7 +11,7 @@
 
             >
 
-            {{ cliente.nombre_comercial }}
+            Listado General de Entregables
             </v-badge>
           <v-spacer></v-spacer>
           <v-col cols="auto">
@@ -59,14 +46,14 @@
                 <v-btn
                     text
                     color="primary"
-                    @click="getEntregables(cliente)"
+                    @click="limpiarFiltro"
                 >
                     Cancelar
                 </v-btn>
                 <v-btn
                     text
                     color="primary"
-                    @click="filtrarPorFechaCliente"
+                    @click="filtrarPorFecha"
                 >
                     Filtrar
                 </v-btn>
@@ -86,7 +73,7 @@
           ></v-text-field>
           </v-col>
 
-          <v-btn-toggle
+          <!-- <v-btn-toggle
                 mandatory
                 >
             <v-btn
@@ -115,7 +102,7 @@
                                     name: 'calendar-tareas'}">
                     <v-icon >mdi-calendar</v-icon>
                 </v-btn>
-            </v-btn-toggle>
+            </v-btn-toggle> -->
 
         </v-card-title>
 
@@ -139,8 +126,9 @@
 
             <template v-slot:item="row">
                 <tr >
-                    <td>{{row.item.fecha}}</td>
+                    <td>{{row.item.contrato.cliente.nombre_comercial}}</td>
                     <td>{{row.item.contrato.observacion}}</td>
+                    <td>{{row.item.fecha}}</td>
                     <td>{{row.item.usuario.name}}</td>
                     <!-- <td>{{row.item.tipo.nombre}}</td> -->
                     <td>{{row.item.descripcion}}</td>
@@ -232,7 +220,7 @@
                     >Editar Entregable
                 </v-card-title>
                 <v-card-text>
-                     <v-divider></v-divider>
+                    <v-divider></v-divider>
                     <v-row dense>
                         <v-col cols="12" sm="6">
                             <v-autocomplete
@@ -395,8 +383,9 @@ import moment from "moment";
                 dialog: false,
                 search: "",
                 headers: [
-                    { text: "Fecha entrega", value: "fecha" ,groupable: false},
+                    { text: "Cliente", value: "contrato.cliente.nombre_comercial" ,groupable: false},
                     { text: "Proyecto", value: "contrato.observacion" ,groupable: false},
+                    { text: "Fecha entrega", value: "fecha" ,groupable: false},
                     { text: "Responsable", value: "usuario.name" ,groupable: false},
                     // { text: "Tarea", value: "tipo.nombre" ,groupable: false},
                     { text: "Entregable", value: "descripcion" ,groupable: false},
@@ -421,6 +410,8 @@ import moment from "moment";
         cliente:{},
         responsables: [],
         tipo_tareas: [],
+
+
             }
 
         },
@@ -453,6 +444,9 @@ import moment from "moment";
             });
         },
         methods: {
+            /**
+             * !REVISAR POR QUE NO ACTUALIZA
+             */
             save (el) {
                 this.tarea.id=el.id;
                 this.tarea.ticket=el.ticket;
@@ -497,17 +491,7 @@ import moment from "moment";
                      this.menu = false;
                 });
             },
-            filtrarPorFechaCliente(){
-                 this.loading = true;
-                this.axios
-                .get(`/api/tareas-cliente/${this.cliente.id}/${this.dates[0]}/${this.dates[1]}`)
-                .then(response => {
-                    this.tareas = response.data;
-                    console.log(this.tareas);
-                    this.loading = false;
-                     this.menu = false;
-                });
-            },
+
             limpiarFiltro(){
                 this.loading = true;
 
@@ -582,6 +566,9 @@ import moment from "moment";
                 this.loadingUpload=false;
                 this.status_archivos=true;
             },
+            /**
+             * !REVISAR POR QUE NO ACTUALIZA
+             */
             updateTarea(e) {
                 e.preventDefault();
                 //this.tarea.adjuntos=this.ruta_archivo;
@@ -623,6 +610,7 @@ import moment from "moment";
                     .catch(err => console.log(err))
                     .finally(() => this.loading = false);
             },
+
 
             async sendAlertMultiple(){
                 console.log(this.tareas_email);
@@ -691,16 +679,16 @@ import moment from "moment";
                 });
         },
         initialData(){
-            this.axios
+            /* this.axios
                 .get('/api/clientes')
                 .then(response => {
                     this.clientes = response.data;
                     //console.log(this.clientes);
                     this.getEntregables(this.clientes[0]);
-                });
+                }); */
                 //this.getEntregables(this.clientes[0].id)
-
-             /* this.axios
+            this.loading=true;
+             this.axios
                 .get('/api/tareas')
                 .then(response => {
                     this.tareas = response.data;
@@ -720,10 +708,11 @@ import moment from "moment";
                 });
                     this.axios.get("/api/estado-tareas/").then(response => {
                     this.estado_tarea = response.data;
-                }); */
+                });
+        }
 
         }
 
        }
-    }
+
 </script>

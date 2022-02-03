@@ -12,6 +12,7 @@ import AllAreas from "../components/area/AllAreas.vue";
 import AllUsuarios from "../components/usuario/AllUsuarios.vue";
 
 import AllTareas from "../components/tareas/AllTareas.vue";
+import AllTareasGeneral from "../components/tareas/AllTareasGeneral.vue";
 import CalendarTareas from "../components/tareas/CalendarTareas.vue";
 import EditTarea from "../components/tareas/EditTarea.vue";
 
@@ -107,6 +108,14 @@ const router = new VueRouter({
             name: "tareas",
             path: "/tareas",
             component: AllTareas,
+            meta: {
+                requiresAuth: true
+            }
+        },
+        {
+            name: "all-tareas",
+            path: "/all-tareas",
+            component: AllTareasGeneral,
             meta: {
                 requiresAuth: true
             }
