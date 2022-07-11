@@ -94,7 +94,14 @@ table.blueTable tfoot .links a{
         </tbody>
     </table>
     <br>
-    <br>
+    <p><small>
+        Este mensaje es un recordatorio de la fecha de terminación del contrato. Su asesor comercial se contactará con usted.
+        {{-- <ul>
+            <li>+593 99 541 3740 Norma Veloz</li>
+            <li>+593 95 899 3477 José María Gómez</li>
+            <li>+593 98 786 5548 Nelson Morales</li>
+        </ul> --}}
+    </small></p>
     <img src="https://1.bp.blogspot.com/-NS9JLHzt1vI/YLgAPd7JaKI/AAAAAAAAoFQ/cBQmkA3KQtUKYG2iFuTHsS4OmIGSBtNoQCLcBGAsYHQ/s0/socfirma.png" alt="logo">
     <br>
     <p><small style="font-size: 10px">Este correo fue generado automaticamente, por lo cual no debe responderlo.

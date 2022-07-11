@@ -48,8 +48,11 @@ class SendAlertEndContract15 extends Command
     {
         $hoy = Carbon::now()->format('Y-m-d');
 
-        $destinatarios = ['paul.canchignia@gruporadical.com','fabian.ortega@gruporadical.com','xavier.montoya@gruporadical.com'];
-        $cc=['teamsoc@gruporadical.com','ana.rivera@gruporadical.com'];
+        $destinatarios = ['paul.canchignia@gruporadical.com','fabian.ortega@gruporadical.com',
+                            'xavier.montoya@gruporadical.com','norma.veloz@gruporadical.com',
+                            'jm.gomez@gruporadical.com','cristina.jimenez@gruporadical.com',
+                            'nelson.morales@gruporadical.com'];
+       $email_cliente="";
 
              $alerta_fechas = Contrato::with('cliente')
                             //->where('alerta_fin_contrato30',0) // se envio la alerta de 30 dias
@@ -59,9 +62,10 @@ class SendAlertEndContract15 extends Command
                             //->where('fecha_fin','2021-08-26') // fecha finalizacion es hoy + 30 dias
                             ->get();
                 foreach ($alerta_fechas as $item) {
+                    $email_cliente = $item->cliente->correo;
                     $details = [
 
-                        'title' => 'Notificación de finalización de operaciones (3ra Alerta)',
+                        'title' => 'Notificación de finalización de operaciones (4ta Alerta)',
                         'alerta' => 1,
                         //'responsable' => $item->usuario->name,
                         'body' => 'Estimad@ el software RGSDM (Radical Gestión SDM) ha generado la siguiente alerta: ',
@@ -80,10 +84,12 @@ class SendAlertEndContract15 extends Command
                     ];
 
 
-
-                    Mail::to($destinatarios)
-                    ->cc($cc)
+                   Mail::to($email_cliente)
+                    ->cc($destinatarios)
+                    ->bcc('teamsoc@gruporadical.com', 'soporte@gruporadical.com')
                     ->send(new FinContratoEmail($details));
+
+
 
 
                     // SOLICITUD APERTURA DE TICKET

@@ -13,21 +13,21 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\TicketFinalizacionContratoEmail;
 
-class SendAlertEndContract60 extends Command
+class SendAlertEndContract extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'send:alertendcontract60';
+    protected $signature = 'send:alertendcontract';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'the alert is sent when a contract is one month (60 days) away from ending '; //se envia la alerta cuando un contrato esta a un mes de terminar
+    protected $description = 'the alert is sent when a contract is one month (0 days) away from ending '; //se envia la alerta cuando un contrato esta a un mes de terminar
 
     /**
      * Create a new command instance.
@@ -55,16 +55,17 @@ class SendAlertEndContract60 extends Command
         $email_cliente="";
 
              $alerta_fechas = Contrato::with('cliente')
-                            ->where('alerta_fin_contrato30',0) // no se ah enviado la alerta
+                            //->where('alerta_fin_contrato30',0) // se envio la alerta de 30 dias
+                            ->where('alerta_fin_contrato',0) // no se ah enviado la alerta
                             ->where('estado',1) // el contrato esta activo
-                            ->where('fecha_fin',Carbon::now()->addDays(60)->format('Y-m-d')) // fecha finalizacion es hoy + 30 dias
+                            ->where('fecha_fin',Carbon::now()->format('Y-m-d')) // fecha finalizacion es hoy
                             //->where('fecha_fin','2021-08-26') // fecha finalizacion es hoy + 30 dias
                             ->get();
                 foreach ($alerta_fechas as $item) {
                     $email_cliente = $item->cliente->correo;
                     $details = [
 
-                        'title' => 'Notificación de finalización de operaciones (2da Alerta)',
+                        'title' => 'Notificación de finalización de operaciones (Contrato finalizado)',
                         'alerta' => 1,
                         //'responsable' => $item->usuario->name,
                         'body' => 'Estimad@ el software RGSDM (Radical Gestión SDM) ha generado la siguiente alerta: ',
@@ -90,12 +91,12 @@ class SendAlertEndContract60 extends Command
 
 
 
-
                     // SOLICITUD APERTURA DE TICKET
                     //Mail::to('soporte@gruporadical.com')
                     //->cc('paul.canchignia@gruporadical.com')
                     //->send(new TicketFinalizacionContratoEmail($details));
-                    $item->alerta_fin_contrato60 = 1;
+                    $item->alerta_fin_contrato = 1;
+                    $item->estado=2; //finalizado
                     //$item->cuenta_alertas=$item->cuenta_alertas+1;
                     $item->save();
                 }
