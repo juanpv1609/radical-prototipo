@@ -62,6 +62,11 @@ class SendAlertEndContract30 extends Command
                             ->get();
                 foreach ($alerta_fechas as $item) {
                     $email_cliente = $item->cliente->correo;
+
+                    if ($item->pais_id==2) { //Si es de Peru
+                        array_push($destinatarios, 'carmen.noel@gruporadical.com');
+                    }
+
                     $details = [
 
                         'title' => 'Notificación de finalización de operaciones (3er Alerta)',

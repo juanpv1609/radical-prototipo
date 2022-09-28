@@ -95,10 +95,10 @@ table.blueTable tfoot .links a{
                 @endif
 
             </tr>
-            <tr>
+            {{-- <tr>
                 <td>Tarea:</td>
                 <td>{{ $details['tipo_tarea'] }}</td>
-            </tr>
+            </tr> --}}
             <tr>
                 <td>Entregable:</td>
                 <td style="font-size: 20px"><strong>{{ $details['entregable'] }}</strong></td>
