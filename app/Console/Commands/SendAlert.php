@@ -53,6 +53,8 @@ class SendAlert extends Command
         $destinatariosCC = [];
                 foreach ($alerta_fechas as $item) {
                     $correos = explode(",", $item->correos_alerta);
+                    //**!Se agrega a  auxiliar.contador@gruporadical.com a las notificaciones */
+                    $correos = array_push($correos,"auxiliar.contador@gruporadical.com");
                     $details = [
 
                         'title' => 'Notificación de entregable (1ra Alerta)',
