@@ -51,7 +51,7 @@ class SendAlertEndContract60 extends Command
         $destinatarios = ['paul.canchignia@gruporadical.com','fabian.ortega@gruporadical.com',
                             'xavier.montoya@gruporadical.com','norma.veloz@gruporadical.com',
                             'jm.gomez@gruporadical.com','cristina.jimenez@gruporadical.com',
-                            'nelson.morales@gruporadical.com','berioska.torres@gruporadical.com'];
+                            'nelson.morales@gruporadical.com','tatiana.pazos@gruporadical.com', 'catherine.stopar@gruporadical.com'];
         $email_cliente="";
 
              $alerta_fechas = Contrato::with('cliente')
