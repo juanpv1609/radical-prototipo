@@ -12,6 +12,7 @@ use App\Mail\FinContratoEmail;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\TicketFinalizacionContratoEmail;
+use App\Models\Destinatario;
 
 class SendAlertEndContract extends Command
 {
@@ -48,61 +49,65 @@ class SendAlertEndContract extends Command
     {
         $hoy = Carbon::now()->format('Y-m-d');
 
-        $destinatarios = ['paul.canchignia@gruporadical.com','fabian.ortega@gruporadical.com',
+        /*$destinatarios = ['paul.canchignia@gruporadical.com','fabian.ortega@gruporadical.com',
                             'xavier.montoya@gruporadical.com','norma.veloz@gruporadical.com',
                             'jm.gomez@gruporadical.com','cristina.jimenez@gruporadical.com',
-                            'nelson.morales@gruporadical.com','berioska.torres@gruporadical.com'];
-        $email_cliente="";
+                            'nelson.morales@gruporadical.com','berioska.torres@gruporadical.com'];*/
+        $email_cliente = "";
 
-             $alerta_fechas = Contrato::with('cliente')
-                            //->where('alerta_fin_contrato30',0) // se envio la alerta de 30 dias
-                            ->where('alerta_fin_contrato',0) // no se ah enviado la alerta
-                            ->where('estado',1) // el contrato esta activo
-                            ->where('fecha_fin',Carbon::now()->format('Y-m-d')) // fecha finalizacion es hoy
-                            //->where('fecha_fin','2021-08-26') // fecha finalizacion es hoy + 30 dias
-                            ->get();
-                foreach ($alerta_fechas as $item) {
-                    $email_cliente = $item->cliente->correo;
-                    if ($item->pais_id==2) { //Si es de Peru
-                        array_push($destinatarios,'carmen.noel@gruporadical.com');
-                    }
-                    $details = [
+        $destinatarios = Destinatario::where('is_deleted', 0)
+            ->pluck('email')
+            ->toArray();
 
-                        'title' => 'Notificación de finalización de operaciones (Contrato finalizado)',
-                        'alerta' => 1,
-                        //'responsable' => $item->usuario->name,
-                        'body' => 'Estimad@ el software RGSDM (Radical Gestión SDM) ha generado la siguiente alerta: ',
+        $alerta_fechas = Contrato::with('cliente')
+            //->where('alerta_fin_contrato30',0) // se envio la alerta de 30 dias
+            ->where('alerta_fin_contrato', 0) // no se ah enviado la alerta
+            ->where('estado', 1) // el contrato esta activo
+            ->where('fecha_fin', Carbon::now()->format('Y-m-d')) // fecha finalizacion es hoy
+            //->where('fecha_fin','2021-08-26') // fecha finalizacion es hoy + 30 dias
+            ->get();
+        foreach ($alerta_fechas as $item) {
+            $email_cliente = $item->cliente->correo;
+            if ($item->pais_id == 2) { //Si es de Peru
+                array_push($destinatarios, 'carmen.noel@gruporadical.com');
+            }
+            $details = [
 
-                        //'entregable' => $item->descripcion,
-                        'cliente' => $item->cliente->nombre_comercial,
-                        'descripcion_contrato' => $item->descripcion,
-                        'observacion_contrato' => $item->observacion,
-                        'fecha_inicio' => $item->fecha_inicio,
-                        'fecha_fin' => $item->fecha_fin,
-                        //'plazo_entrega' => (Carbon::parse($item->fecha)->diffInDays($hoy))+1,
-                        'plazo_finalizacion' => Carbon::now()->diffInDays(Carbon::parse($item->fecha_fin),false),
+                'title' => 'Notificación de finalización de operaciones (Contrato finalizado)',
+                'alerta' => 1,
+                //'responsable' => $item->usuario->name,
+                'body' => 'Estimad@ el software RGSDM (Radical Gestión SDM) ha generado la siguiente alerta: ',
 
-                        //'tipo_tarea' => $item->tipo->nombre,
+                //'entregable' => $item->descripcion,
+                'cliente' => $item->cliente->nombre_comercial,
+                'descripcion_contrato' => $item->descripcion,
+                'observacion_contrato' => $item->observacion,
+                'fecha_inicio' => $item->fecha_inicio,
+                'fecha_fin' => $item->fecha_fin,
+                //'plazo_entrega' => (Carbon::parse($item->fecha)->diffInDays($hoy))+1,
+                'plazo_finalizacion' => Carbon::now()->diffInDays(Carbon::parse($item->fecha_fin), false),
 
-                    ];
+                //'tipo_tarea' => $item->tipo->nombre,
 
-
-                    Mail::to($email_cliente)
-                    ->cc($destinatarios)
-                    ->bcc('teamsoc@gruporadical.com', 'soporte@gruporadical.com')
-                    ->send(new FinContratoEmail($details));
+            ];
 
 
+            Mail::to($email_cliente)
+                ->cc($destinatarios)
+                ->bcc('teamsoc@gruporadical.com', 'soporte@gruporadical.com')
+                ->send(new FinContratoEmail($details));
 
-                    // SOLICITUD APERTURA DE TICKET
-                    //Mail::to('soporte@gruporadical.com')
-                    //->cc('paul.canchignia@gruporadical.com')
-                    //->send(new TicketFinalizacionContratoEmail($details));
-                    $item->alerta_fin_contrato = 1;
-                    $item->estado=2; //finalizado
-                    //$item->cuenta_alertas=$item->cuenta_alertas+1;
-                    $item->save();
-                }
+
+
+            // SOLICITUD APERTURA DE TICKET
+            //Mail::to('soporte@gruporadical.com')
+            //->cc('paul.canchignia@gruporadical.com')
+            //->send(new TicketFinalizacionContratoEmail($details));
+            $item->alerta_fin_contrato == 1;
+            $item->estado == 2; //finalizado
+            //$item->cuenta_alertas=$item->cuenta_alertas+1;
+            $item->save();
+        }
 
         $this->info('Successfully sent daily quote to everyone.');
     }

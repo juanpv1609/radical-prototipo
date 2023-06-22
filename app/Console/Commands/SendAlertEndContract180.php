@@ -12,6 +12,7 @@ use App\Mail\FinContratoEmail;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\TicketFinalizacionContratoEmail;
+use App\Models\Destinatario;
 
 class SendAlertEndContract180 extends Command
 {
@@ -48,11 +49,18 @@ class SendAlertEndContract180 extends Command
     {
         $hoy = Carbon::now()->format('Y-m-d');
 
-        $destinatarios = ['paul.canchignia@gruporadical.com','fabian.ortega@gruporadical.com',
+        /*$destinatarios = ['paul.canchignia@gruporadical.com','fabian.ortega@gruporadical.com',
                             'xavier.montoya@gruporadical.com','norma.veloz@gruporadical.com',
                             'jm.gomez@gruporadical.com','cristina.jimenez@gruporadical.com',
-                            'nelson.morales@gruporadical.com','tatiana.pazos@gruporadical.com', 'catherine.stopar@gruporadical.com'];
+                            'nelson.morales@gruporadical.com','tatiana.pazos@gruporadical.com', 'catherine.stopar@gruporadical.com'];*/
                 $email_cliente="";
+
+                //Obtener los destinatarios de la tabla Destino
+                $destinatarios = Destinatario::where('is_deleted', 0)
+                    ->pluck('email')
+                    ->toArray();
+
+
                 $alerta_fechas = Contrato::with('cliente')
                 ->where('alerta_fin_contrato180',0) // no se ah enviado la alerta
                 ->where('estado',1) // el contrato esta activo
@@ -98,7 +106,7 @@ class SendAlertEndContract180 extends Command
                     //Mail::to('soporte@gruporadical.com')
                     //->cc('paul.canchignia@gruporadical.com')
                     //->send(new TicketFinalizacionContratoEmail($details));
-                    $item->alerta_fin_contrato180 = 1;
+                    $item->alerta_fin_contrato180 == 1;
                     //$item->cuenta_alertas=$item->cuenta_alertas+1;
                     $item->save();
                 }

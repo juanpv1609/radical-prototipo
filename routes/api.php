@@ -29,6 +29,7 @@ use App\Http\Controllers\NivelEstudioController;
 use App\Http\Controllers\PerfilPuestoController;
 use App\Http\Controllers\PersonaMeritoController;
 use App\Http\Controllers\CertificacionesController;
+use App\Http\Controllers\DestinatarioController;
 
 /*
 |--------------------------------------------------------------------------
@@ -151,6 +152,10 @@ Route::resource('persona-merito', PersonaMeritoController::class);
 Route::resource('marcas', MarcaController::class);
 Route::resource('modalidades', ModalidadController::class);
 
+
+//Destinatarios
+
+Route::resource('destinatarios', DestinatarioController::class);
 
 
 });

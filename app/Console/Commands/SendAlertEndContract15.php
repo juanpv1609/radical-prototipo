@@ -12,6 +12,7 @@ use App\Mail\FinContratoEmail;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\TicketFinalizacionContratoEmail;
+use App\Models\Destinatario;
 
 class SendAlertEndContract15 extends Command
 {
@@ -48,11 +49,15 @@ class SendAlertEndContract15 extends Command
     {
         $hoy = Carbon::now()->format('Y-m-d');
 
-        $destinatarios = ['paul.canchignia@gruporadical.com','fabian.ortega@gruporadical.com',
+        /*$destinatarios = ['paul.canchignia@gruporadical.com','fabian.ortega@gruporadical.com',
                             'xavier.montoya@gruporadical.com','norma.veloz@gruporadical.com',
                             'jm.gomez@gruporadical.com','cristina.jimenez@gruporadical.com',
-                            'nelson.morales@gruporadical.com','tatiana.pazos@gruporadical.com', 'catherine.stopar@gruporadical.com'];
+                            'nelson.morales@gruporadical.com','tatiana.pazos@gruporadical.com', 'catherine.stopar@gruporadical.com'];*/
        $email_cliente="";
+
+       $destinatarios = Destinatario::where('is_deleted', 0)
+            ->pluck('email')
+            ->toArray();
 
              $alerta_fechas = Contrato::with('cliente')
                             //->where('alerta_fin_contrato30',0) // se envio la alerta de 30 dias
@@ -101,7 +106,7 @@ class SendAlertEndContract15 extends Command
                     //Mail::to('soporte@gruporadical.com')
                     //->cc('paul.canchignia@gruporadical.com')
                     //->send(new TicketFinalizacionContratoEmail($details));
-                    $item->alerta_fin_contrato15 = 1;
+                    $item->alerta_fin_contrato15 == 1;
                     //$item->cuenta_alertas=$item->cuenta_alertas+1;
                     $item->save();
                 }

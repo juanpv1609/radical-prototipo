@@ -30,6 +30,7 @@
               dark
               small
               color="primary"
+              :disabled="$store.state.user.role==1"
               @click="addContrato"
           >
               <v-icon dark>
@@ -73,6 +74,7 @@
 
                         elevation="2"
                         color="orange darken-4"
+                        :disabled="$store.state.user.role==1"
                         @click="findTareas(row.item)"
                         title="Clic para ver los entregables"
                         >
