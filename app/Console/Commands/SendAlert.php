@@ -54,7 +54,7 @@ class SendAlert extends Command
                 foreach ($alerta_fechas as $item) {
                     $correos = explode(",", $item->correos_alerta);
                     //**!Se agrega a  auxiliar.contador@gruporadical.com a las notificaciones */
-                    $correos = array_push($correos,"auxiliar.contador@gruporadical.com");
+
                     $details = [
 
                         'title' => 'Notificación de entregable (1ra Alerta)',
@@ -77,6 +77,7 @@ class SendAlert extends Command
                         # code...
                         array_push($destinatariosCC, $correo);
                     }
+                    array_push($destinatariosCC,"auxiliar.contador@gruporadical.com");
 
                     /* if ($item->contrato->area_id == 3) { //SOC
                         array_push($destinatarios, 'soc.radical@gruporadical.com');

@@ -55,7 +55,7 @@ class SendSecondAlert extends Command
                     $correos = explode(",", $item->correos_alerta);
 
                     //**!Se agrega a  auxiliar.contador@gruporadical.com a las notificaciones */
-                    $correos = array_push($correos, "auxiliar.contador@gruporadical.com");
+                    //$correos = array_push($correos, "auxiliar.contador@gruporadical.com");
 
                     $details = [
 
@@ -77,6 +77,7 @@ class SendSecondAlert extends Command
                         # code...
                         array_push($destinatariosCC, $correo);
                     }
+                    array_push($destinatariosCC, "auxiliar.contador@gruporadical.com");
 
                     /* if ($item->contrato->area_id == 3) { //SOC
                         array_push($destinatarios, 'soc.radical@gruporadical.com');

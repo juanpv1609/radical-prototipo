@@ -45,7 +45,7 @@ class SendAlertWeek extends Command
             $from = Carbon::now()->format('Y-m-d');
             $to = Carbon::now()->addDays(6)->format('Y-m-d');
              //$destinatarios = ['paul.canchignia@gruporadical.com','paul.landazuri@gruporadical.com','daniel.viteri@gruporadical.com','juan.perugachi@gruporadical.com'];
-             $destinatarios = ['juan.perugachi@gruporadical.com'];
+             $destinatarios = ['juan.perugachi@gruporadical.com','paul.canchignia@gruporadical.com'];
 
 
              $alerta_fechas = Tareas::with('contrato', 'frecuencias', 'estado_tarea', 'tipo', 'usuario')
