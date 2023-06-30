@@ -49,10 +49,10 @@ class SendAlertEndContract180 extends Command
     {
         $hoy = Carbon::now()->format('Y-m-d');
 
-        /*$destinatarios = ['paul.canchignia@gruporadical.com','fabian.ortega@gruporadical.com',
+        $destinatarios = ['paul.canchignia@gruporadical.com','fabian.ortega@gruporadical.com',
                             'xavier.montoya@gruporadical.com','norma.veloz@gruporadical.com',
                             'jm.gomez@gruporadical.com','cristina.jimenez@gruporadical.com',
-                            'nelson.morales@gruporadical.com','tatiana.pazos@gruporadical.com', 'catherine.stopar@gruporadical.com'];*/
+                            'nelson.morales@gruporadical.com','tatiana.pazos@gruporadical.com', 'catherine.stopar@gruporadical.com'];
                 $email_cliente="";
 
                 //Obtener los destinatarios de la tabla Destino
