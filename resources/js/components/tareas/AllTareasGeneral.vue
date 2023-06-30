@@ -315,24 +315,25 @@
                                 rows="1"
                                 ></v-textarea>
                         </v-col>
+                        <v-col cols="12" sm="12">
+                            <v-combobox
+                                        v-model="correos_alerta"
+                                        :items="tarea.correos_alerta"
+                                        hide-selected
+                                        hint="Ingrese una o varias direcciones de correo y presione Enter o TAB "
+                                        label="Direcciones de correo para recibir las alertas"
+
+                                        multiple
+                                        persistent-hint
+                                        small-chips
+                                        deletable-chips
+                                        :delimiters="[';']"
+                                        @change="delimitCorreos"
 
 
-                       <!--  <v-col cols="6">
-                            <v-file-input
-                                small-chips
-                                multiple
-                                v-model="files"
-                                label="Seleccione archivo/s"
-                                >
-                                </v-file-input>
-                                 <v-btn  color="success" block v-if="files.length>0"
-                            @click="subirArchivos"
-                            :loading="loadingUpload"
-                            :disabled="status_archivos">
-                            <span v-if="status_archivos">CORRECTO</span>
-                                    <span v-else>Subir {{files.length}} Archivos</span>
-                                    </v-btn>
-                        </v-col> -->
+                                    >
+                                    </v-combobox>
+                        </v-col>
                         <v-col cols="12" >
                             <v-textarea
                                 clearable
@@ -343,6 +344,23 @@
                                 ></v-textarea>
 
                         </v-col>
+                         <v-col cols="12" sm="12">
+                            <v-file-input
+                                small-chips
+                                multiple
+                                v-model="files"
+                                label="Seleccione uno o más archivos que desee subir"
+                                >
+                                </v-file-input>
+                                 <v-btn  color="success" block v-if="files.length>0"
+                            @click="subirArchivos"
+                            :loading="loadingUpload"
+                            :disabled="status_archivos">
+                            <span v-if="status_archivos">CORRECTO</span>
+                                    <span v-else>Subir {{files.length}} Archivos</span>
+                                    </v-btn>
+                        </v-col>
+
                     </v-row>
                 </v-card-text>
                 <v-card-actions>
@@ -411,7 +429,7 @@ import moment from "moment";
         responsables: [],
         tipo_tareas: [],
 
-
+        correos_alerta:[],
             }
 
         },
@@ -480,6 +498,16 @@ import moment from "moment";
             close () {
                 console.log('Dialog closed')
             },
+            delimitCorreos (v) {
+                const reducer = (a, e) => [...a, ...e.split(/[;]+/)]
+                this.correos_alerta = [...new Set(v.reduce(reducer, []))]
+                },
+        setResponsable(){
+            this.correos_alerta = [];
+            //this.correos_alerta.push(this.usuario.email);
+            this.correos_alerta.push('paul.canchignia@gruporadical.com');
+            this.correos_alerta.push('xavier.montoya@gruporadical.com');
+        },
             filtrarPorFecha(){
                  this.loading = true;
                 this.axios
@@ -518,6 +546,7 @@ import moment from "moment";
                 this.tarea.estado = el.estado;
                 this.tarea.ticket = el.ticket;
                 this.tarea.observacion = el.observacion;
+                this.tarea.correos_alerta = el.correos_alerta;
                 this.dialog = true;
             },
             downloadFile(archivo){
@@ -571,7 +600,7 @@ import moment from "moment";
              */
             updateTarea(e) {
                 e.preventDefault();
-                //this.tarea.adjuntos=this.ruta_archivo;
+                this.tarea.adjuntos=this.ruta_archivo;
                 console.log(this.tarea);
                  this.axios
                     .patch(`/api/tareas/${this.tarea.id}`, this.tarea)

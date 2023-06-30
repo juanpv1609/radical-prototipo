@@ -153,7 +153,7 @@ class TareaController extends Controller
     }
     public function update($id, Request $request)
     {
-        //$arrayAdjuntos = $request->input("adjuntos");
+        $arrayAdjuntos = $request->input("adjuntos");
 
         $tarea = Tareas::find($id);
         // BORRAR ARCHIVOS ANTERIORES
@@ -176,8 +176,9 @@ class TareaController extends Controller
         $tarea->responsable = $request->input('responsable');
         $tarea->ticket = $request->input('ticket');
         $tarea->tipo_tarea = $request->input('tipo_tarea');
+        $tarea->correos_alerta = $request->input('correos_alerta');
 
-        //$tarea->adjunto = implode(",", $arrayAdjuntos);
+        $tarea->adjunto = isset($arrayAdjuntos) ? implode(",", $arrayAdjuntos) : null;
 
 
         $tarea->save();
