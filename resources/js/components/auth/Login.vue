@@ -16,7 +16,7 @@
          <v-card-text>
         <v-img src="../img/nuevologo-radical.png" alt="Logo"  ></v-img>
         <v-divider></v-divider>
-             <h2 class="text-center "> Iniciar Sesión</h2>
+             <h2 class="text-center "> Iniciar Sesión </h2>
 
                  <v-col cols="12" dense>
                     <v-text-field
@@ -36,7 +36,7 @@
                         label="Contraseña*"
                         rounded
                         v-model="form.password"
-                        required 
+                        required
                         outlined
                         dense
                         color="orange darken-4"
