@@ -1,67 +1,41 @@
 <template>
-
     <div>
         <v-card elevation="2" :loading="loading">
-            <v-card-title
-          >
-           <v-badge
-                :content="tipo_tareas.length"
-                :value="tipo_tareas.length"
-                color="green"
+            <v-card-title>
+                <v-badge :content="tipo_tareas.length" :value="tipo_tareas.length" color="green">
+                    Tipos de Tareas
+                </v-badge>
+                <v-spacer></v-spacer>
+                <v-col cols="auto">
+                    <v-text-field v-model="search" append-icon="mdi-magnify" label="Buscar" single-line hide-details filled
+                        rounded dense></v-text-field>
+                </v-col>
 
-            >
-            Tipos de Tareas
-            </v-badge>
-          <v-spacer></v-spacer>
-          <v-col cols="auto">
-              <v-text-field
-              v-model="search"
-              append-icon="mdi-magnify"
-              label="Buscar"
-              single-line
-              hide-details
-              filled
-            rounded
-            dense
-          ></v-text-field>
-          </v-col>
-
-          <v-btn
-              class="mx-2"
-              fab
-              dark
-              small
-              color="primary"
-              @click="addArea"
-          >
-              <v-icon dark>
-                  mdi-plus
-              </v-icon>
-          </v-btn>
-        </v-card-title>
+                <v-btn class="mx-2" fab dark small color="primary" @click="addArea">
+                    <v-icon dark>
+                        mdi-plus
+                    </v-icon>
+                </v-btn>
+            </v-card-title>
 
             <v-card-text>
-                <v-data-table
-                    :headers="headers"
-                    :items="tipo_tareas"
-                    :search="search"
-                >
-                <template v-slot:item="row">
-                    <tr>
-                        <td>{{row.item.id}}</td>
-                        <td>{{row.item.nombre}}</td>
-                        <td>{{row.item.descripcion}}</td>
-                        <td>
-                            <v-btn  icon color="primary" @click="editTipoTarea(row.item)">
-                                <v-icon dark>mdi-pencil</v-icon>
+                <v-data-table :headers="headers" :items="tipo_tareas" :search="search">
+                    <template v-slot:item="row">
+                        <tr>
+                            <td>{{ row.item.id }}</td>
+                            <td>{{ row.item.nombre }}</td>
+                            <td>{{ row.item.descripcion }}</td>
+                            <td>
+                                <v-btn icon color="primary" @click="editTipoTarea(row.item)">
+                                    <v-icon dark>mdi-pencil</v-icon>
                                 </v-btn>
-                                <v-btn  icon color="error" @click="deleteTipoTarea(row.item)">
-                                <v-icon dark>mdi-delete</v-icon>
-                            </v-btn>
-                        </td>
-                    </tr>
-                </template>
-      </v-data-table>
+                                <v-btn icon color="error" @click="deleteTipoTarea(row.item)">
+                                    <v-icon dark>mdi-delete</v-icon>
+                                </v-btn>
+                            </td>
+                        </tr>
+                    </template>
+                </v-data-table>
             </v-card-text>
 
             <v-card-actions> </v-card-actions>
@@ -77,22 +51,14 @@
                             <v-container>
                                 <v-row>
                                     <v-col cols="12">
-                                        <v-text-field
-                                            v-model="tipo_tarea.nombre"
-                                            label="Nombre del tipo de tarea*"
-                                            required
-                                        ></v-text-field>
+                                        <v-text-field v-model="tipo_tarea.nombre" label="Nombre del tipo de tarea*"
+                                            required></v-text-field>
                                     </v-col>
                                 </v-row>
                                 <v-row>
                                     <v-col cols="12">
-                                        <v-textarea
-                                        clearable
-                                        rows="2"
-                                        clear-icon="mdi-close-circle"
-                                         v-model="tipo_tarea.descripcion"
-                                            label="Descripcion"
-                                        ></v-textarea>
+                                        <v-textarea clearable rows="2" clear-icon="mdi-close-circle"
+                                            v-model="tipo_tarea.descripcion" label="Descripcion"></v-textarea>
                                     </v-col>
                                 </v-row>
                             </v-container>
@@ -100,27 +66,13 @@
                         </v-card-text>
                         <v-card-actions>
                             <v-spacer></v-spacer>
-                            <v-btn
-                                color="error"
-                                text
-                                @click="dialog = false"
-                            >
+                            <v-btn color="error" text @click="dialog = false">
                                 Cerrar
                             </v-btn>
-                            <v-btn
-                                v-if="!update"
-                                color="primary"
-                                text
-                                @click="createTipoTarea"
-                            >
+                            <v-btn v-if="!update" color="primary" text @click="createTipoTarea">
                                 Guardar
                             </v-btn>
-                            <v-btn
-                                v-else
-                                color="primary"
-                                text
-                                @click="updateTipoTarea"
-                            >
+                            <v-btn v-else color="primary" text @click="updateTipoTarea">
                                 Actualizar
                             </v-btn>
                         </v-card-actions>
@@ -130,7 +82,6 @@
         </template>
 
     </div>
-
 </template>
 
 <script>

@@ -31,6 +31,7 @@
               dark
               small
               color="primary"
+              :disabled="$store.state.user.role==1"
               @click="addClient"
           >
               <v-icon dark>

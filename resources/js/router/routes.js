@@ -36,6 +36,10 @@ import ReporteCertificacion from "../components/reportes/ReporteCertificacion.vu
 import ReporteGeneral from "../components/reportes/ReporteGeneral.vue";
 import ReportePersona from "../components/reportes/ReportePersona.vue";
 
+//----------DESTINATARIOS--------------
+
+import Destinatario from "../components/destinatario/Destinatario.vue";
+
 //nuevas funciones ISO
 import PerfilPuesto from "../components/perfilPuesto/PerfilPuesto.vue";
 import Servicios from "../components/servicios/Servicios.vue";
@@ -299,6 +303,15 @@ const router = new VueRouter({
                 requiresAuth: true,
             },
         },
+
+        {
+            name: "destinatarios",
+            path: "/destinatarios",
+            component: Destinatario,
+            meta: {
+                requiresAuth: true
+            }
+        }
     ]
 });
 

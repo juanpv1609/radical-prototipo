@@ -108,7 +108,7 @@
                                                 v-model="usuario.password"
                                                 label="Password*"
                                                 required
-                                                disabled
+                                                :disabled = "false"
                                             ></v-text-field>
                                         </v-col>
                                     </v-row>

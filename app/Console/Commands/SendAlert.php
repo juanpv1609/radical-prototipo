@@ -43,7 +43,7 @@ class SendAlert extends Command
      */
     public function handle()
     {
-        $hoy = date("Y-m-d");
+        $hoy = Carbon::now()->format('Y-m-d');
 
         $alerta_fechas = Tareas::with('contrato', 'frecuencias','estado_tarea','tipo','usuario')
         ->where('alerta_enviada',0)
@@ -53,6 +53,8 @@ class SendAlert extends Command
         $destinatariosCC = [];
                 foreach ($alerta_fechas as $item) {
                     $correos = explode(",", $item->correos_alerta);
+                    //**!Se agrega a  auxiliar.contador@gruporadical.com a las notificaciones */
+                    $correos = array_push($correos,"auxiliar.contador@gruporadical.com");
                     $details = [
 
                         'title' => 'Notificación de entregable (1ra Alerta)',
@@ -101,8 +103,8 @@ class SendAlert extends Command
                     //Mail::to('soporte@gruporadical.com')
                     //->cc('paul.canchignia@gruporadical.com')
                     //->send(new TicketEmail($details));
-                    $item->alerta_enviada = 1;
-                    $item->cuenta_alertas=$item->cuenta_alertas+1;
+                    $item->alerta_enviada == 1;
+                    $item->cuenta_alertas==$item->cuenta_alertas+1;
                     $item->save();
                 }
 

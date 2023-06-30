@@ -48,8 +48,11 @@ class SendAlertEndContract60 extends Command
     {
         $hoy = Carbon::now()->format('Y-m-d');
 
-        $destinatarios = ['paul.canchignia@gruporadical.com','fabian.ortega@gruporadical.com','xavier.montoya@gruporadical.com'];
-        $cc=['teamsoc@gruporadical.com','ana.rivera@gruporadical.com'];
+        $destinatarios = ['paul.canchignia@gruporadical.com','fabian.ortega@gruporadical.com',
+                            'xavier.montoya@gruporadical.com','norma.veloz@gruporadical.com',
+                            'jm.gomez@gruporadical.com','cristina.jimenez@gruporadical.com',
+                            'nelson.morales@gruporadical.com','tatiana.pazos@gruporadical.com', 'catherine.stopar@gruporadical.com'];
+        $email_cliente="";
 
              $alerta_fechas = Contrato::with('cliente')
                             ->where('alerta_fin_contrato30',0) // no se ah enviado la alerta
@@ -58,9 +61,15 @@ class SendAlertEndContract60 extends Command
                             //->where('fecha_fin','2021-08-26') // fecha finalizacion es hoy + 30 dias
                             ->get();
                 foreach ($alerta_fechas as $item) {
+                    $email_cliente = $item->cliente->correo;
+
+                    if ($item->pais_id==2) { //Si es de Peru
+                        array_push($destinatarios, 'carmen.noel@gruporadical.com');
+                    }
+
                     $details = [
 
-                        'title' => 'Notificación de finalización de operaciones (1ra Alerta)',
+                        'title' => 'Notificación de finalización de operaciones (2da Alerta)',
                         'alerta' => 1,
                         //'responsable' => $item->usuario->name,
                         'body' => 'Estimad@ el software RGSDM (Radical Gestión SDM) ha generado la siguiente alerta: ',
@@ -79,10 +88,12 @@ class SendAlertEndContract60 extends Command
                     ];
 
 
-
-                    Mail::to($destinatarios)
-                    ->cc($cc)
+                    Mail::to($email_cliente)
+                    ->cc($destinatarios)
+                    ->bcc('teamsoc@gruporadical.com', 'soporte@gruporadical.com')
                     ->send(new FinContratoEmail($details));
+
+
 
 
                     // SOLICITUD APERTURA DE TICKET

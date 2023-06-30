@@ -152,6 +152,7 @@
                             <v-list-item-subtitle>
                                 {{ $store.state.user.email }} <br>
                                 {{ ($store.state.user.role==2) ? 'ADMINISTRADOR' : 'CONSULTA' }}
+                                
 
                             </v-list-item-subtitle>
                             </v-list-item-content>
@@ -318,7 +319,7 @@ export default {
                 { title: "Entregables", icon: "mdi-send-check",
                         subLinks: [
                                 { title: "General",  link: "/all-tareas", icon: "mdi-list-status"},
-                                { title: "Por Cliente", link: "/tareas", icon: "mdi-card-account-details-star"},
+                                { title:  "Por Cliente", link: "/tareas", icon: "mdi-card-account-details-star"},
 
                             ],
                      },
@@ -348,29 +349,30 @@ export default {
                         { title: "Frecuencias", link: "/frecuencias", icon: "mdi-clock-fast" },
                         { title: "Paises", link: "/paises", icon: "mdi-earth" },
                         { title: "Casos de Uso", link: "/casos-de-uso", icon: "mdi-sitemap" },
+                        { title: "Destinatarios", link: "/destinatarios", icon: "mdi-account-multiple"},
 
                     ],
                 },
             ],
             itemsPersonal:[
-                { title: "Personal", link: "/personal", icon: "mdi-face-agent" },
+                /*{ title: "Personal", link: "/personal", icon: "mdi-face-agent" },
                 {
                     title: "Reportes Per.",
                     icon: "mdi-chart-bar",
                     subLinks: [
 
-                        {
+                        {       
                             title: "Certificacion", link: "/reporte-certificacion",icon: "mdi-certificate"
                         },
                         {
                             title: "Persona",  link: "/reporte-persona",icon: "mdi-card-account-details"
                         }
                     ],
-                },
+                },*/
 
             ],
             itemsAdminPersonal:[
-                {
+                /*{
                     title: "Administrar Per.",
                     icon: "mdi-cogs",
                     subLinks: [
@@ -387,7 +389,7 @@ export default {
                             icon: "mdi-graph-outline"
                         }
                     ],
-                },
+                },*/
             ],
 
             right: null,
