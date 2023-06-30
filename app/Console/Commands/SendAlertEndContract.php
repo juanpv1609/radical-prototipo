@@ -55,9 +55,9 @@ class SendAlertEndContract extends Command
                             'nelson.morales@gruporadical.com','tatiana.pazos@gruporadical.com', 'catherine.stopar@gruporadical.com'];
         $email_cliente = "";
 
-        $destinatarios = Destinatario::where('is_deleted', 0)
+        /*$destinatarios = Destinatario::where('is_deleted', 0)
             ->pluck('email')
-            ->toArray();
+            ->toArray();*/
 
         $alerta_fechas = Contrato::with('cliente')
             //->where('alerta_fin_contrato30',0) // se envio la alerta de 30 dias

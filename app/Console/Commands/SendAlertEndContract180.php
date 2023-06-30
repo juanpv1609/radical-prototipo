@@ -56,9 +56,9 @@ class SendAlertEndContract180 extends Command
                 $email_cliente="";
 
                 //Obtener los destinatarios de la tabla Destino
-                $destinatarios = Destinatario::where('is_deleted', 0)
-                    ->pluck('email')
-                    ->toArray();
+                /*$destinatarios = Destinatario::where('is_deleted', 0)
+                ->pluck('email')
+                ->toArray();*/
 
 
                 $alerta_fechas = Contrato::with('cliente')

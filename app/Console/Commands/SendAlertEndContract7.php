@@ -55,9 +55,9 @@ class SendAlertEndContract7 extends Command
                             'nelson.morales@gruporadical.com','tatiana.pazos@gruporadical.com', 'catherine.stopar@gruporadical.com'];
         $email_cliente="";
 
-        $destinatarios = Destinatario::where('is_deleted', 0)
+        /*$destinatarios = Destinatario::where('is_deleted', 0)
             ->pluck('email')
-            ->toArray();
+            ->toArray();*/
 
 
              $alerta_fechas = Contrato::with('cliente')
