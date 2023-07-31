@@ -7,6 +7,7 @@ use App\Models\Contrato;
 use App\Models\Servicio;
 use Illuminate\Http\Request;
 use App\Models\ContratoServicio;
+use App\Models\ContratoDestinatario;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\SendMailController;
 
@@ -15,7 +16,7 @@ class ContratoController extends Controller
     public function index()
     {
         //$products = Product::all()->toArray();
-        $contratos = Contrato::with('cliente', 'pais', 'area', 'tarea','estado_contrato','servicios')->get()->toArray();
+        $contratos = Contrato::with('cliente', 'pais', 'area', 'tarea','estado_contrato','servicios','destinatarios')->get()->toArray();
 
         return $contratos;
     }
@@ -25,8 +26,10 @@ class ContratoController extends Controller
 
 
         $arrayCorreos = $request->input("correos");
+        $arrayEstructuraInforme = $request->input("estructura_informe");
         $arrayAdjuntos = $request->input("adjuntos");
         $arrayServicios = $request->input("servicios");
+        $arrayDestinatarios = $request->input("destinatarios");
 
         $contrato = new Contrato([
             'descripcion' => $request->input("descripcion"),
@@ -41,6 +44,7 @@ class ContratoController extends Controller
             'adjunto' => implode(",", $arrayAdjuntos),
             'observacion' => $request->input("observacion"),
             'estado' => 1,
+            'estructura_informe' => implode(",",$arrayEstructuraInforme)
         ]);
         $contrato->save();
         foreach ($arrayServicios as $item) {
@@ -57,6 +61,18 @@ class ContratoController extends Controller
         // $contratoObject = new SendMailController();
         // $contratoObject->sendMailsClient($contrato->id);
 
+        foreach ($arrayDestinatarios as $item){
+
+            $contrato_destinatario = new ContratoDestinatario([
+                'contrato_id' => $contrato->id,
+                'destinatario_id' => $item['id'],
+                'estado' => 1,
+                'is_deleted' => 0
+            ]);
+            $contrato_destinatario->save();
+
+        }
+
         return response()->json('Contrato created!');
     }
 
@@ -69,8 +85,10 @@ class ContratoController extends Controller
     public function update($id, Request $request)
     {
         $arrayCorreos = $request->input("correos");
+        $arrayEstructuraInforme = $request->input("estructura_informe");
         $arrayAdjuntos = $request->input("adjuntos");
         $arrayServicios = $request->input("servicios");
+        $arrayDestinatarios = $request->input("destinatarios");
 
         $contrato = Contrato::find($id);
         // BORRAR ARCHIVOS ANTERIORES
@@ -97,6 +115,14 @@ class ContratoController extends Controller
             }
         }
 
+        /*$arrayEstructuraInformeOld = explode(",", $contrato->estructura_informe);
+        if ((isset($arrayEstructuraInforme)>0) && (count($arrayEstructuraInformeOld)>0)){
+            foreach ($arrayEstructuraInforme as $new) {
+                # code...
+                array_push($arrayEstructuraInformeOld, $new);
+            }
+        }*/
+
 
         $contrato->descripcion = $request->input("descripcion");
         $contrato->fecha_inicio = $request->input("fecha_inicio");
@@ -107,6 +133,7 @@ class ContratoController extends Controller
         $contrato->solucion = $request->input("solucion");
         $contrato->marca = $request->input("marca");
         $contrato->correos = implode(",", $arrayCorreosOld);
+        $contrato->estructura_informe = implode(",", $arrayEstructuraInforme);
         $contrato->adjunto = implode(",", $arrayAdjuntosOld);
         $contrato->observacion = $request->input("observacion");
         $contrato->estado = 1;
@@ -114,6 +141,12 @@ class ContratoController extends Controller
         // elimina servicios anteriores
         $serviciosOld = ContratoServicio::where('contrato_id',$contrato->id)->get();
         foreach ($serviciosOld as $item) {
+                $item->delete();
+        }
+
+        //elimina los destinatarios anteriores
+        $destinatariosOld = ContratoDestinatario::where('contrato_id',$contrato->id)->get();
+        foreach ($destinatariosOld as $item) {
                 $item->delete();
         }
         //crea nuevos servicios
@@ -126,6 +159,18 @@ class ContratoController extends Controller
                         'is_deleted' => 0
                     ]);
             $contrato_servicio->save();
+        }
+
+        //crea nuevos destinatarios
+        foreach ($arrayDestinatarios as $item) {
+
+            $contrato_destinatario = new ContratoDestinatario([
+                        'contrato_id' => $contrato->id,
+                        'destinatario_id' => $item['id'],
+                        'estado' => 1,
+                        'is_deleted' => 0
+                    ]);
+            $contrato_destinatario->save();
         }
 
 

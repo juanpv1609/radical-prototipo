@@ -55,6 +55,9 @@ class SendAlert extends Command
                     $correos = explode(",", $item->correos_alerta);
                     //**!Se agrega a  auxiliar.contador@gruporadical.com a las notificaciones */
 
+                    $estructura_entregable = explode(",", $item->contrato->estructura_informe);
+                    //$estructura_entregable = $item->contrato->estructura_informe;
+                    
                     $details = [
 
                         'title' => 'Notificación de entregable (1ra Alerta)',
@@ -67,6 +70,7 @@ class SendAlert extends Command
                         'observacion_contrato' => $item->contrato->observacion,
                         'fecha_entrega' => $item->fecha,
                         'fecha_alerta' => $item->fecha_alerta,
+                        'estructura_entregable' => $estructura_entregable,
                         //'plazo_entrega' => (Carbon::parse($item->fecha)->diffInDays($hoy))+1,
                         'plazo_entrega' => Carbon::now()->diffInDays(Carbon::parse($item->fecha),false),
 

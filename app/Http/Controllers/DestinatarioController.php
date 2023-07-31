@@ -22,7 +22,7 @@ class DestinatarioController extends Controller
 
         $destinatario = new Destinatario([
             'name' => $request->input('name'),
-            'email' => $request->input('email')
+            'email' => $request->input('email'),
             
         ]);
         

@@ -12,6 +12,7 @@ use App\Mail\FinContratoEmail;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\TicketFinalizacionContratoEmail;
+use App\Models\ContratoDestinatario;
 use App\Models\Destinatario;
 
 class SendAlertEndContract extends Command
@@ -47,12 +48,23 @@ class SendAlertEndContract extends Command
      */
     public function handle()
     {
-        $hoy = Carbon::now()->format('Y-m-d');
 
-        $destinatarios = ['paul.canchignia@gruporadical.com','fabian.ortega@gruporadical.com',
+        /*$destinatarios = ['paul.canchignia@gruporadical.com','fabian.ortega@gruporadical.com',
                             'xavier.montoya@gruporadical.com','norma.veloz@gruporadical.com',
                             'jm.gomez@gruporadical.com','cristina.jimenez@gruporadical.com',
-                            'nelson.morales@gruporadical.com','tatiana.pazos@gruporadical.com', 'catherine.stopar@gruporadical.com'];
+                            'nelson.morales@gruporadical.com','tatiana.pazos@gruporadical.com', 'catherine.stopar@gruporadical.com'];*/
+
+        /*$destinatarios = [];
+
+        $email_destinatario = ContratoDestinatario::with('destinatarios')
+            ->where('estado', 1)
+
+            ->get();
+            foreach ($email_destinatario as $item) {
+                array_push($destinatarios, $item->destinatarios->email);
+            }*/
+
+
         $email_cliente = "";
 
         /*$destinatarios = Destinatario::where('is_deleted', 0)
@@ -68,9 +80,25 @@ class SendAlertEndContract extends Command
             ->get();
         foreach ($alerta_fechas as $item) {
             $email_cliente = $item->cliente->correo;
+            
+            //Enviar el correo con copia a los destinatarios elegidos.
+            $email_destinatarios = ContratoDestinatario::with('destinatarios')
+                ->where('contrato_id', $item->id)
+                ->where('estado', 1)
+                ->where('is_deleted',0)
+                ->get();
+
+            $destinatarios = [];
+            
+            foreach($email_destinatarios as $email_destinatario){
+
+                array_push($destinatarios, $email_destinatario->destinatarios->email);
+            }
+
             if ($item->pais_id == 2) { //Si es de Peru
                 array_push($destinatarios, 'carmen.noel@gruporadical.com');
             }
+
             $details = [
 
                 'title' => 'Notificación de finalización de operaciones (Contrato finalizado)',

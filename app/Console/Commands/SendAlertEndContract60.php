@@ -12,7 +12,7 @@ use App\Mail\FinContratoEmail;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\TicketFinalizacionContratoEmail;
-
+use App\Models\ContratoDestinatario;
 class SendAlertEndContract60 extends Command
 {
     /**
@@ -66,6 +66,19 @@ class SendAlertEndContract60 extends Command
                 foreach ($alerta_fechas as $item) {
                     $email_cliente = $item->cliente->correo;
 
+
+                    $email_destinatarios = ContratoDestinatario::with('destinatarios')
+                        ->where('contrato_id', $item->id)
+                        ->where('estado', 1)
+                        ->where('is_deleted',0)
+                        ->get();
+
+                    $destinatarios = [];
+
+                foreach($email_destinatarios as $email_destinatario){
+
+                    array_push($destinatarios, $email_destinatario->destinatarios->email);
+                }
                     if ($item->pais_id==2) { //Si es de Peru
                         array_push($destinatarios, 'carmen.noel@gruporadical.com');
                     }
@@ -103,7 +116,7 @@ class SendAlertEndContract60 extends Command
                     //Mail::to('soporte@gruporadical.com')
                     //->cc('paul.canchignia@gruporadical.com')
                     //->send(new TicketFinalizacionContratoEmail($details));
-                    $item->alerta_fin_contrato60 = 1;
+                    $item->alerta_fin_contrato60 == 1;
                     //$item->cuenta_alertas=$item->cuenta_alertas+1;
                     $item->save();
                 }

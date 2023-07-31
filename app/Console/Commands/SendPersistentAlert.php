@@ -44,13 +44,17 @@ class SendPersistentAlert extends Command
         $hoy = date("Y-m-d");
         $destinatarios = ['paul.canchignia@gruporadical.com'];
 
-             $alerta_fechas = Tareas::with('contrato', 'frecuencias','estado_tarea','tipo','usuario')
+            $alerta_fechas = Tareas::with('contrato', 'frecuencias','estado_tarea','tipo','usuario')
                             ->where('alerta_enviada',1) //se envio la primera
                             ->where('segunda_alerta_enviada',1) // y se envio la segunda
                             ->where('estado',1)
                             ->whereDate('fecha' ,'<',$hoy) //implica que se paso la fecha de entrega
                             ->get();
                 foreach ($alerta_fechas as $item) {
+
+                    //Obtener la estructura del entregable solicitada
+                    $estructura_entregable = explode(",", $item->contrato->estructura_informe);
+
                     $details = [
 
                         'title' => 'Notificación de entregable (Alerta Persistente)',
@@ -62,6 +66,7 @@ class SendPersistentAlert extends Command
                         'observacion_contrato' => $item->contrato->observacion,
                         'fecha_entrega' => $item->fecha,
                         'fecha_alerta' => $item->fecha_alerta,
+                        'estructura_entregable' => $estructura_entregable,
                         //'plazo_entrega' => (Carbon::parse($item->fecha)->diffInDays($hoy))+1,
                         'plazo_entrega' => Carbon::now()->diffInDays(Carbon::parse($item->fecha),false),
                         'tipo_tarea' => $item->tipo->nombre,

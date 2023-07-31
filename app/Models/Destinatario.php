@@ -17,7 +17,6 @@ class Destinatario extends Model
 	protected $fillable = [
 		'name',
 		'email',
-		'contrato_id',
 		'is_deleted',
 	];
 
@@ -26,8 +25,4 @@ class Destinatario extends Model
 
 	use HasFactory;
 
-	public function contrato()
-	{
-		return $this->belongsTo(Contrato::class, 'contrato_id', 'id');
-	}
 }

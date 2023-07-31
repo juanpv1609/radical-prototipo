@@ -45,7 +45,7 @@ class SendSecondAlert extends Command
         $destinatariosCC = [];
 
 
-             $alerta_fechas = Tareas::with('contrato', 'frecuencias','estado_tarea','tipo','usuario')
+            $alerta_fechas = Tareas::with('contrato', 'frecuencias','estado_tarea','tipo','usuario')
                             ->where('alerta_enviada',1) //se envio la primera
                             ->where('segunda_alerta_enviada',0) // y NO se envio la segunda
                             ->where('estado',1)
@@ -56,6 +56,7 @@ class SendSecondAlert extends Command
 
                     //**!Se agrega a  auxiliar.contador@gruporadical.com a las notificaciones */
                     //$correos = array_push($correos, "auxiliar.contador@gruporadical.com");
+                    $estructura_entregable = explode(",", $item->contrato->estructura_informe);
 
                     $details = [
 
@@ -68,6 +69,7 @@ class SendSecondAlert extends Command
                         'observacion_contrato' => $item->contrato->observacion,
                         'fecha_entrega' => $item->fecha,
                         'fecha_alerta' => $item->fecha_alerta,
+                        'estructura_entregable' => $estructura_entregable,
                         //'plazo_entrega' => (Carbon::parse($item->fecha)->diffInDays($hoy))+1,
                         'plazo_entrega' => Carbon::now()->diffInDays(Carbon::parse($item->fecha),false),
                         'tipo_tarea' => $item->tipo->nombre,
@@ -96,8 +98,8 @@ class SendSecondAlert extends Command
                     Mail::to($item->usuario->email)
                     ->cc($destinatariosCC)
                     ->send(new TareasEmail($details));
-                    $item->segunda_alerta_enviada = 1;
-                    $item->cuenta_alertas=$item->cuenta_alertas+1;
+                    $item->segunda_alerta_enviada == 1;
+                    $item->cuenta_alertas==$item->cuenta_alertas+1;
                     $item->save();
                 }
 

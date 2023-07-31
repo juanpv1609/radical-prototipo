@@ -4,8 +4,8 @@ namespace App\Models;
 
 
 
-use App\Models\Contratos;
-use App\Models\Servicios;
+use App\Models\Contrato;
+use App\Models\Servicio;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -19,7 +19,7 @@ class ContratoServicio extends Model
     use HasFactory;
      public function contrato()
     {
-        return $this->belongsTo(Contratos::class, 'contrato_id','id');
+        return $this->belongsTo(Contrato::class, 'contrato_id','id');
     }
     public function servicio()
     {

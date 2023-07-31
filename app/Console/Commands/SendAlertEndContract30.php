@@ -13,6 +13,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\TicketFinalizacionContratoEmail;
 use App\Models\Destinatario;
+use App\Models\ContratoDestinatario;
 
 class SendAlertEndContract30 extends Command
 {
@@ -49,10 +50,10 @@ class SendAlertEndContract30 extends Command
     {
         $hoy = Carbon::now()->format('Y-m-d');
 
-        $destinatarios = ['paul.canchignia@gruporadical.com','fabian.ortega@gruporadical.com',
+        /*$destinatarios = ['paul.canchignia@gruporadical.com','fabian.ortega@gruporadical.com',
                             'xavier.montoya@gruporadical.com','norma.veloz@gruporadical.com',
                             'jm.gomez@gruporadical.com','cristina.jimenez@gruporadical.com',
-                            'nelson.morales@gruporadical.com','tatiana.pazos@gruporadical.com', 'catherine.stopar@gruporadical.com' ];
+                            'nelson.morales@gruporadical.com','tatiana.pazos@gruporadical.com', 'catherine.stopar@gruporadical.com' ];*/
         $email_cliente="";
 
         /*$destinatarios = Destinatario::where('is_deleted', 0)
@@ -68,6 +69,18 @@ class SendAlertEndContract30 extends Command
                 foreach ($alerta_fechas as $item) {
                     $email_cliente = $item->cliente->correo;
 
+                    $email_destinatarios = ContratoDestinatario::with('destinatarios')
+                        ->where('contrato_id', $item->id)
+                        ->where('estado', 1)
+                        ->where('is_deleted',0)
+                        ->get();
+
+                    $destinatarios = [];
+
+                foreach($email_destinatarios as $email_destinatario){
+
+                    array_push($destinatarios, $email_destinatario->destinatarios->email);
+                }
                     if ($item->pais_id==2) { //Si es de Peru
                         array_push($destinatarios, 'carmen.noel@gruporadical.com');
                     }

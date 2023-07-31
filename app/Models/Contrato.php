@@ -7,6 +7,8 @@ use App\Models\Pais;
 use App\Models\Tareas;
 use App\Models\Cliente;
 use App\Models\Servicio;
+use App\Models\Destinatario;
+use App\Models\ContratoDestinatario;
 use App\Models\Frecuencia;
 use App\Models\EstadoContrato;
 use App\Models\ContratoServicio;
@@ -33,8 +35,10 @@ class Contrato extends Model
                             'alerta_fin_contrato30',
                             'alerta_fin_contrato15',
                             'alerta_fin_contrato7',
-                            'alerta_fin_contrato'
-                            ,'estado'];
+                            'alerta_fin_contrato',
+                            'estado',
+                            'estructura_informe'
+                        ];
     //public $timestamps = false;
     protected $guarded = [];
     use HasFactory;
@@ -51,12 +55,18 @@ class Contrato extends Model
     {
         return $this->hasMany(Tareas::class, 'contrato_id', 'id');
     }
-     public function servicios()
+    public function servicios()
     {
         //return $this->belongsToMany(Servicios::class);
         return $this->belongsToMany(Servicio::class);
-
     }
+
+    public function destinatarios()
+    {
+        return $this->belongsToMany(Destinatario::class);
+    }
+
+
     public function estado_contrato()
     {
         return $this->belongsTo(EstadoContrato::class, 'estado', 'id');

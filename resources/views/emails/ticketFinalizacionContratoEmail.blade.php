@@ -31,7 +31,6 @@
     <p>Notificar al cliente.</p>
     <br>
     <p>De antemano muchas gracias.</p>
-
     <br>
     <br>
     <img src="https://1.bp.blogspot.com/-NS9JLHzt1vI/YLgAPd7JaKI/AAAAAAAAoFQ/cBQmkA3KQtUKYG2iFuTHsS4OmIGSBtNoQCLcBGAsYHQ/s0/socfirma.png" alt="logo">

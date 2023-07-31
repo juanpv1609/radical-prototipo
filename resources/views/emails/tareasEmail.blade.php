@@ -5,48 +5,57 @@
 <head>
 
     <title>Grupo radical</title>
-<style>
-    @font-face {
-        font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
-        font-weight: normal;
-        font-style: normal;
-        font-variant: normal;
-        src: url("font url");
-      }
-      body {
-        font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
-      }
-      table.blueTable {
-  font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
-  border: 3px solid #1C6EA4;
-  background-color: #D0E4F5;
-  width: 100%;
-  text-align: left;
-}
-table.blueTable td, table.blueTable th {
-  border: 1px solid #AAAAAA;
-  padding: 3px 2px;
-}
-table.blueTable tbody td {
-  font-size: 12px;
-}
-table.blueTable td:nth-child(even) {
-  background: #FFFFFF;
-}
-table.blueTable tfoot td {
-  font-size: 14px;
-}
-table.blueTable tfoot .links {
-  text-align: right;
-}
-table.blueTable tfoot .links a{
-  display: inline-block;
-  background: #1C6EA4;
-  color: #FFFFFF;
-  padding: 2px 8px;
-  border-radius: 5px;
-}
-</style>
+    <style>
+        @font-face {
+            font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+            font-weight: normal;
+            font-style: normal;
+            font-variant: normal;
+            src: url("font url");
+        }
+
+        body {
+            font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+        }
+
+        table.blueTable {
+            font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+            border: 3px solid #1C6EA4;
+            background-color: #D0E4F5;
+            width: 100%;
+            text-align: left;
+        }
+
+        table.blueTable td,
+        table.blueTable th {
+            border: 1px solid #AAAAAA;
+            padding: 3px 2px;
+        }
+
+        table.blueTable tbody td {
+            font-size: 12px;
+        }
+
+        table.blueTable td:nth-child(even) {
+            background: #FFFFFF;
+        }
+
+        table.blueTable tfoot td {
+            font-size: 14px;
+        }
+
+        table.blueTable tfoot .links {
+            text-align: right;
+        }
+
+        table.blueTable tfoot .links a {
+            display: inline-block;
+            background: #1C6EA4;
+            color: #FFFFFF;
+            padding: 2px 8px;
+            border-radius: 5px;
+        }
+    </style>
 </head>
 
 <body>
@@ -61,7 +70,9 @@ table.blueTable tfoot .links a{
 
             </td>
 
-            <td><h2 class="h2">{{ $details['title'] }}</h2></td>
+            <td>
+                <h2 class="h2">{{ $details['title'] }}</h2>
+            </td>
         </tr>
     </table>
 
@@ -87,13 +98,12 @@ table.blueTable tfoot .links a{
             </tr>
             <tr>
                 @if ($details['plazo_entrega'] >= 0)
-                    <td>Se entrega en:</td>
-                    <td ><strong style="color: rgb(11, 79, 204)">{{ $details['plazo_entrega']+1 }} día/s</strong></td>
+                <td>Se entrega en:</td>
+                <td><strong style="color: rgb(11, 79, 204)">{{ $details['plazo_entrega']+1 }} día/s</strong></td>
                 @else
-                    <td>Retrasado por:</td>
-                    <td ><strong style="color: #D32F2F">{{ abs($details['plazo_entrega']) }} día/s</strong></td>
+                <td>Retrasado por:</td>
+                <td><strong style="color: #D32F2F">{{ abs($details['plazo_entrega']) }} día/s</strong></td>
                 @endif
-
             </tr>
             {{-- <tr>
                 <td>Tarea:</td>
@@ -103,6 +113,20 @@ table.blueTable tfoot .links a{
                 <td>Entregable:</td>
                 <td style="font-size: 20px"><strong>{{ $details['entregable'] }}</strong></td>
             </tr>
+            <tr>
+                <td>Estructura solicitada para el entregable</td>
+                <td>
+                    @if (count($details['estructura_entregable']) > 1)
+
+                    @foreach ($details['estructura_entregable'] as $elemento)
+                    <li>{{ $elemento }}</li>
+                    @endforeach
+
+                    @else
+                    <li>Sin formato especificado</li>
+                    @endif
+                </td>
+            </tr>
         </tbody>
     </table>
     <br>
@@ -110,7 +134,7 @@ table.blueTable tfoot .links a{
     <img src="https://1.bp.blogspot.com/-NS9JLHzt1vI/YLgAPd7JaKI/AAAAAAAAoFQ/cBQmkA3KQtUKYG2iFuTHsS4OmIGSBtNoQCLcBGAsYHQ/s0/socfirma.png" alt="logo">
     <br>
     <p><small style="font-size: 10px">Este correo fue generado automaticamente, por lo cual no debe responderlo.
-        Si existe algún error comunicarse con <a >juan.perugachi@gruporadical.com</a></small></p>
+            Si existe algún error comunicarse con <a>juan.perugachi@gruporadical.com</a></small></p>
 
 </body>
 

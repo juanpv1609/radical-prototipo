@@ -69,9 +69,9 @@
                             <v-btn  text color="success" block
                             @click="subirArchivos"
                             :disabled="status_archivos">
-                                   Subir <strong>{{files.length}}</strong> Archivos
+                                Subir <strong>{{files.length}}</strong> Archivos
                                     </v-btn>
-                             <div class="table-responsive">
+                            <div class="table-responsive">
                                 <table class="table table-sm">
                                     <thead>
                                         <tr>
@@ -89,7 +89,7 @@
                                                     <i v-if="!status_archivos" class="fas fa-times text-danger"></i></td>
                                             <td>
                                                 <button class="btn btn-danger btn-sm" :disabled="status_archivos"
-                                                 type="button" @click="deleteFile(item.name)">
+                                                type="button" @click="deleteFile(item.name)">
                                                 <i class="fas fa-trash"></i>
                                             </button>
                                             </td>
@@ -166,7 +166,7 @@
                 for (const file of this.files) {
                     let formData = new FormData();
                     formData.append('file', file);
-                     this.axios
+                    this.axios
                     .post(`/api/subir-archivo`, formData,config)
                     .then((res) => {
                         //this.$router.push({ name: 'tareas' });

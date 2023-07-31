@@ -54,8 +54,8 @@ class Kernel extends ConsoleKernel
         ->dailyAt('07:00');
 
         /* $schedule->command('theTask')
-         ->weekly()
-         ->mondays()
+        ->weekly()
+        ->mondays()
          ->at('12:30'); */
 
 
