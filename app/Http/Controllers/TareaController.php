@@ -6,9 +6,11 @@ use Carbon\Carbon;
 use App\Models\Tarea;
 use App\Models\Tareas;
 use App\Models\Contrato;
+use App\Models\TareaAdjunto;
 use Illuminate\Http\File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Psy\Readline\Hoa\Console;
 
 class TareaController extends Controller
 {
@@ -50,6 +52,11 @@ class TareaController extends Controller
 
 
         return $this->tareas;
+    }
+    public function tareasHistorialAdjuntos($id){
+        $historialAdjuntos = TareaAdjunto::where('tarea_id',$id)
+        ->get();
+        return response()->json($historialAdjuntos);
     }
     public function tareasPorFechaCliente($cliente,$inicial,$final)
     {
@@ -140,7 +147,7 @@ class TareaController extends Controller
 
     public function show($id)
     {
-        $contrato = Tareas::with('contrato.cliente', 'frecuencias','estado_tarea','tipo')->find($id);
+        $contrato = Tareas::with('contrato.cliente', 'frecuencias','estado_tarea','tipo','tarea_adjunto')->find($id);
         return response()->json($contrato);
     }
     public function contratoTareas($id)
@@ -165,6 +172,9 @@ class TareaController extends Controller
         //         }
         //     }
         // }
+
+        
+
         $date = Carbon::createFromFormat('Y-m-d',$request->input('fecha'));
         $fecha_alerta = $date->subDays($tarea->alerta);
         $tarea->descripcion = $request->input('descripcion');
@@ -180,9 +190,16 @@ class TareaController extends Controller
 
         $tarea->adjunto = isset($arrayAdjuntos) ? implode(",", $arrayAdjuntos) : null;
 
-
         $tarea->save();
 
+        $tarea_adjunto =new TareaAdjunto([
+            'tarea_id' => $tarea->id,
+            'version' => TareaAdjunto::where('tarea_id', $tarea->id)->count()+1,
+            'adjunto' => $tarea->adjunto,
+            'observacion' => $tarea->observacion,
+            
+        ]);
+        $tarea_adjunto->save();
         return response()->json('Tarea updated!');
     }
     public function updateGroup(Request $request)

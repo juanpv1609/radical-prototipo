@@ -120,6 +120,17 @@
                                     </template>
                                     <span>{{ row.item.adjunto }}</span>
                                 </v-tooltip>
+                                <v-tooltip bottom>
+                                    <template v-slot:activator="{ on, attrs }">
+                                        <v-btn icon v-bind="attrs" v-on="on" color="dark"
+                                            @click="historialAdjuntos(row.item.id)">
+                                            <v-icon>
+                                                mdi-ballot
+                                            </v-icon>
+                                        </v-btn>
+                                    </template>
+                                    <span>Versiones del entregable</span>
+                                </v-tooltip>
                             </td>
                         </tr>
                     </template>
@@ -149,7 +160,7 @@
                                     <v-tabs-slider color="orange"></v-tabs-slider>
                                     <v-tab href="#tab-1">Editar Entregable</v-tab>
                                     <v-tab href="#tab-2">Adjuntar Entregable</v-tab>
-                                    <v-tab href="#tab-3">Versiones del Entregable</v-tab>
+                                    <!--<v-tab href="#tab-3">Versiones del Entregable</v-tab>-->
                                 </v-tabs>
                             </template>
                         </v-toolbar>
@@ -256,7 +267,7 @@
                     </v-card>
 
                 </v-dialog>
-                    <!--
+                <!--
                     <v-card elevation="2">
                         <v-card-title>Editar Entregable
                         </v-card-title>
@@ -338,8 +349,42 @@
                     -->
             </v-row>
         </template>
+        <template>
+            <v-row justify="center">
+                <v-dialog v-model="dialog1" persistent max-width="800px">
+                    <v-toolbar color="accent-4" dark flat>
+                        <v-toolbar-title>Historial de Versiones del Adjunto</v-toolbar-title>
+                        <v-spacer></v-spacer>
+                        <v-btn icon @click="dialog1 = false">
+                            <v-icon>mdi-close</v-icon>
+                        </v-btn>
+                    </v-toolbar>
+                    <v-skeleton-loader v-if="firstLoad" :loading="loading" type="table"></v-skeleton-loader>
+                    <v-data-table :headers="headersAdjuntos" item-key="id" :items="historial_adjuntos" >
+                        <template v-slot:item="row">
+                        <tr>
+                            <td>{{ row.item.version }}</td>
+                            <td>{{ formatDateAdjunto(row.item.created_at) }}</td>
+                            <td>{{ row.item.observacion }}</td>
+                            <td>{{ row.item.adjunto }}</td>
+                            <td>
+                                <v-tooltip bottom>
+                                    <template v-slot:activator="{ on, attrs }">
+                                        <v-btn icon v-bind="attrs" v-on="on" color="primary" @click="downloadFile(row.item.adjunto)">
+                                            <v-icon dark>mdi-download</v-icon>
+                                        </v-btn>
+                                    </template>
+                                <span>{{ row.item.adjunto }}</span>
+                                </v-tooltip>
+                            </td>
+                        </tr>
+                    </template>
+                    </v-data-table>
+                    
+                </v-dialog>
+            </v-row>
+        </template>
     </div>
-
 </template>
 
 <script>
@@ -357,6 +402,7 @@ export default {
             tareas: [],
             loading: true,
             dialog: false,
+            dialog1: false,
             search: "",
             headers: [
                 { text: "Cliente", value: "contrato.cliente.nombre_comercial", groupable: false },
@@ -368,6 +414,13 @@ export default {
                 { text: "Ticket", value: "ticket", groupable: false },
                 // { text: "Adjuntos", value: "adjunto",sortable: false, filterable: false },
                 { text: "Estado", value: "estado_tarea", align: 'center', sortable: false, filterable: false, groupable: false, align: 'start' },
+                { text: "Acciones", value: "controls", sortable: false, groupable: false, align: 'start' }
+            ],
+            headersAdjuntos: [
+                { text: "Versión", value: "version", groupable: false },
+                { text: "Fecha de Creación", value: "created_at", groupable: false },
+                { text: "Observación", value: "observacion", groupable: false },
+                { text: "Adjunto", value: "adjunto", groupable: false },
                 { text: "Acciones", value: "controls", sortable: false, groupable: false, align: 'start' }
             ],
             tarea: {},
@@ -386,8 +439,8 @@ export default {
             cliente: {},
             responsables: [],
             tipo_tareas: [],
-
             correos_alerta: [],
+            historial_adjuntos: [],
         }
 
     },
@@ -455,6 +508,22 @@ export default {
         },
         close() {
             console.log('Dialog closed')
+        },
+        historialAdjuntos(id) {
+            this.dialog1 = true
+            //console.log(id);
+            this.axios
+                .get(`/api/tareas-adjuntos/${id}`)
+                .then((res) => {
+                    this.historial_adjuntos = res.data;
+                    //console.log(this.historial_adjuntos);
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        },
+        formatDateAdjunto(date) {
+            return date.slice(0, 10);
         },
         delimitCorreos(v) {
             const reducer = (a, e) => [...a, ...e.split(/[;]+/)]

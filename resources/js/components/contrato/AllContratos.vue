@@ -88,7 +88,7 @@
         </v-card>
         <template>
             <v-row justify="center">
-                <v-dialog v-model="dialog" persistent max-width="800px">
+                <v-dialog v-model="dialog" persistent max-width="1000px">
                     <v-card>
                         <v-toolbar color="accent-4" dark flat>
                             <v-toolbar-title>{{ titleForm }}</v-toolbar-title>

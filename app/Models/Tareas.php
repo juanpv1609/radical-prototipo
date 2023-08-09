@@ -42,5 +42,9 @@ class Tareas extends Model
     {
         return $this->belongsTo(User::class, 'responsable', 'id');
     }
+    public function tarea_adjunto()
+    {
+        return $this->belongsToMany(TareaAdjunto::class);
+    }
 
 }

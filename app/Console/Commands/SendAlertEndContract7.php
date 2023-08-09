@@ -57,7 +57,7 @@ class SendAlertEndContract7 extends Command
         $email_cliente="";
 
 
-             $alerta_fechas = Contrato::with('cliente')
+            $alerta_fechas = Contrato::with('cliente')
                             //->where('alerta_fin_contrato30',0) // se envio la alerta de 30 dias
                             ->where('alerta_fin_contrato7',0) // no se ah enviado la alerta
                             ->where('estado',1) // el contrato esta activo

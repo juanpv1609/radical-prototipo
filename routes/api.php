@@ -70,6 +70,7 @@ Route::middleware('api')->group(function () {
     Route::resource('tareas', TareaController::class);
     Route::get('tareas/{inicial}/{final}', [TareaController::class, 'tareasPorFecha']);
     Route::get('tareas-cliente/{cliente}/{inicial}/{final}', [TareaController::class, 'tareasPorFechaCliente']);
+    Route::get('tareas-adjuntos/{id}', [TareaController::class, 'tareasHistorialAdjuntos']);
 
     Route::get('tareas-cliente-all/{cliente}', [TareaController::class, 'tareasPorCliente']);
     Route::resource('usuarios', UserController::class);
