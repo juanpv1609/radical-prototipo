@@ -78,7 +78,7 @@ class ContratoController extends Controller
 
     public function show($id)
     {
-        $contrato = Contrato::with('cliente', 'pais', 'area', 'tarea')->find($id);
+        $contrato = Contrato::with('cliente', 'pais', 'area', 'tarea','servicios','destinatarios')->find($id);
         return response()->json($contrato);
     }
 
@@ -91,6 +91,7 @@ class ContratoController extends Controller
         $arrayDestinatarios = $request->input("destinatarios");
 
         $contrato = Contrato::find($id);
+        
         // BORRAR ARCHIVOS ANTERIORES
         /* if ($contrato->adjunto!=='') {
             $arrayAdjuntosOld = explode(",", $contrato->adjunto); //convierte a array
@@ -132,12 +133,13 @@ class ContratoController extends Controller
         $contrato->area_id = $request->input("area")['id'];
         $contrato->solucion = $request->input("solucion");
         $contrato->marca = $request->input("marca");
-        $contrato->correos = implode(",", $arrayCorreosOld);
-        $contrato->estructura_informe = implode(",", $arrayEstructuraInforme);
-        $contrato->adjunto = implode(",", $arrayAdjuntosOld);
+        $contrato->correos = isset($arrayCorreosOld) ? implode(",", $arrayCorreosOld) : null;
         $contrato->observacion = $request->input("observacion");
         $contrato->estado = 1;
+        $contrato->adjunto = implode(",", $arrayAdjuntosOld);
+        $contrato->estructura_informe = isset($arrayEstructuraInforme) ? implode(",", $arrayEstructuraInforme) : null;
         $contrato->save();
+        
         // elimina servicios anteriores
         $serviciosOld = ContratoServicio::where('contrato_id',$contrato->id)->get();
         foreach ($serviciosOld as $item) {

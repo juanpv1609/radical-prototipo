@@ -555,7 +555,7 @@ export default {
         editContrato(el) {
             this.titleForm = "Editar Contrato";
             this.update = true;
-            console.log(el);
+            //console.log(el);
             this.contrato.id = el.id;
             this.contrato.descripcion = el.descripcion;
             this.contrato.cliente = el.cliente_id;
@@ -571,8 +571,9 @@ export default {
             //this.contrato.correos=this.correos;
             this.selectedServicios = el.servicios
             this.selectedDestinatarios = el.destinatarios;
-            console.log(this.correos);
+            //console.log(this.correos);
             this.dialog = true;
+            //console.log(this.contrato)
         },
         createContrato() {
             this.loading = true;
@@ -585,7 +586,7 @@ export default {
             this.contrato.servicios = this.selectedServicios;
             this.contrato.destinatarios = this.selectedDestinatarios;
 
-            console.log(this.contrato);
+            //console.log(this.contrato);
             this.axios
                 .post('/api/contratos', this.contrato)
                 .then(() => {
@@ -597,27 +598,29 @@ export default {
                 .finally(() => this.loading = false)
         },
         updateContrato() {
+            
             this.loading = true;
 
             this.contrato.adjuntos = this.ruta_archivo;
             this.contrato.servicios = this.selectedServicios;
             this.contrato.destinatarios = this.selectedDestinatarios;
-            console.log(this.contrato);
+            //console.log(this.contrato);
             this.axios
                 .patch(`/api/contratos/${this.contrato.id}`, this.contrato)
                 .then(() => {
                     this.dialog = false;
                     this.loading = false;
                     this.refresh();
+                    //console.log(this.contrato)
                 })
                 .catch(err => console.log(err))
                 .finally(() => this.loading = false)
         },
         findTareas(el) {
-            console.log(el);
+            //console.log(el);
             this.axios.get(`/api/contrato-tareas/${el.id}`).then(res => {
                 //this.contratos = res.data;
-                console.log(res.data);
+                //console.log(res.data);
                 this.tareas = res.data;
                 this.titleTareas = el.cliente.nombre_comercial;
                 this.titleContrato = el.observacion;

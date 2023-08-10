@@ -62,6 +62,7 @@ Route::middleware('api')->group(function () {
 
 
     Route::resource('contratos', ContratoController::class);
+    Route::resource('casos-de-uso', CasosDeUsoController::class);
     Route::resource('products', ProductController::class);
     Route::resource('clientes', ClienteController::class);
     Route::resource('areas', AreaController::class);

@@ -25,4 +25,8 @@ class Destinatario extends Model
 
 	use HasFactory;
 
+	public function contratos(){
+		return $this->belongsTo(Contrato::class);
+	}
+
 }

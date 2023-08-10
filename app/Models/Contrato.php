@@ -29,14 +29,15 @@ class Contrato extends Model
                             'marca',
                             'frecuencia',
                             'correos',
-                            'observacion','adjunto',
+                            'observacion',
+                            'estado',
+                            'adjunto',
                             'alerta_fin_contrato180',
                             'alerta_fin_contrato60',
                             'alerta_fin_contrato30',
                             'alerta_fin_contrato15',
                             'alerta_fin_contrato7',
                             'alerta_fin_contrato',
-                            'estado',
                             'estructura_informe'
                         ];
     //public $timestamps = false;

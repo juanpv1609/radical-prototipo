@@ -21,10 +21,10 @@ class Servicio extends Model
     {
         return $this->belongsTo(Area::class, 'area_id','id');
     }
-     public function contratos()
+    public function contratos()
     {
         //return $this->belongsToMany(Servicios::class);
-        return $this->belongsToMany(Contrato::class);
+        return $this->belongsTo(Contrato::class);
 
     }
     public function marca()
