@@ -17,13 +17,13 @@ class ContratoServicio extends Model
     //public $timestamps = false;
     protected $guarded = [];
     use HasFactory;
-     public function contratos()
+     public function contrato()
     {
-        return $this->belongsToMany(Contrato::class, 'contrato_id','id');
+        return $this->belongsTo(Contrato::class, 'contrato_id','id');
     }
     public function servicio()
     {
-        return $this->belongsToMany(Servicio::class, 'servicio_id','id');
+        return $this->belongsTo(Servicio::class, 'servicio_id','id');
     }
 
 

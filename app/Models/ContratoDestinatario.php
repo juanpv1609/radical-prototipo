@@ -17,13 +17,13 @@ class ContratoDestinatario extends Model
 
     use HasFactory;
 
-    public function contratos()
+    public function contrato()
     {
-        return $this->belongsToMany(Contratos::class, 'contrato_id','id');
+        return $this->belongsTo(Contratos::class, 'contrato_id','id');
     }
 
     public function destinatarios()
     {
-        return $this->belongsToMany(Destinatario::class, 'destinatario_id','id');
+        return $this->belongsTo(Destinatario::class, 'destinatario_id','id');
     }
 }

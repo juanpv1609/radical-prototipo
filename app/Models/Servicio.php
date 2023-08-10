@@ -24,7 +24,7 @@ class Servicio extends Model
     public function contratos()
     {
         //return $this->belongsToMany(Servicios::class);
-        return $this->belongsTo(Contrato::class);
+        return $this->belongsToMany(Contrato::class);
 
     }
     public function marca()
