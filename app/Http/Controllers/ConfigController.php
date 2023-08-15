@@ -7,6 +7,7 @@ use App\Models\EstadoTarea;
 use Illuminate\Http\Request;
 use App\Models\EstadoEstudio;
 use App\Models\TipoIdentificacion;
+use App\Models\TipoEmpresa;
 
 class ConfigController extends Controller
 {

@@ -31,6 +31,7 @@
                         <tr>
                             <td>{{ row.item.observacion }}</td>
                             <td>{{ row.item.cliente.nombre_comercial }}</td>
+                            <td>{{ row.item.cliente.tipo_empresa }}</td>
                             <td>{{ row.item.fecha_inicio }}</td>
                             <td>{{ row.item.fecha_fin }}</td>
                             <td>{{ row.item.area.nombre }}</td>
@@ -104,7 +105,8 @@
                                     <!-- <v-tab href="#tab-3">Entregables</v-tab> -->
                                     <v-tab href="#tab-4">Adjuntos</v-tab>
                                     <v-tab href="#tab-5">Destinatarios-CC</v-tab>
-                                    <v-tab href="#tab-6">Estructura del Informe</v-tab>
+                                    <v-tab href="#tab-6" v-if="mostrarEstructuraInforme">
+                                        Estructura del Informe</v-tab>
                                 </v-tabs>
                             </template>
                         </v-toolbar>
@@ -117,7 +119,7 @@
                                         <v-col cols="4">
                                             <v-autocomplete :items="clientes" item-text="nombre_comercial" item-value="id"
                                                 v-model="contrato.cliente" label="Seleccione un cliente"
-                                                return-object>
+                                                return-object @input="actualizarMostrarEstructuraInforme">
                                             </v-autocomplete>
                                         </v-col>
                                         <v-col cols="4">
@@ -419,10 +421,12 @@ export default {
             cliente: {},
             loading: true,
             titleForm: null,
+            mostrarEstructuraInforme: true,
             search: "",
             headers: [
                 { text: "Descripcion", value: "descripcion" },
                 { text: "Cliente", value: "cliente.nombre_comercial" },
+                { text: "Tipo Empresa", value: "cliente.tipo_empresa" },
                 { text: "Fecha inicio", value: "fecha_inicio" },
                 { text: "Fecha fin", value: "fecha_fin" },
                 { text: "Servicio", value: "area" },
@@ -463,11 +467,11 @@ export default {
         this.axios.get("/api/contratos/").then(response => {
             this.contratos = response.data;
             this.loading = false;
-            console.log(response.data);
+            //console.log(response.data);
         });
         this.axios.get("/api/clientes/").then(response => {
             this.clientes = response.data;
-            //console.log('clientes'+response.data);
+            console.log(response.data);
         });
         this.axios.get("/api/paises/").then(response => {
             this.paises = response.data;
@@ -495,13 +499,13 @@ export default {
             });
         this.axios.get("/api/servicios/").then(response => {
             this.servicios = response.data;
-            console.log(response.data);
+            //console.log(response.data);
 
         });
 
         this.axios.get("/api/destinatarios/").then(response => {
             this.destinatarios = response.data;
-            console.log(response.data);
+            //console.log(response.data);
 
         })
     },
@@ -551,6 +555,7 @@ export default {
             this.selectedDestinatarios = [];
             this.update = false;
             this.dialog = true;
+            console.log(this.cliente);
         },
         editContrato(el) {
             this.titleForm = "Editar Contrato";
@@ -573,6 +578,7 @@ export default {
             this.selectedDestinatarios = el.destinatarios;
             //console.log(this.correos);
             this.dialog = true;
+            
             //console.log(this.contrato)
         },
         createContrato() {
@@ -766,6 +772,16 @@ export default {
         delimitEstructuraInforme(v) {
             const reducer = (a, e) => [...a, ...e.split(/[,]+/)]
             this.estructura_informe = [...new Set(v.reduce(reducer, []))]
+        },
+        actualizarMostrarEstructuraInforme(){
+            const clienteId = this.contrato.cliente.id;
+            const clienteSeleccionado = this.clientes.find(cliente => cliente.id === clienteId)
+            if(clienteSeleccionado && clienteSeleccionado.tipo_empresa === 'Privada'){
+                this.mostrarEstructuraInforme =false;
+            }
+            else {
+                this.mostrarEstructuraInforme =true;
+            }
         }
     }
 };

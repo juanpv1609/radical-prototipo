@@ -13,7 +13,7 @@ class Cliente extends Model
                             'nombre_comercial',
                             'correo',
                             'telefono',
-                            'direccion','tipo_identificacion','dni','is_deleted'];
+                            'direccion','tipo_identificacion','dni','is_deleted', 'tipo_empresa'];
     //public $timestamps = false;
     protected $guarded = [];
 

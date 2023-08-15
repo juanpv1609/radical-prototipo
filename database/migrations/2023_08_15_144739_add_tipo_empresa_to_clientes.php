@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddColumnEstructuraInformeToTableContrato extends Migration
+class AddTipoEmpresaToClientes extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddColumnEstructuraInformeToTableContrato extends Migration
      */
     public function up()
     {
-        Schema::table('contratos', function (Blueprint $table) {
-            $table->string ('estructura_informe')->nullable();
+        Schema::table('clientes', function (Blueprint $table) {
+            $table->string('tipo_empresa')->nullable();
         });
     }
 
@@ -25,7 +25,7 @@ class AddColumnEstructuraInformeToTableContrato extends Migration
      */
     public function down()
     {
-        Schema::table('table_contrato', function (Blueprint $table) {
+        Schema::table('clientes', function (Blueprint $table) {
             
         });
     }

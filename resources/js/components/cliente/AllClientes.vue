@@ -115,9 +115,22 @@
                                     </v-col>
                                 </v-row>
                                 <v-row>
-                                    <v-col cols="12">
+                                    <v-col cols="6">
                                         <v-text-field v-model="cliente.direccion" label="Direccion"></v-text-field>
                                     </v-col>
+                                    <v-col cols="6">
+                                    <v-select :items="opcionesTipoEmpresa" v-model="cliente.tipo_empresa"
+                                        label="Tipo de Empresa">
+                                        <template slot="selection" slot-scope="data">
+                                                <!-- HTML that describe how select should render selected items -->
+                                                {{ data.item.text }}
+                                            </template>
+                                            <template slot="item" slot-scope="data">
+                                                <!-- HTML that describe how select should render items when the select is open -->
+                                                {{ data.item.text }}
+                                            </template>
+                                    </v-select>
+                                </v-col>
                                 </v-row>
                             </v-container>
                             <small>*indicates required field</small>
@@ -147,6 +160,11 @@ export default {
         return {
             clientes: [],
             tipo_identificacion: {},
+            tipo_empresa: '',
+            opcionesTipoEmpresa: [
+                { text: 'Pública', value: 'Pública' },
+                { text: 'Privada', value: 'Privada' }
+            ],
             dialog: false,
             update: false,
             cliente: {},
@@ -172,7 +190,7 @@ export default {
         this.axios
             .get('/api/tipo-identificacion')
             .then(response => {
-                console.log(response.data);
+                //console.log(response.data);
                 this.tipo_identificacion = response.data;
             });
     },
@@ -189,6 +207,7 @@ export default {
             this.update = true;
             this.cliente.id = el.id;
             this.cliente.tipo_identificacion = el.tipo_identificacion;
+            this.cliente.tipo_empresa = el.tipo_empresa;
             this.cliente.dni = el.dni;
             this.cliente.razon_social = el.razon_social;
             this.cliente.nombre_comercial = el.nombre_comercial;
@@ -200,6 +219,8 @@ export default {
         createClient() {
             this.loading = true;
             this.cliente.tipo_identificacion = this.cliente.tipo_identificacion.id;
+            this.cliente.tipo_empresa = this.cliente.tipo_empresa;
+            //console.log(this.cliente.tipo_empresa);
             this.axios
                 .post('/api/clientes', this.cliente)
                 .then(() => {
@@ -217,7 +238,8 @@ export default {
         updateClient() {
             this.loading = true;
             this.cliente.tipo_identificacion = this.cliente.tipo_identificacion.id;
-
+            this.cliente.tipo_empresa = this.cliente.tipo_empresa;
+            //console.log(this.cliente.tipo_empresa)
             this.axios
                 .patch(`/api/clientes/${this.cliente.id}`, this.cliente)
                 .then((res) => {

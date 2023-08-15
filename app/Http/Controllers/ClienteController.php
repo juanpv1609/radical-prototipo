@@ -46,12 +46,14 @@ class ClienteController extends Controller
 
         $client = new Cliente([
             'tipo_identificacion' => $request->input('tipo_identificacion'),
+            'tipo_empresa' => $request->input('tipo_empresa'),
             'dni' => $request->input('dni'),
             'razon_social' => $request->input('razon_social'),
             'nombre_comercial' => $request->input('nombre_comercial'),
             'correo' => $request->input('correo'),
             'telefono' => $request->input('telefono'),
             'direccion' => $request->input('direccion'),
+
         ]);
         $client->save();
 

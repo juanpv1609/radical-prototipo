@@ -51,7 +51,7 @@ class DatabaseBackUp extends Command
             'body' => 'Estimad@ el software <strong>RGSDM</strong> ha generado el backup semanal automático correspondiente al '.Carbon::now()->format('Y-m-d'),
             'file' =>  $filename
         ];
-            Mail::to('juan.perugachi@gruporadical.com')
+            Mail::to('juan.perugachi@gruporadical.com', 'diana.arevalo@gruporadical.com')
                     //->cc(['paul.canchignia@gruporadical.com','xavier.montoya@gruporadical.com'])
                     ->send(new BackupEmail($details));
                     $this->info('Emails enviados.');
