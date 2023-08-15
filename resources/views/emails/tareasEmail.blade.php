@@ -114,7 +114,7 @@
                 <td style="font-size: 20px"><strong>{{ $details['entregable'] }}</strong></td>
             </tr>
             <tr>
-                <td>Estructura solicitada para el entregable</td>
+                <td>Estructura del informe solicitada por el ETR</td>
                 <td>
                     @if (count($details['estructura_entregable']) > 1)
 
