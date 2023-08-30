@@ -82,40 +82,6 @@ class ContratoController extends Controller
         return response()->json($contrato);
     }
 
-    public function buscarContratoTerminadoPorCliente($idCliente)
-    {
-        $contratos = Contrato::with('cliente', 'pais', 'area', 'tarea','servicios','destinatarios')
-        ->where('cliente_id', $idCliente )
-        ->where('estado', 2)
-        ->get();
-        return response()->json($contratos);
-
-    }
-
-    public function buscarContratoTerminado(){
-        $contratos = Contrato::with('cliente', 'pais', 'area', 'tarea','servicios','destinatarios')
-        ->where('estado', 2)
-        ->get();
-        return response()->json($contratos);
-    }
-
-    public function buscarContratoActivoPorCliente($idCliente)
-    {
-        $contratos = Contrato::with('cliente', 'pais', 'area', 'tarea','servicios','destinatarios')
-        ->where('cliente_id', $idCliente )
-        ->where('estado', 1)
-        ->get();
-        return response()->json($contratos);
-
-    }
-
-    public function buscarContratoActivo(){
-        $contratos = Contrato::with('cliente', 'pais', 'area', 'tarea','servicios','destinatarios')
-        ->where('estado', 1)
-        ->get();
-        return response()->json($contratos);
-    }
-
     public function update($id, Request $request)
     {
         $arrayCorreos = $request->input("correos");
@@ -125,7 +91,7 @@ class ContratoController extends Controller
         $arrayDestinatarios = $request->input("destinatarios");
 
         $contrato = Contrato::find($id);
-
+        
         // BORRAR ARCHIVOS ANTERIORES
         /* if ($contrato->adjunto!=='') {
             $arrayAdjuntosOld = explode(",", $contrato->adjunto); //convierte a array
@@ -173,7 +139,7 @@ class ContratoController extends Controller
         $contrato->adjunto = implode(",", $arrayAdjuntosOld);
         $contrato->estructura_informe = isset($arrayEstructuraInforme) ? implode(",", $arrayEstructuraInforme) : null;
         $contrato->save();
-
+        
         // elimina servicios anteriores
         $serviciosOld = ContratoServicio::where('contrato_id',$contrato->id)->get();
         foreach ($serviciosOld as $item) {

@@ -20,7 +20,7 @@
         "material-icons": "^0.5.3",
         "popper.js": "^1.12",
         "postcss": "^8.1.14",
-        "resolve-url-loader": "^5.0.0",
+        "resolve-url-loader": "^2.3.1",
         "sass": "^1.32.6",
         "sass-loader": "^8.0.2",
         "vue": "^2.5.17",
@@ -30,14 +30,11 @@
     "dependencies": {
         "@websanova/vue-auth": "^4.1.1",
         "bootstrap-vue": "^2.21.2",
-        "chart.js": "^4.4.0",
         "es6-promise": "^4.2.8",
         "moment": "^2.29.1",
         "sweetalert2": "^10.14.0",
         "v-calendar": "^2.2.3",
         "vue-axios": "^3.2.4",
-        "vue-chartjs": "^5.2.0",
-        "vue-google-charts": "^0.3.3",
         "vue-input-tag": "^2.0.7",
         "vue-moment": "^4.1.0",
         "vue-multiselect": "^2.1.6",
@@ -47,6 +44,6 @@
         "vuetify": "^2.4.4",
         "vuex": "^3.6.2",
         "vuex-persistedstate": "^4.0.0",
-        "xlsx": "^0.18.5"
+        "xlsx": "^0.14.1"
     }
 }

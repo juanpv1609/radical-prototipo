@@ -112,7 +112,7 @@
                     <th>FECHA</th>
                     <th>RESPONSABLE</th>
                     <th>CLIENTE</th>
-                    <th>AREA</th>
+                    <th>TAREA</th>
                     <th>ENTREGABLE</th>
                     <th>ESTADO</th>
                 </tr>
@@ -138,7 +138,7 @@
             </tbody>
         </table>
         @else
-        <p class="text-info">No se encontraron resultados </p>
+         <p class="text-info">No se encontraron resultados </p>
         @endif
 
     </div>

@@ -46,8 +46,5 @@ class Tareas extends Model
     {
         return $this->belongsToMany(TareaAdjunto::class);
     }
-    public function area(){
-        return $this->belongsTo(Area::class);
-    }
 
 }

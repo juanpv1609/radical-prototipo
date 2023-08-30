@@ -283,12 +283,6 @@ export default {
 
                     ],
                 },
-                /*{
-                    title: "Dashboards", icon: "mdi-view-quilt",
-                    subLinks: [
-                        {title: "Contratos por Clientes", link: "/dashboard-contratos", icon: "mdi-checkbox-marked"}
-                    ],
-                },*/
                 {
                     title: "Reportes",
                     icon: "mdi-chart-bar",
@@ -327,7 +321,7 @@ export default {
                     icon: "mdi-chart-bar",
                     subLinks: [
 
-                        {
+                        {       
                             title: "Certificacion", link: "/reporte-certificacion",icon: "mdi-certificate"
                         },
                         {

@@ -62,10 +62,6 @@ Route::middleware('api')->group(function () {
 
 
     Route::resource('contratos', ContratoController::class);
-    Route::get('contratoActivo-cliente/{idCliente}', [ContratoController::class, 'buscarContratoActivoPorCliente']);
-    Route::get('contratoTerminado-cliente/{idCliente}', [ContratoController::class, 'buscarContratoTerminadoPorCliente']);
-    Route::get('contrato-activo-all', [ContratoController::class, 'buscarContratoActivo']);
-    Route::get('contrato-terminado-all', [ContratoController::class, 'buscarContratoTerminado']);
     Route::resource('casos-de-uso', CasosDeUsoController::class);
     Route::resource('products', ProductController::class);
     Route::resource('clientes', ClienteController::class);
@@ -129,15 +125,11 @@ Route::get('get-file-persona/{archivo}', function ($archivo) {
 
 
 // reportes
-Route::get('reporte-tareas-pdf/{inicial}/{final}', [ReportesController::class, 'reporteTareasPDF']);
-Route::get('reporte-tareas-csv/{inicial}/{final}', [ReportesController::class, 'reporteTareasCSV']);
-Route::get('reporte-tareas-contrato-pdf/{inicial}/{final}/{contrato}', [ReportesController::class, 'reporteTareasContratoPDF']);
-Route::get('reporte-tareas-contrato-csv/{inicial}/{final}/{contrato}', [ReportesController::class, 'reporteTareasContratoCSV']);
-Route::get('reporte-tareas-usuario-pdf/{inicial}/{final}/{usuario}', [ReportesController::class, 'reporteTareasUsuarioPDF']);
-Route::get('reporte-tareas-usuario-csv/{inicial}/{final}/{usuario}', [ReportesController::class, 'reporteTareasUsuarioCSV']);
+Route::get('reporte-tareas/{inicial}/{final}', [ReportesController::class, 'reporteTareas']);
+Route::get('reporte-tareas-contrato/{inicial}/{final}/{contrato}', [ReportesController::class, 'reporteTareasContrato']);
+Route::get('reporte-tareas-usuario/{inicial}/{final}/{usuario}', [ReportesController::class, 'reporteTareasUsuario']);
 //contratos
-Route::get('reporte-contratos-pdf', [ReportesController::class, 'reporteContratosPDF']);
-Route::get('reporte-contratos-csv', [ReportesController::class, 'reporteContratosCSV']);
+Route::get('reporte-contratos', [ReportesController::class, 'reporteContratos']);
 
     //casos de uso
 Route::resource('casos-de-uso', CasosDeUsoController::class);
