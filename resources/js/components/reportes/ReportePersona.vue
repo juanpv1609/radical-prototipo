@@ -86,7 +86,7 @@ export default {
                 this.loadingUpload=true;
                 let url;
              await   this.axios
-                    .get(`/api/reporte-persona/${this.persona.id}`)
+                    .get(`/api/reporte-persona-pdf/${this.persona.id}`)
                     .then(response => {
                         url=response.config.baseURL+response.config.url;
 
