@@ -45,6 +45,10 @@ import PerfilPuesto from "../components/perfilPuesto/PerfilPuesto.vue";
 import Servicios from "../components/servicios/Servicios.vue";
 import Marcas from "../components/marca/Marcas.vue";
 
+//----------DASHBOARDS---------------
+
+import DashboardAllContratos from "../components/dashboards/DashboardAllContratos.vue"
+
 const router = new VueRouter({
     mode: "history",
     routes: [
@@ -310,6 +314,14 @@ const router = new VueRouter({
             component: Destinatario,
             meta: {
                 requiresAuth: true
+            }
+        },
+        {
+            name: 'dashboard-contrato-clientes',
+            path:'/dashboard-contratos',
+            component: DashboardAllContratos,
+            meta: {
+                requiresAuth:true
             }
         }
     ]

@@ -471,7 +471,7 @@ export default {
         });
         this.axios.get("/api/clientes/").then(response => {
             this.clientes = response.data;
-            console.log(response.data);
+            //console.log(response.data);
         });
         this.axios.get("/api/paises/").then(response => {
             this.paises = response.data;
@@ -578,7 +578,7 @@ export default {
             this.selectedDestinatarios = el.destinatarios;
             //console.log(this.correos);
             this.dialog = true;
-            
+
             //console.log(this.contrato)
         },
         createContrato() {
@@ -604,7 +604,7 @@ export default {
                 .finally(() => this.loading = false)
         },
         updateContrato() {
-            
+
             this.loading = true;
 
             this.contrato.adjuntos = this.ruta_archivo;

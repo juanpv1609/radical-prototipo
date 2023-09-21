@@ -119,7 +119,7 @@ export default {
                 }
                 console.log(arrayCertificacionesID);
               await   this.axios
-                    .get(`/api/reporte-certificaciones/${arrayCertificacionesID}`)
+                    .get(`/api/reporte-certificaciones-pdf/${arrayCertificacionesID}`)
                     .then(response => {
                         url=response.config.baseURL+response.config.url;
 

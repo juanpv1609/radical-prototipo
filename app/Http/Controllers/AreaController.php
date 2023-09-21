@@ -10,8 +10,6 @@ class AreaController extends Controller
     /**
      * Display a listing of the resource.
      *
-     *
-     * *Commit inicial
      * @return \Illuminate\Http\Response
      */
 
@@ -27,7 +25,7 @@ class AreaController extends Controller
 
     }
 
-
+    
     public function store(Request $request)
     {
         $area = new Area([
