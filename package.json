@@ -7,8 +7,7 @@
         "watch-poll": "mix watch -- --watch-options-poll=1000",
         "hot": "mix watch --hot",
         "prod": "npm run production",
-        "production": "mix --production",
-        "build": "vue-cli-service build"
+        "production": "mix --production"
     },
     "devDependencies": {
         "@mdi/font": "^5.9.55",
