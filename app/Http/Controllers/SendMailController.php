@@ -47,6 +47,8 @@ class SendMailController extends Controller
         //dd($tarea);
         $correos = explode(",", $tarea->correos_alerta);
 
+        $estructura_entregable = explode(",", $tarea->contrato->estructura_informe);
+
         $details = [
 
             'title' => 'Notificación de entregable (1ra Alerta)',
@@ -59,6 +61,7 @@ class SendMailController extends Controller
             'observacion_contrato' => $tarea->contrato->observacion,
             'fecha_entrega' => $tarea->fecha,
             'fecha_alerta' => $tarea->fecha_alerta,
+            'estructura_entregable' => $estructura_entregable,
             //'plazo_entrega' => Carbon::parse($tarea->fecha)->diffForHumans(Carbon::now()),
             'plazo_entrega' => Carbon::now()->diffInDays(Carbon::parse($tarea->fecha), false),
             'tipo_tarea' => $tarea->tipo->nombre,
