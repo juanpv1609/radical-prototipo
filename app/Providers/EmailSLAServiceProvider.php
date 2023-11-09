@@ -258,7 +258,7 @@ class EmailSLAServiceProvider
 
 
 
-
+    // * Para los tickets abiertos prioridad Critica
     public function verifyDay() {
         $today = Carbon::now('America/Guayaquil')->dayOfWeek;
 
@@ -276,7 +276,7 @@ class EmailSLAServiceProvider
 
         return $days[$today];
     }
-
+    // * Resto de prioridades.
     public function verifyDay2() {
         $days = [
             Carbon::MONDAY => [4],
