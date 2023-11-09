@@ -204,13 +204,13 @@ class EmailSLAServiceProvider
 
         // ! destinatarios por categoría, escalar a la base de datos
         $destinatarios = [
-            'SIEM' => 'juan.perugachi@gruporadical.com,brenda.perez@gruporadical.com,maylee.pineda@gruporadical.com,paul.canchignia@gruporadical.com',
-            'Análisis de Vulnerabilidades Web' => 'lenin.cortes@gruporadical.com,paul.canchignia@gruporadical.com',
-            'Web Application Firewall' => 'richard.teran@gruporadical.com,paul.canchignia@gruporadical.com',
-            'Firewall' => 'washington.cardenas@gruporadical.com,gabriel.luna@gruporadical.com,paul.canchignia@gruporadical.com',
-            'CIFRADO' => 'christian.molina@gruporadical.com,paul.canchignia@gruporadical.com',
-            'Pentesting' => 'lenin.cortes@gruporadical.com,paul.canchignia@gruporadical.com',
-            'Análisis de Vulnerabilidades' => 'lenin.cortes@gruporadical.com,paul.canchignia@gruporadical.com',
+            'SIEM' => 'juan.perugachi@gruporadical.com,brenda.perez@gruporadical.com,maylee.pineda@gruporadical.com,paul.canchignia@gruporadical.com,diana.arevalo@gruporadical.com',
+            'Análisis de Vulnerabilidades Web' => 'lenin.cortes@gruporadical.com,paul.canchignia@gruporadical.com,diana.arevalo@gruporadical.com',
+            'Web Application Firewall' => 'richard.teran@gruporadical.com,paul.canchignia@gruporadical.com,diana.arevalo@gruporadical.com',
+            'Firewall' => 'washington.cardenas@gruporadical.com,gabriel.luna@gruporadical.com,paul.canchignia@gruporadical.com,diana.arevalo@gruporadical.com',
+            'CIFRADO' => 'christian.molina@gruporadical.com,paul.canchignia@gruporadical.com,diana.arevalo@gruporadical.com',
+            'Pentesting' => 'lenin.cortes@gruporadical.com,paul.canchignia@gruporadical.com,diana.arevalo@gruporadical.com',
+            'Análisis de Vulnerabilidades' => 'lenin.cortes@gruporadical.com,paul.canchignia@gruporadical.com,diana.arevalo@gruporadical.com',
         ];
 
         foreach ($categories as &$category) {
