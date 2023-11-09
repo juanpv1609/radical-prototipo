@@ -72,10 +72,10 @@ class Kernel extends ConsoleKernel
             }
         }
 
-        foreach ($slaLevels as $level) {
+        /*foreach ($slaLevels as $level) {
             $command = "send:alertInformeSLA$level";
             $schedule->command($command)->everyMinute();
-        }
+        }*/
 
 
         /* $schedule->command('theTask')
