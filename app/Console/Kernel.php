@@ -50,8 +50,33 @@ class Kernel extends ConsoleKernel
         //$schedule->command('send:alert_week')
         //->dailyAt('07:00');
 
+
         $schedule->command('database:backup')
         ->dailyAt('07:00');
+
+        //Notificaciones del SLA (Ticket Abierto)
+        $commands = ['send:alertSLAcritica', 'send:alertSLAalto', 'send:alertSLAmedio', 'send:alertSLAbajo'];
+
+        foreach ($commands as $command) {
+            $schedule->command($command)->dailyAt('08:00');
+        }
+
+        //Notificación del SLA (Entrega del Informe)
+        $slaLevels = ['critica', 'alto', 'medio', 'bajo'];
+        $hours = ['08:00', '16:00', '22:00'];
+
+        foreach ($slaLevels as $level) {
+            foreach ($hours as $hour) {
+                $command = "send:alertInformeSLA$level";
+                $schedule->command($command)->dailyAt($hour);
+            }
+        }
+
+        foreach ($slaLevels as $level) {
+            $command = "send:alertInformeSLA$level";
+            $schedule->command($command)->everyMinute();
+        }
+
 
         /* $schedule->command('theTask')
         ->weekly()
