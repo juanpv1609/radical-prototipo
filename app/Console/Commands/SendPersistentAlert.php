@@ -22,7 +22,7 @@ class SendPersistentAlert extends Command
      *
      * @var string
      */
-    protected $description = 'Persistent Alert sendend to user';
+    protected $description = 'Persistent Alert sended to user';
 
     /**
      * Create a new command instance.
