@@ -321,7 +321,7 @@ export default {
                     icon: "mdi-chart-bar",
                     subLinks: [
 
-                        {       
+                        {
                             title: "Certificacion", link: "/reporte-certificacion",icon: "mdi-certificate"
                         },
                         {
