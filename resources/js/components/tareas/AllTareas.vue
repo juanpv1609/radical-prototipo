@@ -146,75 +146,113 @@
         </v-card>
         <template>
             <v-row justify="center">
-                <v-dialog v-model="dialog" persistent max-width="700px">
-                    <v-card elevation="2">
-                        <v-card-title>Editar Entregable
-                        </v-card-title>
+                <v-dialog v-model="dialog" persistent max-width="800px">
+                    <v-card>
+                        <v-toolbar color="accent-4" dark flat>
+                            <v-toolbar-title>Editar Entregable</v-toolbar-title>
+                            <v-spacer></v-spacer>
+                            <v-btn icon @click="dialog = false; tarea = {}">
+                                <v-icon>mdi-close</v-icon>
+                            </v-btn>
+                            <template v-slot:extension>
+                                <v-tabs v-model="tabs" fixed-tabs>
+                                    <v-tabs-slider color="orange"></v-tabs-slider>
+                                    <v-tab href="#tab-1">Editar Entregable</v-tab>
+                                    <v-tab href="#tab-2">Adjuntar Entregable</v-tab>
+                                    <!--<v-tab href="#tab-3">Versiones del Entregable</v-tab>-->
+                                </v-tabs>
+                            </template>
+                        </v-toolbar>
                         <v-card-text>
-                            <v-divider></v-divider>
-                            <v-row dense>
-                                <v-col cols="12" sm="6">
-                                    <v-autocomplete :items="responsables" item-text="name" item-value="id"
-                                        v-model="tarea.responsable" label="Seleccione un responsable"></v-autocomplete>
-                                </v-col>
-                                <v-col cols="12" sm="3">
+                            <v-tabs-items v-model="tabs">
+                                <v-tab-item :value="'tab-1'">
+                                    <br>
+                                    <v-row>
+                                        <v-col cols="4">
+                                            <v-autocomplete :items="responsables" item-text="name" item-value="id"
+                                                v-model="tarea.responsable"
+                                                label="Seleccione un responsable"></v-autocomplete>
+                                        </v-col>
+                                        <v-col cols="4">
+                                            <v-menu ref="menu2" v-model="menu2" :close-on-content-click="false"
+                                                :return-value.sync="date2" transition="scale-transition" offset-y
+                                                min-width="auto">
+                                                <template v-slot:activator="{ on, attrs }">
+                                                    <v-text-field v-model="tarea.fecha" label="Fecha de entrega" readonly
+                                                        v-bind="attrs" v-on="on"></v-text-field>
+                                                </template>
+                                                <v-date-picker v-model="tarea.fecha" no-title scrollable>
+                                                    <v-spacer></v-spacer>
+                                                    <v-btn text color="primary" @click="menu2 = false">
+                                                        Cancel
+                                                    </v-btn>
+                                                    <v-btn text color="primary" @click="$refs.menu2.save(date2)">
+                                                        OK
+                                                    </v-btn>
+                                                </v-date-picker>
+                                            </v-menu>
+                                        </v-col>
+                                        <v-col cols="4">
+                                            <v-autocomplete :items="estado_tarea" item-text="descripcion" item-value="id"
+                                                v-model="tarea.estado" label="Estado"></v-autocomplete>
+                                        </v-col>
+                                    </v-row>
+                                    <v-row dense>
+                                        <v-col cols="8">
+                                            <v-autocomplete :items="tipo_tareas" item-text="nombre" item-value="id"
+                                                v-model="tarea.tipo_tarea"
+                                                label="Seleccione el tipo de servicio"></v-autocomplete>
+                                        </v-col>
+                                        <v-col cols="4">
+                                            <v-text-field v-model="tarea.ticket" label="Ticket ProactivaNET"></v-text-field>
+                                        </v-col>
+                                    </v-row>
+                                    <v-row dense>
+                                        <v-col cols="12">
+                                            <v-textarea clearable clear-icon="mdi-close-circle"
+                                                label="Descripción de Entregable" v-model="tarea.descripcion"
+                                                rows="1"></v-textarea>
+                                        </v-col>
+                                    </v-row>
+                                    <v-row dense>
+                                        <v-col cols="12">
+                                            <v-combobox v-model="correos_alerta" :items="tarea.correos_alerta" hide-selected
+                                                hint="Ingrese una o varias direcciones de correo y presione Enter o TAB "
+                                                label="Direcciones de correo para recibir las alertas" multiple
+                                                persistent-hint small-chips deletable-chips :delimiters="[';']"
+                                                @change="delimitCorreos">
+                                            </v-combobox>
+                                        </v-col>
+                                    </v-row>
+                                </v-tab-item>
+                                <v-tab-item :value="'tab-2'">
+                                    <v-card>
+                                        <v-card-title>Suba archivos relacionados al contrato
+                                        </v-card-title>
+                                        <v-card-text>
+                                            <v-row>
+                                                <v-col cols="12">
+                                                    <v-textarea clearable clear-icon="mdi-close-circle"
+                                                        label="Observaciones" v-model="tarea.observacion"
+                                                        rows="1"></v-textarea>
 
-                                    <v-menu ref="menu2" v-model="menu2" :close-on-content-click="false"
-                                        :return-value.sync="date2" transition="scale-transition" offset-y min-width="auto">
-                                        <template v-slot:activator="{ on, attrs }">
-                                            <v-text-field v-model="tarea.fecha" label="Fecha de entrega" readonly
-                                                v-bind="attrs" v-on="on"></v-text-field>
-                                        </template>
-                                        <v-date-picker v-model="tarea.fecha" no-title scrollable>
-                                            <v-spacer></v-spacer>
-                                            <v-btn text color="primary" @click="menu2 = false">
-                                                Cancel
-                                            </v-btn>
-                                            <v-btn text color="primary" @click="$refs.menu2.save(date2)">
-                                                OK
-                                            </v-btn>
-                                        </v-date-picker>
-                                    </v-menu>
-                                </v-col>
-                                <v-col cols="12" sm="3">
-                                    <v-autocomplete :items="estado_tarea" item-text="descripcion" item-value="id"
-                                        v-model="tarea.estado" label="Estado"></v-autocomplete>
-                                </v-col>
-                                <v-col cols="12" sm="8">
-                                    <v-autocomplete :items="tipo_tareas" item-text="nombre" item-value="id"
-                                        v-model="tarea.tipo_tarea" label="Seleccione el tipo de servicio"></v-autocomplete>
-                                </v-col>
-                                <v-col cols="12" sm="4">
-                                    <v-text-field v-model="tarea.ticket" label="Ticket ProactivaNET"></v-text-field>
-                                </v-col>
-                                <v-col cols="12" sm="12">
-                                    <v-textarea clearable clear-icon="mdi-close-circle" label="Descripción de Entregable"
-                                        v-model="tarea.descripcion" rows="1"></v-textarea>
-                                </v-col>
-
-
-                                <!--  <v-col cols="6">
-                            <v-file-input
-                                small-chips
-                                multiple
-                                v-model="files"
-                                label="Seleccione archivo/s"
-                                >
-                                </v-file-input>
-                                <v-btn  color="success" block v-if="files.length>0"
-                            @click="subirArchivos"
-                            :loading="loadingUpload"
-                            :disabled="status_archivos">
-                            <span v-if="status_archivos">CORRECTO</span>
-                                    <span v-else>Subir {{files.length}} Archivos</span>
-                                    </v-btn>
-                        </v-col> -->
-                                <v-col cols="12">
-                                    <v-textarea clearable clear-icon="mdi-close-circle" label="Observaciones"
-                                        v-model="tarea.observacion" rows="1"></v-textarea>
-
-                                </v-col>
-                            </v-row>
+                                                </v-col>
+                                                <v-col cols="12" sm="12">
+                                                    <v-file-input small-chips multiple v-model="files"
+                                                        label="Seleccione uno o más archivos que desee subir">
+                                                    </v-file-input>
+                                                    <v-btn color="success" block v-if="files.length > 0"
+                                                        @click="subirArchivos" :loading="loadingUpload"
+                                                        :disabled="status_archivos">
+                                                        <span v-if="status_archivos">CORRECTO</span>
+                                                        <span v-else>Subir {{ files.length }} Archivos</span>
+                                                    </v-btn>
+                                                </v-col>
+                                            </v-row>
+                                        </v-card-text>
+                                    </v-card>
+                                </v-tab-item>
+                            </v-tabs-items>
                         </v-card-text>
                         <v-card-actions>
                             <v-spacer></v-spacer>
@@ -226,7 +264,9 @@
                             </v-btn>
                         </v-card-actions>
                     </v-card>
+
                 </v-dialog>
+
             </v-row>
         </template>
         <template>
@@ -240,27 +280,28 @@
                         </v-btn>
                     </v-toolbar>
                     <v-skeleton-loader v-if="firstLoad" :loading="loading" type="table"></v-skeleton-loader>
-                    <v-data-table :headers="headersAdjuntos" item-key="id" :items="historial_adjuntos" >
+                    <v-data-table :headers="headersAdjuntos" item-key="id" :items="historial_adjuntos">
                         <template v-slot:item="row">
-                        <tr>
-                            <td>{{ row.item.version }}</td>
-                            <td>{{ formatDateAdjunto(row.item.created_at) }}</td>
-                            <td>{{ row.item.observacion }}</td>
-                            <td>{{ row.item.adjunto }}</td>
-                            <td>
-                                <v-tooltip bottom>
-                                    <template v-slot:activator="{ on, attrs }">
-                                        <v-btn icon v-bind="attrs" v-on="on" color="primary" @click="downloadFile(row.item.adjunto)">
-                                            <v-icon dark>mdi-download</v-icon>
-                                        </v-btn>
-                                    </template>
-                                <span>{{ row.item.adjunto }}</span>
-                                </v-tooltip>
-                            </td>
-                        </tr>
-                    </template>
+                            <tr>
+                                <td>{{ row.item.version }}</td>
+                                <td>{{ formatDateAdjunto(row.item.created_at) }}</td>
+                                <td>{{ row.item.observacion }}</td>
+                                <td>{{ row.item.adjunto }}</td>
+                                <td>
+                                    <v-tooltip bottom>
+                                        <template v-slot:activator="{ on, attrs }">
+                                            <v-btn icon v-bind="attrs" v-on="on" color="primary"
+                                                @click="downloadFile(row.item.adjunto)">
+                                                <v-icon dark>mdi-download</v-icon>
+                                            </v-btn>
+                                        </template>
+                                        <span>{{ row.item.adjunto }}</span>
+                                    </v-tooltip>
+                                </td>
+                            </tr>
+                        </template>
                     </v-data-table>
-                    
+
                 </v-dialog>
             </v-row>
         </template>
@@ -273,6 +314,7 @@ import moment from "moment";
 export default {
     data() {
         return {
+            tabs: null,
             firstLoad: true,
             date: new Date().toISOString().substr(0, 10),
             menu: false,
@@ -317,6 +359,7 @@ export default {
             cliente: {},
             responsables: [],
             tipo_tareas: [],
+            correos_alerta: [],
             historial_adjuntos: [],
         }
 
@@ -398,6 +441,10 @@ export default {
         },
         formatDateAdjunto(date) {
             return date.slice(0, 10);
+        },
+        delimitCorreos(v) {
+            const reducer = (a, e) => [...a, ...e.split(/[;]+/)]
+            this.correos_alerta = [...new Set(v.reduce(reducer, []))]
         },
         filtrarPorFecha() {
             this.loading = true;
@@ -497,7 +544,7 @@ export default {
         },
         updateTarea(e) {
             e.preventDefault();
-            this.tarea.adjuntos=this.ruta_archivo;
+            this.tarea.adjuntos = this.ruta_archivo;
             console.log(this.tarea);
             this.axios
                 .patch(`/api/tareas/${this.tarea.id}`, this.tarea)
