@@ -465,13 +465,13 @@ export default {
     },
     created() {
         this.axios.get("/api/contratos/").then(response => {
-            this.contratos = response.data;
+            //this.contratos = response.data;
             this.loading = false;
             //console.log(response.data);
         });
         this.axios.get("/api/clientes/").then(response => {
             this.clientes = response.data;
-            console.log(response.data);
+            //console.log(response.data);
         });
         this.axios.get("/api/paises/").then(response => {
             this.paises = response.data;
@@ -555,7 +555,7 @@ export default {
             this.selectedDestinatarios = [];
             this.update = false;
             this.dialog = true;
-            console.log(this.cliente);
+            //console.log(this.cliente);
         },
         editContrato(el) {
             this.titleForm = "Editar Contrato";
@@ -578,7 +578,7 @@ export default {
             this.selectedDestinatarios = el.destinatarios;
             //console.log(this.correos);
             this.dialog = true;
-            
+
             //console.log(this.contrato)
         },
         createContrato() {
@@ -604,7 +604,7 @@ export default {
                 .finally(() => this.loading = false)
         },
         updateContrato() {
-            
+
             this.loading = true;
 
             this.contrato.adjuntos = this.ruta_archivo;
@@ -635,7 +635,7 @@ export default {
             });
         },
         updateTareas() {
-            console.log(this.tareas);
+            //console.log(this.tareas);
             this.contrato.tareas = this.tareas;
 
             this.axios
@@ -651,7 +651,7 @@ export default {
         },
         async subirArchivos() {
             this.loadingUpload = true;
-            console.log(this.files);
+            //console.log(this.files);
             const config = {
                 headers: { 'enctype': 'multipart/form-data' }
             }
@@ -674,7 +674,7 @@ export default {
             this.status_archivos = true;
         },
         downloadFile(archivo) {
-            console.log(archivo);
+            //console.log(archivo);
             let arrayArchivos = archivo.split(',');
             for (const file of arrayArchivos) {
                 this.axios
@@ -701,7 +701,7 @@ export default {
             await this.axios
                 .get(`/api/contratos/${el.id}`)
                 .then((res) => {
-                    console.log(res.data);
+                    //console.log(res.data);
                     this.correos = res.data.correos.replace(',', '<br>')
                 });
             await this.$swal.fire({

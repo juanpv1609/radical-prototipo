@@ -37,6 +37,7 @@ class EmailSLAServiceProvider
                 'id' => $category['Id'],
                 'categoryName' => $category['Name'],
                 'destinatario' => '',
+                'cc' => '',
             ];
         }, $categories);
     }
@@ -189,6 +190,7 @@ class EmailSLAServiceProvider
                 'title' => $incident['Title'],
                 'message' => $plazo,
                 'destinatario' => '',
+                'cc'=>'',
                 'categoryName' => '',
                 'incidentType' => '',
             ];
@@ -204,20 +206,32 @@ class EmailSLAServiceProvider
 
         // ! destinatarios por categoría, escalar a la base de datos
         $destinatarios = [
-            'SIEM' => 'juan.perugachi@gruporadical.com,brenda.perez@gruporadical.com,maylee.pineda@gruporadical.com,paul.canchignia@gruporadical.com,diana.arevalo@gruporadical.com',
-            'Análisis de Vulnerabilidades Web' => 'lenin.cortes@gruporadical.com,paul.canchignia@gruporadical.com,diana.arevalo@gruporadical.com',
-            'Web Application Firewall' => 'richard.teran@gruporadical.com,paul.canchignia@gruporadical.com,diana.arevalo@gruporadical.com',
-            'Firewall' => 'washington.cardenas@gruporadical.com,gabriel.luna@gruporadical.com,paul.canchignia@gruporadical.com,diana.arevalo@gruporadical.com',
-            'CIFRADO' => 'christian.molina@gruporadical.com,paul.canchignia@gruporadical.com,diana.arevalo@gruporadical.com',
-            'Pentesting' => 'lenin.cortes@gruporadical.com,paul.canchignia@gruporadical.com,diana.arevalo@gruporadical.com',
-            'Análisis de Vulnerabilidades' => 'lenin.cortes@gruporadical.com,paul.canchignia@gruporadical.com,diana.arevalo@gruporadical.com',
+            'SIEM' => 'juan.perugachi@gruporadical.com',
+            'Análisis de Vulnerabilidades Web' => 'lenin.cortes@gruporadical.com',
+            'Web Application Firewall' => 'richard.teran@gruporadical.com',
+            'Firewall' => 'washington.cardenas@gruporadical.com',
+            'CIFRADO' => 'christian.molina@gruporadical.com',
+            'Pentesting' => 'lenin.cortes@gruporadical.com',
+            'Análisis de Vulnerabilidades' => 'lenin.cortes@gruporadical.com',
+        ];
+
+        $cc = [
+            'SIEM' => 'brenda.perez@gruporadical.com,maylee.pineda@gruporadical.com,paul.canchignia@gruporadical.com,diana.arevalo@gruporadical.com',
+            'Análisis de Vulnerabilidades Web' => 'paul.canchignia@gruporadical.com,diana.arevalo@gruporadical.com',
+            'Web Application Firewall' => 'paul.canchignia@gruporadical.com,diana.arevalo@gruporadical.com',
+            'Firewall' => 'gabriel.luna@gruporadical.com,paul.canchignia@gruporadical.com,diana.arevalo@gruporadical.com',
+            'CIFRADO' => 'paul.canchignia@gruporadical.com,diana.arevalo@gruporadical.com',
+            'Pentesting' => 'paul.canchignia@gruporadical.com,diana.arevalo@gruporadical.com',
+            'Análisis de Vulnerabilidades' => 'paul.canchignia@gruporadical.com,diana.arevalo@gruporadical.com',
         ];
 
         foreach ($categories as &$category) {
             if (isset($destinatarios[$category['categoryName']])) {
                 $category['destinatario'] = $destinatarios[$category['categoryName']];
+                $category['cc'] = $cc[$category['categoryName']];
             } else {
                 $category['destinatario'] = '';
+                $category['cc']='';
             }
         }
 
@@ -232,6 +246,7 @@ class EmailSLAServiceProvider
                 if ($incident['padCategories_id'] == $category['id']) {
                     $incident['categoryName'] = $category['categoryName'];
                     $incident['destinatario'] = $category['destinatario'];
+                    $incident['cc'] = $category['cc'];
                     $mergedIncidents[] = $incident;
                 }
             }
@@ -268,11 +283,9 @@ class EmailSLAServiceProvider
             Carbon::WEDNESDAY => [1],
             Carbon::THURSDAY => [1],
             Carbon::FRIDAY => [1],
-            Carbon::SATURDAY => [],
+            Carbon::SATURDAY => [1],
             Carbon::SUNDAY => [],
         ];
-
-        $today = Carbon::now('America/Guayaquil')->dayOfWeek;
 
         return $days[$today];
     }
@@ -284,7 +297,7 @@ class EmailSLAServiceProvider
             Carbon::WEDNESDAY => [2, 3, 4],
             Carbon::THURSDAY => [2],
             Carbon::FRIDAY => [2],
-            Carbon::SATURDAY => [],
+            Carbon::SATURDAY => [2],
             Carbon::SUNDAY => [],
         ];
 

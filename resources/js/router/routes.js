@@ -44,7 +44,8 @@ import Destinatario from "../components/destinatario/Destinatario.vue";
 import PerfilPuesto from "../components/perfilPuesto/PerfilPuesto.vue";
 import Servicios from "../components/servicios/Servicios.vue";
 import Marcas from "../components/marca/Marcas.vue";
-
+import SendSLA from "../components/panet/SendSLA.vue"
+import SendInformeSLA from "../components/panet/SendInformeSLA.vue"
 const router = new VueRouter({
     mode: "history",
     routes: [
@@ -308,6 +309,22 @@ const router = new VueRouter({
             name: "destinatarios",
             path: "/destinatarios",
             component: Destinatario,
+            meta: {
+                requiresAuth: true
+            }
+        },
+        {
+            name: "panetCierreTicket",
+            path: "/panetCierreTicket",
+            component: SendSLA,
+            meta: {
+                requiresAuth: true
+            }
+        },
+        {
+            name: "panetEnvioInforme",
+            path: "/panetEnvioInforme",
+            component: SendInformeSLA,
             meta: {
                 requiresAuth: true
             }

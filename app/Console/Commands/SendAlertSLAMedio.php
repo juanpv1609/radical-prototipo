@@ -66,6 +66,7 @@ class SendAlertSLAMedio extends Command
         foreach ($incidentesData as $item) {
             // Dividir la cadena de destinatarios en un array
             $destinatarios = explode(',', $item['destinatario']);
+            $destinatariosCC = explode(',', $item['cc']);
 
             // Iterar sobre los destinatarios y enviar el correo a cada uno
             foreach ($destinatarios as $destinatario) {
@@ -85,7 +86,9 @@ class SendAlertSLAMedio extends Command
                 ];
 
                 // Enviar el correo al destinatario actual
-                Mail::to(trim($destinatario))->send(new NotificacionSLA($details));
+                Mail::to(trim($destinatario))
+                ->cc($destinatariosCC)
+                ->send(new NotificacionSLA($details));
             }
         }
 

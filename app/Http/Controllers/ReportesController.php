@@ -9,6 +9,10 @@ use App\Models\Contrato;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Date;
+use App\Models\Certificaciones;
+use App\Models\PersonaEstudio;
+use App\Models\Persona;
+
 
 class ReportesController extends Controller
 {
@@ -25,8 +29,8 @@ class ReportesController extends Controller
             else
                 $terminados++;
         }
-        $contratos->total_iniciados=$iniciados;
-        $contratos->total_terminados=$terminados;
+        $contratos->total_iniciados==$iniciados;
+        $contratos->total_terminados==$terminados;
         $pdf = App::make('dompdf.wrapper');
 
         $pdf->getDomPDF()->set_option("enable_php", true);
@@ -34,7 +38,7 @@ class ReportesController extends Controller
         $pdf->getDomPDF()->set_option('isRemoteEnabled', true);
         $pdf->loadView('pdf.contratos', compact('contratos'));
 
-        return $pdf->download('reporteContratos_'.$hoy.'.pdf');
+        return $pdf->download('reporteContratos_' . $hoy . '.pdf');
     }
     public function reporteTareas($inicial, $final)
     {

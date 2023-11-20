@@ -591,7 +591,7 @@ export default {
             }
         },
         async sendMails(el) {
-            console.log(el);
+            //console.log(el);
             await this.$swal.fire({
                 title: 'Esta seguro?',
                 html: `Se enviara un correo a la siguiente dirección:\n${el.usuario.email}\n

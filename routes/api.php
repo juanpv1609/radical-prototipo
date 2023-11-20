@@ -30,6 +30,7 @@ use App\Http\Controllers\PerfilPuestoController;
 use App\Http\Controllers\PersonaMeritoController;
 use App\Http\Controllers\CertificacionesController;
 use App\Http\Controllers\DestinatarioController;
+use App\Http\Controllers\PanetSLAController;
 
 /*
 |--------------------------------------------------------------------------
@@ -159,6 +160,12 @@ Route::resource('modalidades', ModalidadController::class);
 
 Route::resource('destinatarios', DestinatarioController::class);
 
+//Notificaciónes SLA ticket por cerrar
+
+Route::get('cierreTicket/{priority}', [PanetSLAController::class, 'getSLANotification']);
+Route::get('notificarTicketPorCerrar/{priority}', [PanetSLAController::class, 'sendNotificationTicket']);
+Route::get('informeTecnico/{priority}', [PanetSLAController::class, 'getSLAInformeNotification']);
+Route::get('notificarInforme/{priority}', [PanetSLAController::class, 'sendNotificationInforme']);
 
 });
 
