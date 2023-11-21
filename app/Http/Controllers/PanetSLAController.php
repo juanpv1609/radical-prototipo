@@ -43,7 +43,7 @@ class PanetSLAController extends Controller
     public function veryfyDateSearch($priority)
     {
         $days = [
-            'Baja' => [4, 10, 15, 20],
+            'Baja' => [10, 15, 20],
             'Media' => [7, 12, 14],
             'Alta' => [3, 5, 7],
             'Critica' => [3, 5, 7]
