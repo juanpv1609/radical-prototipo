@@ -209,7 +209,7 @@ class EmailSLAServiceProvider
             'SIEM' => 'juan.perugachi@gruporadical.com',
             'Análisis de Vulnerabilidades Web' => 'lenin.cortes@gruporadical.com',
             'Web Application Firewall' => 'richard.teran@gruporadical.com',
-            'Firewall' => 'washington.cardenas@gruporadical.com',
+            'Firewall' => 'bryan.paucar@gruporadical.com'/*'washington.cardenas@gruporadical.com'*/,
             'CIFRADO' => 'christian.molina@gruporadical.com',
             'Pentesting' => 'lenin.cortes@gruporadical.com',
             'Análisis de Vulnerabilidades' => 'lenin.cortes@gruporadical.com',
@@ -283,7 +283,7 @@ class EmailSLAServiceProvider
             Carbon::WEDNESDAY => [1],
             Carbon::THURSDAY => [1],
             Carbon::FRIDAY => [1],
-            Carbon::SATURDAY => [1],
+            Carbon::SATURDAY => [],
             Carbon::SUNDAY => [],
         ];
 
@@ -293,7 +293,7 @@ class EmailSLAServiceProvider
     public function verifyDay2() {
         $days = [
             Carbon::MONDAY => [4],
-            Carbon::TUESDAY => [4],
+            Carbon::TUESDAY => [4,5],
             Carbon::WEDNESDAY => [2, 3, 4],
             Carbon::THURSDAY => [2],
             Carbon::FRIDAY => [2],
