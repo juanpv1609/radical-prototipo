@@ -30,6 +30,7 @@ use App\Http\Controllers\PerfilPuestoController;
 use App\Http\Controllers\PersonaMeritoController;
 use App\Http\Controllers\CertificacionesController;
 use App\Http\Controllers\DestinatarioController;
+use App\Http\Controllers\NotificarTareas;
 use App\Http\Controllers\PanetSLAController;
 
 /*
@@ -166,6 +167,11 @@ Route::get('cierreTicket/{priority}', [PanetSLAController::class, 'getSLANotific
 Route::get('notificarTicketPorCerrar/{priority}', [PanetSLAController::class, 'sendNotificationTicket']);
 Route::get('informeTecnico/{priority}', [PanetSLAController::class, 'getSLAInformeNotification']);
 Route::get('notificarInforme/{priority}', [PanetSLAController::class, 'sendNotificationInforme']);
+
+//Notificaciónes Tareas
+
+Route::get('notificarTareas', [NotificarTareas::class, 'getTareasPorNotificar']);
+Route::get('sendAlertTareas', [NotificarTareas::class, 'sendAlertaTareas']);
 
 });
 

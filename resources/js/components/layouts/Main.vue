@@ -376,7 +376,8 @@ export default {
                     icon: "mdi-email",
                     subLinks: [
                         { title: "Cierre de Ticket", link: "/panetCierreTicket", icon: "mdi-clock-fast" },
-                        { title: "Envío Informe", link: "/panetEnvioInforme", icon: "mdi-clock-fast"  }
+                        { title: "Envío Informe", link: "/panetEnvioInforme", icon: "mdi-clock-fast"  },
+                        { title: "Notificar Tareas", link: "/notificarAlertaTareas", icon: "mdi-clock-fast" }
                     ],
                 },
             ],
