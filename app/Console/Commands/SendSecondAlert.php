@@ -44,7 +44,6 @@ class SendSecondAlert extends Command
         $hoy = date("Y-m-d");
         $destinatariosCC = [];
 
-
             $alerta_fechas = Tareas::with('contrato', 'frecuencias','estado_tarea','tipo','usuario')
                             ->where('alerta_enviada',1) //se envio la primera
                             ->where('segunda_alerta_enviada',0) // y NO se envio la segunda
@@ -98,8 +97,8 @@ class SendSecondAlert extends Command
                     Mail::to($item->usuario->email)
                     ->cc($destinatariosCC)
                     ->send(new TareasEmail($details));
-                    $item->segunda_alerta_enviada == 1;
-                    $item->cuenta_alertas==$item->cuenta_alertas+1;
+                    $item->segunda_alerta_enviada = 1;
+                    $item->cuenta_alertas=$item->cuenta_alertas+1;
                     $item->save();
                 }
 

@@ -57,7 +57,7 @@ class SendAlert extends Command
 
                     $estructura_entregable = explode(",", $item->contrato->estructura_informe);
                     //$estructura_entregable = $item->contrato->estructura_informe;
-                    
+
                     $details = [
 
                         'title' => 'Notificación de entregable (1ra Alerta)',
@@ -108,8 +108,8 @@ class SendAlert extends Command
                     //Mail::to('soporte@gruporadical.com')
                     //->cc('paul.canchignia@gruporadical.com')
                     //->send(new TicketEmail($details));
-                    $item->alerta_enviada == 1;
-                    $item->cuenta_alertas==$item->cuenta_alertas+1;
+                    $item->alerta_enviada = 1;
+                    $item->cuenta_alertas=$item->cuenta_alertas+1;
                     $item->save();
                 }
 

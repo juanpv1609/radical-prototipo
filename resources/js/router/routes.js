@@ -46,7 +46,8 @@ import Servicios from "../components/servicios/Servicios.vue";
 import Marcas from "../components/marca/Marcas.vue";
 import SendSLA from "../components/panet/SendSLA.vue"
 import SendInformeSLA from "../components/panet/SendInformeSLA.vue"
-import NotificarAlertaTareas from "../components/panet/SendNotification.vue"
+import NotificarAlertaTareas from "../components/notificacionesTareas/SendNotification.vue"
+import NotificarAlertaTareas2 from "../components/notificacionesTareas/SendNotification2.vue";
 const router = new VueRouter({
     mode: "history",
     routes: [
@@ -335,6 +336,15 @@ const router = new VueRouter({
             name: "notificarAlertaTareas",
             path: "/notificarAlertaTareas",
             component: NotificarAlertaTareas,
+            meta: {
+                requiresAuth: true
+            }
+        },
+
+        {
+            name: 'notificarSegundaAlerta',
+            path: '/notificarSegundaAlerta',
+            component: NotificarAlertaTareas2,
             meta: {
                 requiresAuth: true
             }

@@ -122,6 +122,25 @@
 
                     </div>
 
+                    <div v-for="item in itemsNotificaciones" :key="item.title">
+
+                        <v-list-group v-if="$store.state.user.role == 2" :key="item.title" no-action
+                            :prepend-icon="item.icon" color="orange darken-4">
+                            <template v-slot:activator>
+                                <v-list-item-title>{{ item.title }}</v-list-item-title>
+                            </template>
+                            <v-list-item v-for="sublink in item.subLinks" :key="sublink.title" link :to="sublink.link">
+
+                                <v-list-item-title>
+                                    {{ sublink.title }}</v-list-item-title>
+                                <v-list-item-icon>
+                                    <v-icon v-text="sublink.icon"></v-icon>
+                                </v-list-item-icon>
+                            </v-list-item>
+                        </v-list-group>
+
+                    </div>
+
                 </v-list>
 
                 <!-- <template v-slot:append>
@@ -372,12 +391,22 @@ export default {
             ],
             itemsPanet: [
                 {
-                    title: "Notificaciones",
+                    title: "Notificaciones SLA",
+                    icon: "mdi-clock-fast",
+                    subLinks: [
+                        { title: "Cierre de Ticket", link: "/panetCierreTicket" },
+                        { title: "Envío Informe", link: "/panetEnvioInforme"},
+                    ],
+                },
+            ],
+
+            itemsNotificaciones: [
+                {
+                    title: "Notificaciones Tareas",
                     icon: "mdi-email",
                     subLinks: [
-                        { title: "Cierre de Ticket", link: "/panetCierreTicket", icon: "mdi-clock-fast" },
-                        { title: "Envío Informe", link: "/panetEnvioInforme", icon: "mdi-clock-fast"  },
-                        { title: "Notificar Tareas", link: "/notificarAlertaTareas", icon: "mdi-clock-fast" }
+                        { title: "1era Alerta", link: "/notificarAlertaTareas" },
+                        { title: "2da Alerta", link: "/notificarSegundaAlerta" }
                     ],
                 },
             ],

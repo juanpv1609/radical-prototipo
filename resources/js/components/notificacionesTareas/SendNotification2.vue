@@ -2,7 +2,7 @@
     <div>
         <v-card elevation="2" :loading="loading">
             <v-card-title class="d-flex justify-space-between mb-6">
-                <span>Notificar alerta de entregables</span>
+                <span>Notificar 2da alerta de entregables</span>
             </v-card-title>
             <v-card-text>
                 <v-col cols="3">
@@ -51,7 +51,7 @@ export default {
     created() {
         /*Generar las tareas por el API*/
         this.axios
-            .get("/api/notificarTareas")
+            .get("/api/notificarTareas2")
             .then(response => {
                 this.tareas = response.data;
                 console.log(this.tareas)
@@ -60,9 +60,6 @@ export default {
     methods: {
 
         async sendMails() {
-
-
-
             try {
                 await this.$swal.fire({
                     title: '¿Está seguro?',
@@ -84,7 +81,7 @@ export default {
                     allowEnterKey: false,
                 });
 
-                const response = await this.axios.get(`/api/sendAlertTareas`);
+                const response = await this.axios.get(`/api/sendAlertTareas2`);
 
                 const settledPromises = await Promise.allSettled(response.data);
 

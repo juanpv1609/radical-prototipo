@@ -172,6 +172,8 @@ Route::get('notificarInforme/{priority}', [PanetSLAController::class, 'sendNotif
 
 Route::get('notificarTareas', [NotificarTareas::class, 'getTareasPorNotificar']);
 Route::get('sendAlertTareas', [NotificarTareas::class, 'sendAlertaTareas']);
+Route::get('notificarTareas2', [NotificarTareas::class, 'getTareasPorNotificar2']);
+Route::get('sendAlertTareas2', [NotificarTareas::class, 'sendAlertaTareas2']);
 
 });
 
