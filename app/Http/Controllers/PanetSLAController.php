@@ -63,7 +63,7 @@ class PanetSLAController extends Controller
             // Iterar sobre los destinatarios y enviar el correo a cada uno
             foreach ($destinatarios as $destinatario) {
                 $details = [
-                    'title' => 'Notificación de SLA - Ticket abierto (Prioridad' . $priority . ')',
+                    'title' => 'Notificación de SLA - Ticket abierto (Prioridad ' . $priority . ')',
                     'alerta' => $priority,
                     'body' => 'Estimad@ el software RGSDM (Radical Gestión SDM) ha generado la siguiente alerta: ',
                     'code' => $item['code'],
@@ -97,7 +97,7 @@ class PanetSLAController extends Controller
             // Iterar sobre los destinatarios y enviar el correo a cada uno
             foreach ($destinatarios as $destinatario) {
                 $details = [
-                    'title' => 'Notificación de SLA - Ticket abierto (Prioridad' . $priority . ')',
+                    'title' => 'Notificación de SLA - Entrega del Informe Técnico (Prioridad ' . $priority . ')',
                     'alerta' => $priority,
                     'body' => 'Estimad@ el software RGSDM (Radical Gestión SDM) ha generado la siguiente alerta: ',
                     'code' => $item['code'],
