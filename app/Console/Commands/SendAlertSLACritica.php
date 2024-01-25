@@ -42,7 +42,7 @@ class SendAlertSLACritica extends Command
     {
 
 
-        $days = [3, 5, 7];
+        $days = [1, 3, 5, 7];
 
         $priority = 'Critica';
 

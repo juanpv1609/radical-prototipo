@@ -38,7 +38,7 @@ class SendAlertSLABajo extends Command
     {
 
 
-        $days = [10, 15, 20];
+        $days = [10, 15, 16, 17, 18, 19, 20];
 
         $priority = 'Baja';
 

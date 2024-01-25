@@ -50,7 +50,7 @@ class SendAlertSLAMedio extends Command
     {
 
 
-        $days = [7, 12, 14];
+        $days = [7, 11, 12, 13, 14];
 
         $priority = 'Media';
 
