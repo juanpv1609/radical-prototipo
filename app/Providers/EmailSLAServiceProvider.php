@@ -217,12 +217,12 @@ class EmailSLAServiceProvider
 
         $cc = [
             'SIEM' => 'brenda.perez@gruporadical.com,maylee.pineda@gruporadical.com,paul.canchignia@gruporadical.com,diana.arevalo@gruporadical.com',
-            'Análisis de Vulnerabilidades Web' => 'paul.canchignia@gruporadical.com,diana.arevalo@gruporadical.com',
-            'Web Application Firewall' => 'paul.canchignia@gruporadical.com,diana.arevalo@gruporadical.com',
-            'Firewall' => 'gabriel.luna@gruporadical.com,paul.canchignia@gruporadical.com,diana.arevalo@gruporadical.com',
-            'CIFRADO' => 'paul.canchignia@gruporadical.com,diana.arevalo@gruporadical.com',
-            'Pentesting' => 'paul.canchignia@gruporadical.com,diana.arevalo@gruporadical.com',
-            'Análisis de Vulnerabilidades' => 'paul.canchignia@gruporadical.com,diana.arevalo@gruporadical.com',
+            'Análisis de Vulnerabilidades Web' => 'paul.canchignia@gruporadical.com,diana.arevalo@gruporadical.com,lenin.cortes@gruporadical.com,ciberseguridad@gruporadical.com',
+            'Web Application Firewall' => 'paul.canchignia@gruporadical.com,diana.arevalo@gruporadical.com,lenin.cortes@gruporadical.com,ciberseguridad@gruporadical.com',
+            'Firewall' => 'paul.canchignia@gruporadical.com,diana.arevalo@gruporadical.com,lenin.cortes@gruporadical.com,ciberseguridad@gruporadical.com',
+            'CIFRADO' => 'paul.canchignia@gruporadical.com,diana.arevalo@gruporadical.com,lenin.cortes@gruporadical.com,ciberseguridad@gruporadical.com',
+            'Pentesting' => 'paul.canchignia@gruporadical.com,diana.arevalo@gruporadical.com,ciberseguridad@gruporadical.com',
+            'Análisis de Vulnerabilidades' => 'paul.canchignia@gruporadical.com,diana.arevalo@gruporadical.com,ciberseguridad@gruporadical.com',
         ];
 
         foreach ($categories as &$category) {
