@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Http;
 class EmailSLAServiceProvider
 {
     // ! Credenciales de acceso a la API ( Escalar a base de datos )
-    protected const PANET_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJwYW5ldC5hZG1pbiIsIm92ciI6ImZhbHNlIiwiYXV0IjoiMCIsIm5iZiI6MTY4NjM0NDcwNiwiZXhwIjoxNzE3ODgwNzA2LCJpYXQiOjE2ODYzNDQ3MDYsImlzcyI6InByb2FjdGl2YW5ldCIsImF1ZCI6ImFwaSJ9.8PHCIFVfIIme_twFYH9WHZB0T8-7KymKgXyhTC6OZIw';
+    protected const PANET_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJwYW5ldC5hZG1pbiIsIm92ciI6ImZhbHNlIiwiYXV0IjoiMCIsIm5iZiI6MTcxODA1MDI2NiwiZXhwIjoxNzQ5NTg2MjY2LCJpYXQiOjE3MTgwNTAyNjYsImlzcyI6InByb2FjdGl2YW5ldCIsImF1ZCI6ImFwaSJ9.HaLQKxBJdvuDQ9_VgCtWoCybY1m0T6B-2eMAIYdeTZM';
     protected const API_PANET = 'https://soporte.gruporadical.com/proactivanet/api/';
 
     protected $namePriority, $statusIncident;
