@@ -60,9 +60,6 @@ export default {
     methods: {
 
         async sendMails() {
-
-
-
             try {
                 await this.$swal.fire({
                     title: '¿Está seguro?',
@@ -85,6 +82,7 @@ export default {
                 });
 
                 const response = await this.axios.get(`/api/sendAlertTareas`);
+                
 
                 const settledPromises = await Promise.allSettled(response.data);
 

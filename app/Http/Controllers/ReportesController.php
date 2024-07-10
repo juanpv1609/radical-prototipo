@@ -38,7 +38,7 @@ class ReportesController extends Controller
         $pdf->getDomPDF()->set_option('isRemoteEnabled', true);
         $pdf->loadView('pdf.contratos', compact('contratos'));
 
-        return $pdf->download('reporteContratos_' . $hoy . '.pdf');
+        return $pdf->download('reporteContratos_'.$hoy.'.pdf');
     }
     public function reporteTareas($inicial, $final)
     {
