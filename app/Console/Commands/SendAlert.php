@@ -43,7 +43,7 @@ class SendAlert extends Command
      */
     public function handle()
     {
-        $hoy = Carbon::now()->format('Y-m-d');
+       $hoy = Carbon::now()->format('Y-m-d');
 
         $alerta_fechas = Tareas::with('contrato', 'frecuencias','estado_tarea','tipo','usuario')
         ->where('alerta_enviada',0)
@@ -60,7 +60,7 @@ class SendAlert extends Command
 
                     $details = [
 
-                        'title' => 'Notificación de entregable (1ra Alerta)',
+                        'title' => 'Notificación (1ra Alerta)',
                         'alerta' => 1,
                         'responsable' => $item->usuario->name,
                         'body' => 'Estimad@ '.$item->usuario->name.' el software RGSDM (Radical Gestión SDM) ha generado la siguiente alerta:',

@@ -59,7 +59,7 @@ class SendSecondAlert extends Command
 
                     $details = [
 
-                        'title' => 'Notificación de entregable (2da Alerta)',
+                        'title' => 'Notificación (2da Alerta)',
                         'alerta' => 2,
                         'body' => 'Estimad@ '.$item->usuario->name.' el software RGSDM (Radical Gestión SDM) ha generado la siguiente alerta:',
                         'entregable' => $item->descripcion,
