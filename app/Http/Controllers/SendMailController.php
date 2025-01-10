@@ -51,7 +51,7 @@ class SendMailController extends Controller
 
         $details = [
 
-            'title' => 'Notificación de entregable (1ra Alerta)',
+            'title' => 'Notificación (1ra Alerta)',
             'alerta' => 1,
             'responsable' => $tarea->usuario->name,
             'body' => 'Estimad@ ' . $tarea->usuario->name . ' el software RGSDM (Radical Gestión SDM) ha generado la siguiente alerta:',

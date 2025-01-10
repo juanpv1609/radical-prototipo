@@ -38,7 +38,7 @@ class NotificarTareas extends Controller
 
             $details = [
 
-                'title' => 'Notificación de entregable (1ra Alerta)',
+                'title' => 'Notificación (1ra Alerta)',
                 'alerta' => 1,
                 'responsable' => $item->usuario->name,
                 'body' => 'Estimad@ ' . $item->usuario->name . ' el software RGSDM (Radical Gestión SDM) ha generado la siguiente alerta:',
@@ -96,7 +96,7 @@ class NotificarTareas extends Controller
 
             $details = [
 
-                'title' => 'Notificación de entregable (2da Alerta)',
+                'title' => 'Notificación (2da Alerta)',
                 'alerta' => 2,
                 'body' => 'Estimad@ '.$item->usuario->name.' el software RGSDM (Radical Gestión SDM) ha generado la siguiente alerta:',
                 'entregable' => $item->descripcion,
